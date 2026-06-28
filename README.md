@@ -18,3 +18,18 @@ python -m http.server 8080   # then visit http://localhost:8080
 
 - Action CTAs read "Coming soon" until the product is live.
 - Independent project, not affiliated with Epic Games or Unreal Engine.
+
+## Deploy / update
+
+Hosted on **Cloudflare Pages** (project `agentconduit-site`, domain `conduit.unrealtools.com`)
+via wrangler **direct upload** — pushing this repo does NOT auto-deploy. To ship a change,
+run wrangler from a non-repo dir so its `.wrangler` cache never lands in the repo:
+
+```bash
+D=$(mktemp -d) && cp index.html "$D"/
+cd "$D" && npx wrangler pages deploy . --project-name agentconduit-site --branch main --commit-dirty=true
+```
+
+Requires a Cloudflare login once (`npx wrangler login`). `conduit.unrealtools.com` is a
+subdomain of the `unrealtools.com` Cloudflare zone, so its DNS + cert were auto-provisioned
+when the custom domain was registered on the Pages project.
