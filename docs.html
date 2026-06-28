@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Docs — Get started with Conduit in minutes</title>
-<meta name="description" content="Install Conduit, connect your agent, and build a playable Unreal Engine game from a single prompt. Five steps, about ten minutes. Free for indie developers.">
-<meta property="og:title" content="Conduit Docs — From zero to a playable game in minutes">
-<meta property="og:description" content="Install, connect your agent, prompt. Build Unreal Engine games by talking to an AI agent. Free for indies.">
+<title>Docs — Conduit for Unreal Engine</title>
+<meta name="description" content="Full documentation for Conduit: install, connect your agent, core concepts, the agentic skills, and a detailed reference for all 67 typed tools. Free for indie developers.">
+<meta property="og:title" content="Conduit Docs — install, concepts, and the full 67-tool reference">
+<meta property="og:description" content="Everything you need to build Unreal Engine games by prompting an agent. Free for indies.">
 <meta property="og:type" content="website">
 <meta name="theme-color" content="#09090C">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -19,179 +19,166 @@
   ::selection { background:rgba(10,132,255,0.35); }
   a { color:inherit; text-decoration:none; }
   :focus-visible { outline:2px solid #4DB2FF; outline-offset:3px; border-radius:4px; }
+  [id] { scroll-margin-top:84px; }
   @keyframes acGlow { 0%,100%{opacity:.45} 50%{opacity:.85} }
-  @keyframes acReveal { from{opacity:0; transform:translateY(18px)} to{opacity:1; transform:none} }
-  .acReveal { animation:acReveal both; animation-timeline:view(); animation-range:entry 2% cover 26%; }
   .nav-link:hover { color:#F2F2F5; background:rgba(255,255,255,0.04); }
   .foot-link:hover { color:#F2F2F5; }
   .cta-buy:hover { background:#1f90ff; }
   .btn-secondary:hover { background:rgba(255,255,255,0.08); border-color:rgba(255,255,255,0.2); }
-  .step:hover { border-color:rgba(10,132,255,0.4); }
-  .step { transition:border-color .2s; }
   code { font-family:'JetBrains Mono',monospace; }
   .ic { font-family:'JetBrains Mono',monospace; font-size:12.5px; color:#7CC4FF; background:rgba(10,132,255,0.08); border:1px solid rgba(10,132,255,0.25); padding:1px 6px; border-radius:5px; white-space:nowrap; }
-  pre { margin:0; }
   .codeblock { background:#0C0C11; border:1px solid rgba(255,255,255,0.1); border-radius:12px; overflow:auto; }
-  .codeblock pre { padding:16px 18px; font-family:'JetBrains Mono',monospace; font-size:13px; line-height:1.65; color:#D6D6E0; }
-  .cm { color:#6B6B76; }     /* comment */
-  .cg { color:#6EE7A0; }     /* green / prompt */
-  .cb { color:#7CC4FF; }     /* blue / value */
-  @media (prefers-reduced-motion: reduce){
-    html{scroll-behavior:auto}
-    .acReveal{animation:none!important; opacity:1!important; transform:none!important}
-    *{animation-duration:.001ms!important}
+  .codeblock pre { margin:0; padding:16px 18px; font-family:'JetBrains Mono',monospace; font-size:13px; line-height:1.65; color:#D6D6E0; }
+  .cm { color:#6B6B76; } .cg { color:#6EE7A0; } .cb { color:#7CC4FF; }
+  /* layout */
+  .docwrap { max-width:1200px; margin:0 auto; padding:8px 24px 0; display:grid; grid-template-columns:236px 1fr; gap:44px; align-items:start; }
+  .side { position:sticky; top:74px; align-self:start; max-height:calc(100vh - 92px); overflow:auto; padding:6px 0 40px; }
+  .side .grp { font-family:'JetBrains Mono',monospace; font-size:10.5px; text-transform:uppercase; letter-spacing:.09em; color:#6B6B76; margin:20px 8px 7px; }
+  .side a { display:block; padding:5px 10px; color:#9A9AA6; border-radius:7px; line-height:1.3; font-size:13.5px; }
+  .side a:hover { color:#fff; background:rgba(255,255,255,0.04); }
+  .content { min-width:0; padding-bottom:24px; }
+  .sec { padding:38px 0 4px; border-top:1px solid rgba(255,255,255,0.06); margin-top:30px; }
+  .sec:first-child { border-top:0; margin-top:0; }
+  .lbl { font-family:'JetBrains Mono',monospace; font-size:12px; color:#4DB2FF; margin-bottom:12px; }
+  h2.h { font-size:clamp(1.5rem,2.6vw,2rem); line-height:1.12; letter-spacing:-0.03em; font-weight:700; margin:0 0 12px; }
+  h3.sub { font-size:15px; font-weight:650; color:#E6E6EC; margin:26px 0 12px; }
+  p.lede { color:#A6A6B2; font-size:15.5px; line-height:1.65; margin:0 0 18px; max-width:680px; }
+  /* tools */
+  .tool { border:1px solid rgba(255,255,255,0.09); border-radius:13px; padding:15px 18px; background:rgba(255,255,255,0.012); margin-bottom:10px; }
+  .tool .th { display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:7px; }
+  .tn { font-family:'JetBrains Mono',monospace; font-size:14px; color:#7CC4FF; font-weight:600; }
+  .td { font-size:13.5px; color:#A6A6B2; line-height:1.62; margin:0; }
+  .gate { font-family:'JetBrains Mono',monospace; font-size:10.5px; padding:2px 8px; border-radius:999px; font-weight:500; }
+  .gw { color:#7CC4FF; background:rgba(10,132,255,0.1); border:1px solid rgba(10,132,255,0.3); }
+  .gr { color:#6EE7A0; background:rgba(74,222,128,0.08); border:1px solid rgba(74,222,128,0.28); }
+  .gu { color:#9A9AA6; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.12); }
+  .gc { color:#F2C66B; background:rgba(242,180,80,0.08); border:1px solid rgba(242,180,80,0.3); }
+  .gp { color:#C9A6FF; background:rgba(150,110,255,0.1); border:1px solid rgba(150,110,255,0.3); }
+  @media (max-width:860px){
+    .docwrap { grid-template-columns:1fr; gap:0; }
+    .side { position:static; max-height:none; border-bottom:1px solid rgba(255,255,255,0.08); margin-bottom:8px; }
   }
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} *{animation-duration:.001ms!important} }
 </style>
 </head>
 <body>
 
 <div style="background:#09090C;overflow-x:hidden">
+  <div aria-hidden="true" style="position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(900px 520px at 82% -10%, rgba(10,132,255,0.13), transparent 60%)"></div>
 
-  <!-- background glow -->
-  <div aria-hidden="true" style="position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(900px 520px at 80% -8%, rgba(10,132,255,0.15), transparent 60%), radial-gradient(700px 600px at 4% 6%, rgba(80,180,255,0.06), transparent 55%)"></div>
-
-  <!-- ===================== NAV ===================== -->
+  <!-- NAV -->
   <header style="position:sticky;top:0;z-index:50;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);background:rgba(9,9,12,0.72);border-bottom:1px solid rgba(255,255,255,0.06)">
-    <nav aria-label="Primary" style="max-width:1180px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap">
+    <nav aria-label="Primary" style="max-width:1200px;margin:0 auto;padding:13px 24px;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap">
       <a href="/" style="display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:-0.02em;font-size:17px">
         <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><rect x="2.5" y="2.5" width="17" height="17" rx="4.5" fill="none" stroke="#0A84FF" stroke-width="1.6"/><path d="M7 11h8M11 7v8" stroke="#4DB2FF" stroke-width="1.6" stroke-linecap="round"/></svg>
-        Conduit
+        Conduit <span style="color:#6B6B76;font-weight:500">/ docs</span>
       </a>
       <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
-        <div style="display:flex;align-items:center;gap:4px;margin-right:6px">
-          <a class="nav-link" href="#install" style="padding:8px 12px;font-size:14px;color:#A6A6B2;border-radius:8px">Install</a>
-          <a class="nav-link" href="#connect" style="padding:8px 12px;font-size:14px;color:#A6A6B2;border-radius:8px">Connect</a>
-          <a class="nav-link" href="#skills" style="padding:8px 12px;font-size:14px;color:#A6A6B2;border-radius:8px">Skills</a>
-          <a class="nav-link" href="/#pricing" style="padding:8px 12px;font-size:14px;color:#A6A6B2;border-radius:8px">Pricing</a>
-        </div>
+        <a class="nav-link" href="/#features" style="padding:8px 12px;font-size:14px;color:#A6A6B2;border-radius:8px">Features</a>
+        <a class="nav-link" href="/#pricing" style="padding:8px 12px;font-size:14px;color:#A6A6B2;border-radius:8px">Pricing</a>
         <a class="cta-buy" href="https://buy.polar.sh/polar_cl_1FGJ3RGFEE5f2nqXGHt7n7UGcCq32avE6Ge8n3gKW5R" style="display:inline-flex;align-items:center;gap:7px;padding:9px 16px;font-size:14px;font-weight:600;color:#fff;background:#0A84FF;border-radius:9px;box-shadow:0 1px 0 rgba(255,255,255,0.18) inset, 0 8px 24px -8px rgba(10,132,255,0.7);transition:background .2s">Get it free</a>
       </div>
     </nav>
   </header>
 
-  <main style="position:relative;z-index:1">
+  <!-- HERO -->
+  <section style="position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:clamp(36px,5vw,60px) 24px clamp(20px,3vw,32px)">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:12.5px;color:#4DB2FF;margin-bottom:14px">// documentation</div>
+    <h1 style="font-size:clamp(2rem,4.4vw,3rem);line-height:1.05;letter-spacing:-0.035em;font-weight:800;margin:0 0 16px;max-width:760px;text-wrap:balance">Everything you need to build a game by prompting.</h1>
+    <p style="font-size:clamp(1rem,1.4vw,1.16rem);line-height:1.6;color:#A6A6B2;max-width:620px;margin:0 0 24px">Install, connect any MCP agent, and reach for 67 typed, safety-gated tools and 4 agentic skills. Start with the five-minute setup, then dive into the full reference below.</p>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+      <a class="cta-buy" href="https://buy.polar.sh/polar_cl_1FGJ3RGFEE5f2nqXGHt7n7UGcCq32avE6Ge8n3gKW5R" style="display:inline-flex;align-items:center;gap:8px;padding:12px 22px;font-size:15px;font-weight:600;color:#fff;background:#0A84FF;border-radius:11px;box-shadow:0 1px 0 rgba(255,255,255,0.18) inset, 0 12px 34px -10px rgba(10,132,255,0.8);transition:background .2s">Get Conduit free<span style="width:7px;height:7px;border-radius:999px;background:#fff;opacity:.9;animation:acGlow 2s ease-in-out infinite"></span></a>
+      <a class="btn-secondary" href="#install" style="display:inline-flex;align-items:center;gap:8px;padding:12px 20px;font-size:15px;font-weight:600;color:#C9C9D3;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.12);border-radius:11px;transition:background .2s,border-color .2s">Start the setup</a>
+    </div>
+  </section>
 
-    <!-- ===================== HERO ===================== -->
-    <section style="max-width:880px;margin:0 auto;padding:clamp(44px,7vw,88px) 24px clamp(32px,4vw,52px);text-align:center">
-      <div style="font-family:'JetBrains Mono',monospace;font-size:12.5px;color:#4DB2FF;margin-bottom:16px">// documentation</div>
-      <h1 style="font-size:clamp(2.3rem,5.4vw,3.6rem);line-height:1.04;letter-spacing:-0.035em;font-weight:800;margin:0 0 20px;text-wrap:balance">From zero to a playable game in minutes.</h1>
-      <p style="font-size:clamp(1.04rem,1.5vw,1.24rem);line-height:1.6;color:#A6A6B2;max-width:620px;margin:0 auto 30px">
-        Install the plugin, point your agent at one local endpoint, and start prompting. Conduit turns natural language into levels, Blueprints, UMG, input, and a play-tested game — inside the real Unreal Editor. No sidecar, no glue code.
-      </p>
-      <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-bottom:18px">
-        <a class="cta-buy" href="https://buy.polar.sh/polar_cl_1FGJ3RGFEE5f2nqXGHt7n7UGcCq32avE6Ge8n3gKW5R" style="display:inline-flex;align-items:center;gap:8px;padding:13px 24px;font-size:15px;font-weight:600;color:#fff;background:#0A84FF;border-radius:11px;box-shadow:0 1px 0 rgba(255,255,255,0.18) inset, 0 12px 34px -10px rgba(10,132,255,0.8);transition:background .2s">
-          Start free — it's free for indies
-          <span style="width:7px;height:7px;border-radius:999px;background:#fff;opacity:.9;animation:acGlow 2s ease-in-out infinite"></span>
-        </a>
-        <a class="btn-secondary" href="#install" style="display:inline-flex;align-items:center;gap:8px;padding:13px 22px;font-size:15px;font-weight:600;color:#C9C9D3;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.12);border-radius:11px;transition:background .2s,border-color .2s">Jump to install</a>
-      </div>
-      <p style="font-size:13px;color:#6B6B76;font-family:'JetBrains Mono',monospace;margin:0">5 steps · ~10 minutes · Claude Code, Claude Desktop &amp; any MCP client</p>
-    </section>
+  <!-- DOC LAYOUT -->
+  <div class="docwrap" style="position:relative;z-index:1">
 
-    <!-- ===================== STAT BAND ===================== -->
-    <section class="acReveal" style="max-width:1000px;margin:0 auto 8px;padding:0 24px">
-      <div style="display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(min(200px,100%),1fr))">
-        <div style="border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:20px 22px;background:rgba(255,255,255,0.015)"><div style="font-size:30px;font-weight:780;letter-spacing:-0.03em">65</div><div style="font-size:13.5px;color:#9A9AA6">typed, safety-gated tools</div></div>
-        <div style="border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:20px 22px;background:rgba(255,255,255,0.015)"><div style="font-size:30px;font-weight:780;letter-spacing:-0.03em">4</div><div style="font-size:13.5px;color:#9A9AA6">agentic skills that ship outcomes</div></div>
-        <div style="border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:20px 22px;background:rgba(255,255,255,0.015)"><div style="font-size:30px;font-weight:780;letter-spacing:-0.03em">0</div><div style="font-size:13.5px;color:#9A9AA6">sidecars — native, in-engine</div></div>
-      </div>
-    </section>
+    <!-- SIDEBAR -->
+    <aside class="side" aria-label="Docs navigation">
+      <div class="grp">Getting started</div>
+      <a href="#requirements">Requirements</a>
+      <a href="#install">Install in 5 steps</a>
+      <a href="#connect">Connect your agent</a>
+      <a href="#first-prompt">Your first prompt</a>
+      <div class="grp">Core concepts</div>
+      <a href="#architecture">Architecture</a>
+      <a href="#safety">Safety &amp; gates</a>
+      <a href="#transactions">Transactions &amp; undo</a>
+      <a href="#skills">Agentic skills</a>
+      <div class="grp">Tool reference</div>
+      <a href="#g-world">World &amp; level</a>
+      <a href="#g-actors">Actors &amp; scene</a>
+      <a href="#g-blueprints">Blueprints &amp; logic</a>
+      <a href="#g-umg">UMG — game UI</a>
+      <a href="#g-materials">Materials &amp; look</a>
+      <a href="#g-data">Data, assets &amp; properties</a>
+      <a href="#g-gameplay">Gameplay &amp; input</a>
+      <a href="#g-verify">Camera, play &amp; verify</a>
+      <a href="#g-bulk">Bulk &amp; orchestration</a>
+      <a href="#g-escape">Escape hatches</a>
+    </aside>
 
-    <!-- ===================== REQUIREMENTS ===================== -->
-    <section class="acReveal" style="max-width:880px;margin:0 auto;padding:clamp(36px,5vw,64px) 24px 8px">
-      <div style="font-family:'JetBrains Mono',monospace;font-size:12.5px;color:#4DB2FF;margin-bottom:14px">// before you start</div>
-      <h2 style="font-size:clamp(1.6rem,3vw,2.2rem);line-height:1.1;letter-spacing:-0.03em;font-weight:700;margin:0 0 18px">What you need</h2>
-      <div style="display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr))">
-        <div style="display:flex;gap:11px;align-items:flex-start;border:1px solid rgba(255,255,255,0.1);border-radius:13px;padding:16px 18px;background:rgba(255,255,255,0.015)"><svg width="15" height="15" viewBox="0 0 12 12" style="flex-shrink:0;margin-top:3px"><path d="M2.5 6.4l2.4 2.4 4.6-5.6" stroke="#4ADE80" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><span style="font-size:14px;color:#C9C9D3;line-height:1.55"><strong style="font-weight:650;color:#E6E6EC">Unreal Engine 5.7 or 5.8</strong> (broader 5.5–5.8 in progress)</span></div>
-        <div style="display:flex;gap:11px;align-items:flex-start;border:1px solid rgba(255,255,255,0.1);border-radius:13px;padding:16px 18px;background:rgba(255,255,255,0.015)"><svg width="15" height="15" viewBox="0 0 12 12" style="flex-shrink:0;margin-top:3px"><path d="M2.5 6.4l2.4 2.4 4.6-5.6" stroke="#4ADE80" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><span style="font-size:14px;color:#C9C9D3;line-height:1.55"><strong style="font-weight:650;color:#E6E6EC">A C++ project</strong> with the Visual Studio toolchain (Windows)</span></div>
-        <div style="display:flex;gap:11px;align-items:flex-start;border:1px solid rgba(255,255,255,0.1);border-radius:13px;padding:16px 18px;background:rgba(255,255,255,0.015)"><svg width="15" height="15" viewBox="0 0 12 12" style="flex-shrink:0;margin-top:3px"><path d="M2.5 6.4l2.4 2.4 4.6-5.6" stroke="#4ADE80" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><span style="font-size:14px;color:#C9C9D3;line-height:1.55"><strong style="font-weight:650;color:#E6E6EC">An MCP-capable agent</strong> — Claude Code, Claude Desktop, or similar</span></div>
-      </div>
-      <p style="font-size:13px;color:#6B6B76;margin:16px 0 0;line-height:1.6">Python Editor Script Plugin and Enhanced Input are auto-enabled as plugin dependencies — nothing to install by hand.</p>
-    </section>
+    <!-- CONTENT -->
+    <main class="content">
 
-    <!-- ===================== INSTALL ===================== -->
-    <section id="install" class="acReveal" style="max-width:880px;margin:0 auto;padding:clamp(40px,5vw,72px) 24px 8px">
-      <div style="font-family:'JetBrains Mono',monospace;font-size:12.5px;color:#4DB2FF;margin-bottom:14px">// install</div>
-      <h2 style="font-size:clamp(1.7rem,3.2vw,2.4rem);line-height:1.08;letter-spacing:-0.03em;font-weight:700;margin:0 0 8px">Install in five steps</h2>
-      <p style="color:#A6A6B2;font-size:16px;line-height:1.6;margin:0 0 32px;max-width:600px">It's a drop-in source plugin. Place it, build it, flip the switches you want, connect, and prompt.</p>
-
-      <div style="display:grid;gap:14px">
-
-        <!-- step 1 -->
-        <div class="step" style="border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:24px;background:rgba(255,255,255,0.015)">
-          <div style="display:flex;gap:14px;align-items:center;margin-bottom:14px">
-            <div style="flex-shrink:0;width:30px;height:30px;border-radius:9px;background:rgba(10,132,255,0.14);border:1px solid rgba(10,132,255,0.4);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:600;color:#7CC4FF">1</div>
-            <div style="font-size:17px;font-weight:650">Get the plugin</div>
-          </div>
-          <p style="font-size:14.5px;color:#A6A6B2;line-height:1.65;margin:0 0 14px">Grab a license (free for indies), accept your GitHub invite, and download <code class="ic">AgentConduit-vX.Y.Z.zip</code> from the repository's Releases tab. Unzip the <code class="ic">AgentConduit/</code> folder.</p>
-          <a class="cta-buy" href="https://buy.polar.sh/polar_cl_1FGJ3RGFEE5f2nqXGHt7n7UGcCq32avE6Ge8n3gKW5R" style="display:inline-flex;align-items:center;gap:8px;padding:10px 18px;font-size:14px;font-weight:600;color:#fff;background:#0A84FF;border-radius:10px;transition:background .2s">Get Conduit free</a>
+      <!-- REQUIREMENTS -->
+      <section id="requirements" class="sec">
+        <div class="lbl">// getting started</div>
+        <h2 class="h">What you need</h2>
+        <p class="lede">Conduit is a native C++ plugin that compiles into your project. You need a C++-capable Unreal project and any MCP-compatible agent.</p>
+        <div style="display:grid;gap:10px">
+          <div style="display:flex;gap:11px;align-items:flex-start;border:1px solid rgba(255,255,255,0.09);border-radius:12px;padding:14px 16px;background:rgba(255,255,255,0.012)"><svg width="15" height="15" viewBox="0 0 12 12" style="flex-shrink:0;margin-top:3px"><path d="M2.5 6.4l2.4 2.4 4.6-5.6" stroke="#4ADE80" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><span style="font-size:14px;color:#C9C9D3;line-height:1.55"><strong style="font-weight:650;color:#E6E6EC">Unreal Engine 5.7 or 5.8</strong> — broader 5.5–5.8 coverage in progress.</span></div>
+          <div style="display:flex;gap:11px;align-items:flex-start;border:1px solid rgba(255,255,255,0.09);border-radius:12px;padding:14px 16px;background:rgba(255,255,255,0.012)"><svg width="15" height="15" viewBox="0 0 12 12" style="flex-shrink:0;margin-top:3px"><path d="M2.5 6.4l2.4 2.4 4.6-5.6" stroke="#4ADE80" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><span style="font-size:14px;color:#C9C9D3;line-height:1.55"><strong style="font-weight:650;color:#E6E6EC">A C++ project</strong> with the Visual Studio toolchain (Windows).</span></div>
+          <div style="display:flex;gap:11px;align-items:flex-start;border:1px solid rgba(255,255,255,0.09);border-radius:12px;padding:14px 16px;background:rgba(255,255,255,0.012)"><svg width="15" height="15" viewBox="0 0 12 12" style="flex-shrink:0;margin-top:3px"><path d="M2.5 6.4l2.4 2.4 4.6-5.6" stroke="#4ADE80" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><span style="font-size:14px;color:#C9C9D3;line-height:1.55"><strong style="font-weight:650;color:#E6E6EC">An MCP agent</strong> — Claude Code, Claude Desktop, or any MCP client.</span></div>
         </div>
+        <p style="font-size:13px;color:#6B6B76;margin:14px 0 0;line-height:1.6">The Python Editor Script Plugin and Enhanced Input are auto-enabled as plugin dependencies — nothing to install by hand.</p>
+      </section>
 
-        <!-- step 2 -->
-        <div class="step" style="border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:24px;background:rgba(255,255,255,0.015)">
-          <div style="display:flex;gap:14px;align-items:center;margin-bottom:14px">
-            <div style="flex-shrink:0;width:30px;height:30px;border-radius:9px;background:rgba(10,132,255,0.14);border:1px solid rgba(10,132,255,0.4);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:600;color:#7CC4FF">2</div>
-            <div style="font-size:17px;font-weight:650">Drop it in &amp; build</div>
-          </div>
-          <p style="font-size:14.5px;color:#A6A6B2;line-height:1.65;margin:0 0 14px">Place the folder at <code class="ic">YourProject/Plugins/AgentConduit/</code>, regenerate project files, and build the <strong style="color:#C9C9D3;font-weight:600">Development Editor</strong> target.</p>
-          <div class="codeblock"><pre><span class="cm"># your project layout</span>
+      <!-- INSTALL -->
+      <section id="install" class="sec">
+        <div class="lbl">// install</div>
+        <h2 class="h">Install in five steps</h2>
+        <p class="lede">It is a drop-in source plugin: place it, build it, flip the gates you want, connect, and prompt.</p>
+
+        <h3 class="sub">1 · Get the plugin</h3>
+        <p class="td" style="margin-bottom:12px">Grab a license (free for indies), accept your GitHub invite, and download <code class="ic">AgentConduit-vX.Y.Z.zip</code> from the repository's Releases tab. Unzip the <code class="ic">AgentConduit/</code> folder.</p>
+        <a class="cta-buy" href="https://buy.polar.sh/polar_cl_1FGJ3RGFEE5f2nqXGHt7n7UGcCq32avE6Ge8n3gKW5R" style="display:inline-flex;align-items:center;gap:8px;padding:9px 16px;font-size:14px;font-weight:600;color:#fff;background:#0A84FF;border-radius:10px;transition:background .2s;margin-bottom:6px">Get Conduit free</a>
+
+        <h3 class="sub">2 · Drop it in &amp; build</h3>
+        <p class="td" style="margin-bottom:12px">Place the folder at <code class="ic">YourProject/Plugins/AgentConduit/</code>, regenerate project files, and build the <strong style="color:#C9C9D3;font-weight:600">Development Editor</strong> target.</p>
+        <div class="codeblock"><pre><span class="cm"># your project layout</span>
 YourProject/
   YourProject.uproject
-  Source/
   Plugins/
     <span class="cb">AgentConduit/</span>        <span class="cm">&lt;- drop the folder here</span>
       AgentConduit.uplugin</pre></div>
+
+        <h3 class="sub">3 · Enable &amp; launch</h3>
+        <p class="td" style="margin-bottom:12px">Open the editor, enable <strong style="color:#C9C9D3;font-weight:600">Edit → Plugins → AgentConduit</strong>, and restart. The Output Log confirms the server is live:</p>
+        <div class="codeblock"><pre><span class="cg">AgentConduit</span> MCP server listening on <span class="cb">http://127.0.0.1:30010/mcp</span></pre></div>
+
+        <h3 class="sub">4 · Flip the safety gates you want</h3>
+        <p class="td" style="margin-bottom:12px">Conduit is <strong style="color:#C9C9D3;font-weight:600">read-only until you opt in</strong>. In <strong style="color:#C9C9D3;font-weight:600">Project Settings → Plugins → AgentConduit</strong>, enable only what you need — each switch is independent:</p>
+        <div style="display:grid;gap:8px;margin-bottom:4px">
+          <div style="display:flex;gap:9px;align-items:center;font-size:13.5px;color:#C9C9D3"><span class="ic">Allow Editor Mutations</span><span style="color:#7B7B86">write tools — spawn, author, edit</span></div>
+          <div style="display:flex;gap:9px;align-items:center;font-size:13.5px;color:#C9C9D3"><span class="ic">Allow Console Commands</span><span style="color:#7B7B86">exec console + CVars</span></div>
+          <div style="display:flex;gap:9px;align-items:center;font-size:13.5px;color:#C9C9D3"><span class="ic">Allow Python Execution</span><span style="color:#7B7B86">the Python escape hatch</span></div>
         </div>
 
-        <!-- step 3 -->
-        <div class="step" style="border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:24px;background:rgba(255,255,255,0.015)">
-          <div style="display:flex;gap:14px;align-items:center;margin-bottom:14px">
-            <div style="flex-shrink:0;width:30px;height:30px;border-radius:9px;background:rgba(10,132,255,0.14);border:1px solid rgba(10,132,255,0.4);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:600;color:#7CC4FF">3</div>
-            <div style="font-size:17px;font-weight:650">Enable &amp; launch</div>
-          </div>
-          <p style="font-size:14.5px;color:#A6A6B2;line-height:1.65;margin:0 0 14px">Open the editor, enable <strong style="color:#C9C9D3;font-weight:600">Edit → Plugins → AgentConduit</strong>, and restart. On startup the Output Log confirms the server is live:</p>
-          <div class="codeblock"><pre><span class="cg">AgentConduit</span> MCP server listening on <span class="cb">http://127.0.0.1:30010/mcp</span></pre></div>
-        </div>
+        <h3 class="sub">5 · Connect your agent &amp; prompt</h3>
+        <p class="td">Point any MCP client at the endpoint (next section) and start talking to it.</p>
+      </section>
 
-        <!-- step 4 -->
-        <div class="step" style="border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:24px;background:rgba(255,255,255,0.015)">
-          <div style="display:flex;gap:14px;align-items:center;margin-bottom:14px">
-            <div style="flex-shrink:0;width:30px;height:30px;border-radius:9px;background:rgba(10,132,255,0.14);border:1px solid rgba(10,132,255,0.4);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:600;color:#7CC4FF">4</div>
-            <div style="font-size:17px;font-weight:650">Flip the safety gates you want</div>
-          </div>
-          <p style="font-size:14.5px;color:#A6A6B2;line-height:1.65;margin:0 0 14px">Conduit is <strong style="color:#C9C9D3;font-weight:600">read-only until you opt in</strong>. In <strong style="color:#C9C9D3;font-weight:600">Project Settings → Plugins → AgentConduit</strong>, enable only what you need — each is an independent switch:</p>
-          <div style="display:grid;gap:8px">
-            <div style="display:flex;gap:9px;align-items:center;font-size:14px;color:#C9C9D3"><span class="ic">Allow Editor Mutations</span><span style="color:#7B7B86">write tools (spawn, author, edit)</span></div>
-            <div style="display:flex;gap:9px;align-items:center;font-size:14px;color:#C9C9D3"><span class="ic">Allow Console Commands</span><span style="color:#7B7B86">exec console + CVars</span></div>
-            <div style="display:flex;gap:9px;align-items:center;font-size:14px;color:#C9C9D3"><span class="ic">Allow Python Execution</span><span style="color:#7B7B86">the Python escape hatch</span></div>
-          </div>
-        </div>
-
-        <!-- step 5 -->
-        <div class="step" style="border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:24px;background:rgba(255,255,255,0.015)">
-          <div style="display:flex;gap:14px;align-items:center;margin-bottom:14px">
-            <div style="flex-shrink:0;width:30px;height:30px;border-radius:9px;background:rgba(10,132,255,0.14);border:1px solid rgba(10,132,255,0.4);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:600;color:#7CC4FF">5</div>
-            <div style="font-size:17px;font-weight:650">Connect your agent &amp; prompt</div>
-          </div>
-          <p style="font-size:14.5px;color:#A6A6B2;line-height:1.65;margin:0 0 8px">Point any MCP client at the endpoint — full details in the next section. Then just talk to it.</p>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- ===================== CONNECT ===================== -->
-    <section id="connect" class="acReveal" style="max-width:880px;margin:0 auto;padding:clamp(40px,5vw,72px) 24px 8px">
-      <div style="font-family:'JetBrains Mono',monospace;font-size:12.5px;color:#4DB2FF;margin-bottom:14px">// connect your agent</div>
-      <h2 style="font-size:clamp(1.7rem,3.2vw,2.4rem);line-height:1.08;letter-spacing:-0.03em;font-weight:700;margin:0 0 8px">One endpoint. Any MCP client.</h2>
-      <p style="color:#A6A6B2;font-size:16px;line-height:1.6;margin:0 0 26px;max-width:620px">Conduit speaks the Model Context Protocol over Streamable-HTTP. If your agent talks MCP, it works.</p>
-
-      <div style="margin-bottom:18px">
-        <div style="font-size:14px;font-weight:650;color:#E6E6EC;margin-bottom:10px">Claude Code — one command</div>
+      <!-- CONNECT -->
+      <section id="connect" class="sec">
+        <div class="lbl">// connect</div>
+        <h2 class="h">One endpoint, any MCP client</h2>
+        <p class="lede">Conduit speaks the Model Context Protocol over Streamable-HTTP. If your agent talks MCP, it works.</p>
+        <h3 class="sub">Claude Code — one command</h3>
         <div class="codeblock"><pre>claude mcp add --transport http agentconduit <span class="cb">http://127.0.0.1:30010/mcp</span></pre></div>
-      </div>
-
-      <div>
-        <div style="font-size:14px;font-weight:650;color:#E6E6EC;margin-bottom:10px">Claude Desktop / config-based clients</div>
+        <h3 class="sub">Claude Desktop / config-based clients</h3>
         <div class="codeblock"><pre>{
   <span class="cb">"mcpServers"</span>: {
     <span class="cb">"agentconduit"</span>: {
@@ -200,104 +187,230 @@ YourProject/
     }
   }
 }</pre></div>
-      </div>
+        <div style="display:flex;gap:11px;align-items:flex-start;border:1px solid rgba(10,132,255,0.25);background:rgba(10,132,255,0.06);border-radius:13px;padding:14px 16px;margin-top:16px">
+          <svg width="16" height="16" viewBox="0 0 16 16" style="flex-shrink:0;margin-top:2px" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="none" stroke="#4DB2FF" stroke-width="1.4"/><path d="M8 7.2v4M8 4.8v.01" stroke="#4DB2FF" stroke-width="1.6" stroke-linecap="round"/></svg>
+          <p style="font-size:13.5px;color:#B7C9DC;line-height:1.6;margin:0">Locked-down setup? Set an <strong style="color:#E6E6EC;font-weight:600">Auth Token</strong> in settings and every request to <code class="ic">/mcp</code> must carry <code class="ic">Authorization: Bearer &lt;token&gt;</code> (HTTP 401 otherwise). Empty by default for open local connections.</p>
+        </div>
+      </section>
 
-      <div style="display:flex;gap:11px;align-items:flex-start;border:1px solid rgba(10,132,255,0.25);background:rgba(10,132,255,0.06);border-radius:13px;padding:16px 18px;margin-top:18px">
-        <svg width="16" height="16" viewBox="0 0 16 16" style="flex-shrink:0;margin-top:2px" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="none" stroke="#4DB2FF" stroke-width="1.4"/><path d="M8 7.2v4M8 4.8v.01" stroke="#4DB2FF" stroke-width="1.6" stroke-linecap="round"/></svg>
-        <p style="font-size:13.5px;color:#B7C9DC;line-height:1.6;margin:0">Locked-down setup? Set an <strong style="color:#E6E6EC;font-weight:600">Auth Token</strong> in settings and every request must carry <code class="ic">Authorization: Bearer &lt;token&gt;</code>. Empty by default for open local connections.</p>
-      </div>
-    </section>
-
-    <!-- ===================== FIRST PROMPT ===================== -->
-    <section class="acReveal" style="max-width:880px;margin:0 auto;padding:clamp(40px,5vw,72px) 24px 8px">
-      <div style="font-family:'JetBrains Mono',monospace;font-size:12.5px;color:#4DB2FF;margin-bottom:14px">// your first prompt</div>
-      <h2 style="font-size:clamp(1.7rem,3.2vw,2.4rem);line-height:1.08;letter-spacing:-0.03em;font-weight:700;margin:0 0 8px">Say it. Watch it build.</h2>
-      <p style="color:#A6A6B2;font-size:16px;line-height:1.6;margin:0 0 24px;max-width:620px">Describe what you want. The agent picks the tools, makes the edits inside the real editor, and verifies the result with screenshots and play-in-editor.</p>
-
-      <div class="codeblock" style="margin-bottom:16px"><pre><span class="cg">You ></span> Make a coin-collector: a floor, a coin Blueprint with a Score
+      <!-- FIRST PROMPT -->
+      <section id="first-prompt" class="sec">
+        <div class="lbl">// your first prompt</div>
+        <h2 class="h">Say it. Watch it build.</h2>
+        <p class="lede">Describe what you want. The agent picks the tools, makes the edits inside the real editor, and verifies with screenshots and play-in-editor.</p>
+        <div class="codeblock" style="margin-bottom:14px"><pre><span class="cg">You ></span> Make a coin-collector: a floor, a coin Blueprint with a Score
       variable and a BeginPlay graph, spawn one, a GameMode, and
       SpaceBar mapped to jump.</pre></div>
-
-      <div style="border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:22px 24px;background:rgba(255,255,255,0.015)">
-        <div style="font-size:12.5px;font-family:'JetBrains Mono',monospace;color:#6EE7A0;margin-bottom:14px">// Conduit drives the editor</div>
-        <div style="display:grid;gap:9px">
-          <div style="display:flex;gap:10px;align-items:flex-start;font-size:14px;color:#C9C9D3"><svg width="14" height="14" viewBox="0 0 12 12" style="flex-shrink:0;margin-top:3px"><path d="M2.5 6.4l2.4 2.4 4.6-5.6" stroke="#4ADE80" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>New level created and saved, floor actor with a real cube mesh</div>
-          <div style="display:flex;gap:10px;align-items:flex-start;font-size:14px;color:#C9C9D3"><svg width="14" height="14" viewBox="0 0 12 12" style="flex-shrink:0;margin-top:3px"><path d="M2.5 6.4l2.4 2.4 4.6-5.6" stroke="#4ADE80" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>BP_Coin with a StaticMesh component and a Score variable</div>
-          <div style="display:flex;gap:10px;align-items:flex-start;font-size:14px;color:#C9C9D3"><svg width="14" height="14" viewBox="0 0 12 12" style="flex-shrink:0;margin-top:3px"><path d="M2.5 6.4l2.4 2.4 4.6-5.6" stroke="#4ADE80" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Event graph: BeginPlay → PrintString → SET Score=5 → Branch, compiled clean</div>
-          <div style="display:flex;gap:10px;align-items:flex-start;font-size:14px;color:#C9C9D3"><svg width="14" height="14" viewBox="0 0 12 12" style="flex-shrink:0;margin-top:3px"><path d="M2.5 6.4l2.4 2.4 4.6-5.6" stroke="#4ADE80" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Coin spawned, BP_GameMode applied, Enhanced Input SpaceBar → IA_Jump</div>
-        </div>
-        <p style="font-size:13px;color:#7B7B86;margin:16px 0 0;line-height:1.6;font-style:italic">A verified live run — 24 of 24 tool calls succeeded against Unreal Engine 5.7.</p>
-      </div>
-    </section>
-
-    <!-- ===================== SKILLS ===================== -->
-    <section id="skills" class="acReveal" style="max-width:880px;margin:0 auto;padding:clamp(40px,5vw,72px) 24px 8px">
-      <div style="font-family:'JetBrains Mono',monospace;font-size:12.5px;color:#4DB2FF;margin-bottom:14px">// skills</div>
-      <h2 style="font-size:clamp(1.7rem,3.2vw,2.4rem);line-height:1.08;letter-spacing:-0.03em;font-weight:700;margin:0 0 8px">Outcomes, not API calls</h2>
-      <p style="color:#A6A6B2;font-size:16px;line-height:1.6;margin:0 0 24px;max-width:620px">Conduit ships expert Skills — workflows that encode design judgment. Install them into your project and your agent gets a head start on real game-building.</p>
-
-      <div class="codeblock" style="margin-bottom:20px"><pre>pwsh Scripts/Install-AgentConduitSkills.ps1 -ProjectRoot <span class="cg">"C:\Path\To\YourUnrealProject"</span></pre></div>
-
-      <div style="display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(min(360px,100%),1fr))">
-        <div style="border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:18px 20px;background:rgba(255,255,255,0.015)"><div style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#7CC4FF;margin-bottom:6px">game-bootstrapper</div><p style="font-size:14px;color:#A6A6B2;line-height:1.55;margin:0">A whole playable loop — level, pawn, input, GameMode, HUD, win/lose — proven in PIE.</p></div>
-        <div style="border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:18px 20px;background:rgba(255,255,255,0.015)"><div style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#7CC4FF;margin-bottom:6px">gameplay-logic-builder</div><p style="font-size:14px;color:#A6A6B2;line-height:1.55;margin:0">A wired, compiling Blueprint graph from a plain behavior description.</p></div>
-        <div style="border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:18px 20px;background:rgba(255,255,255,0.015)"><div style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#7CC4FF;margin-bottom:6px">game-ui-builder</div><p style="font-size:14px;color:#A6A6B2;line-height:1.55;margin:0">A designed UMG interface — HUD or menu — with layout, type scale, and styling.</p></div>
-        <div style="border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:18px 20px;background:rgba(255,255,255,0.015)"><div style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#7CC4FF;margin-bottom:6px">level-designer</div><p style="font-size:14px;color:#A6A6B2;line-height:1.55;margin:0">A blocked-out, lit, dressed scene with real composition.</p></div>
-      </div>
-    </section>
-
-    <!-- ===================== TOOLS ===================== -->
-    <section class="acReveal" style="max-width:880px;margin:0 auto;padding:clamp(40px,5vw,72px) 24px 8px">
-      <div style="font-family:'JetBrains Mono',monospace;font-size:12.5px;color:#4DB2FF;margin-bottom:14px">// the toolbox</div>
-      <h2 style="font-size:clamp(1.7rem,3.2vw,2.4rem);line-height:1.08;letter-spacing:-0.03em;font-weight:700;margin:0 0 8px">65 typed tools, grouped by job</h2>
-      <p style="color:#A6A6B2;font-size:16px;line-height:1.6;margin:0 0 24px;max-width:620px">Every tool has a real schema, validation, and an undo transaction. The full, always-current reference ships in the repo as <code class="ic">docs/Tools.md</code>.</p>
-      <div style="display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr))">
-        <div style="border:1px solid rgba(255,255,255,0.1);border-radius:13px;padding:16px 18px;background:rgba(255,255,255,0.015)"><div style="font-size:14px;font-weight:650;margin-bottom:5px">World &amp; level</div><div style="font-size:13px;color:#8E8E9A;line-height:1.5">new/load/save level, game mode</div></div>
-        <div style="border:1px solid rgba(255,255,255,0.1);border-radius:13px;padding:16px 18px;background:rgba(255,255,255,0.015)"><div style="font-size:14px;font-weight:650;margin-bottom:5px">Actors &amp; scene</div><div style="font-size:13px;color:#8E8E9A;line-height:1.5">spawn, transform, pose, scatter, components, physics</div></div>
-        <div style="border:1px solid rgba(255,255,255,0.1);border-radius:13px;padding:16px 18px;background:rgba(255,255,255,0.015)"><div style="font-size:14px;font-weight:650;margin-bottom:5px">Blueprints &amp; logic</div><div style="font-size:13px;color:#8E8E9A;line-height:1.5">create, variables, components, node graphs, connect pins, compile</div></div>
-        <div style="border:1px solid rgba(255,255,255,0.1);border-radius:13px;padding:16px 18px;background:rgba(255,255,255,0.015)"><div style="font-size:14px;font-weight:650;margin-bottom:5px">UMG — game UI</div><div style="font-size:13px;color:#8E8E9A;line-height:1.5">widget blueprints, add widget, properties, render-to-image</div></div>
-        <div style="border:1px solid rgba(255,255,255,0.1);border-radius:13px;padding:16px 18px;background:rgba(255,255,255,0.015)"><div style="font-size:14px;font-weight:650;margin-bottom:5px">Materials &amp; look</div><div style="font-size:13px;color:#8E8E9A;line-height:1.5">materials, params, decals, post-process</div></div>
-        <div style="border:1px solid rgba(255,255,255,0.1);border-radius:13px;padding:16px 18px;background:rgba(255,255,255,0.015)"><div style="font-size:14px;font-weight:650;margin-bottom:5px">Data &amp; assets</div><div style="font-size:13px;color:#8E8E9A;line-height:1.5">create/import/save assets, properties, arrays, curve tables</div></div>
-        <div style="border:1px solid rgba(255,255,255,0.1);border-radius:13px;padding:16px 18px;background:rgba(255,255,255,0.015)"><div style="font-size:14px;font-weight:650;margin-bottom:5px">Play &amp; verify</div><div style="font-size:13px;color:#8E8E9A;line-height:1.5">camera, PIE, screenshots, reference diff, output log</div></div>
-        <div style="border:1px solid rgba(255,255,255,0.1);border-radius:13px;padding:16px 18px;background:rgba(255,255,255,0.015)"><div style="font-size:14px;font-weight:650;margin-bottom:5px">Batch &amp; escape hatches</div><div style="font-size:13px;color:#8E8E9A;line-height:1.5">batch calls, Python, console, CVars (gated)</div></div>
-      </div>
-    </section>
-
-    <!-- ===================== SAFETY ===================== -->
-    <section class="acReveal" style="max-width:880px;margin:0 auto;padding:clamp(40px,5vw,72px) 24px 8px">
-      <div style="font-family:'JetBrains Mono',monospace;font-size:12.5px;color:#4DB2FF;margin-bottom:14px">// safety</div>
-      <h2 style="font-size:clamp(1.7rem,3.2vw,2.4rem);line-height:1.08;letter-spacing:-0.03em;font-weight:700;margin:0 0 18px">Trusted in a real project</h2>
-      <div style="display:grid;gap:12px">
-        <div style="display:flex;gap:12px;align-items:flex-start;border:1px solid rgba(255,255,255,0.1);border-radius:13px;padding:16px 18px;background:rgba(255,255,255,0.015)"><svg width="15" height="15" viewBox="0 0 12 12" style="flex-shrink:0;margin-top:3px"><path d="M2.5 6.4l2.4 2.4 4.6-5.6" stroke="#4ADE80" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><span style="font-size:14.5px;color:#C9C9D3;line-height:1.55"><strong style="color:#E6E6EC;font-weight:650">Read-only by default.</strong> The agent can inspect everything but change nothing until you opt in.</span></div>
-        <div style="display:flex;gap:12px;align-items:flex-start;border:1px solid rgba(255,255,255,0.1);border-radius:13px;padding:16px 18px;background:rgba(255,255,255,0.015)"><svg width="15" height="15" viewBox="0 0 12 12" style="flex-shrink:0;margin-top:3px"><path d="M2.5 6.4l2.4 2.4 4.6-5.6" stroke="#4ADE80" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><span style="font-size:14.5px;color:#C9C9D3;line-height:1.55"><strong style="color:#E6E6EC;font-weight:650">Transactional.</strong> Every write runs in an undo transaction — Ctrl-Z works, and failures roll back.</span></div>
-        <div style="display:flex;gap:12px;align-items:flex-start;border:1px solid rgba(255,255,255,0.1);border-radius:13px;padding:16px 18px;background:rgba(255,255,255,0.015)"><svg width="15" height="15" viewBox="0 0 12 12" style="flex-shrink:0;margin-top:3px"><path d="M2.5 6.4l2.4 2.4 4.6-5.6" stroke="#4ADE80" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><span style="font-size:14.5px;color:#C9C9D3;line-height:1.55"><strong style="color:#E6E6EC;font-weight:650">Serialized.</strong> Structural edits are queued so overlapping requests can't corrupt an asset.</span></div>
-      </div>
-    </section>
-
-    <!-- ===================== FINAL CTA ===================== -->
-    <section class="acReveal" style="max-width:880px;margin:0 auto;padding:clamp(48px,6vw,88px) 24px clamp(40px,5vw,72px)">
-      <div style="position:relative;border:1px solid rgba(10,132,255,0.4);border-radius:22px;padding:clamp(36px,5vw,56px) clamp(28px,4vw,48px);text-align:center;background:linear-gradient(180deg, rgba(10,132,255,0.12), rgba(255,255,255,0.008));box-shadow:0 40px 90px -40px rgba(10,132,255,0.6);overflow:hidden">
-        <div aria-hidden="true" style="position:absolute;inset:0;background:radial-gradient(600px 300px at 50% 0%, rgba(10,132,255,0.18), transparent 70%);pointer-events:none"></div>
-        <div style="position:relative">
-          <h2 style="font-size:clamp(1.8rem,3.6vw,2.7rem);line-height:1.06;letter-spacing:-0.03em;font-weight:780;margin:0 0 14px;text-wrap:balance">Your next game starts with a sentence.</h2>
-          <p style="font-size:clamp(1rem,1.4vw,1.16rem);color:#B7C2D0;line-height:1.6;margin:0 auto 30px;max-width:520px">Free for indie developers. Install in minutes, prompt your first level today, and ship when you're ready.</p>
-          <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center">
-            <a class="cta-buy" href="https://buy.polar.sh/polar_cl_1FGJ3RGFEE5f2nqXGHt7n7UGcCq32avE6Ge8n3gKW5R" style="display:inline-flex;align-items:center;gap:8px;padding:14px 26px;font-size:15.5px;font-weight:650;color:#fff;background:#0A84FF;border-radius:12px;box-shadow:0 1px 0 rgba(255,255,255,0.18) inset, 0 14px 38px -12px rgba(10,132,255,0.9);transition:background .2s">
-              Get Conduit free
-              <span style="width:7px;height:7px;border-radius:999px;background:#fff;opacity:.9;animation:acGlow 2s ease-in-out infinite"></span>
-            </a>
-            <a class="btn-secondary" href="https://buy.polar.sh/polar_cl_TU4MkqtbaaudWQkSDZzI8md9sLWMuNqvMPNQR3IQiht" style="display:inline-flex;align-items:center;gap:8px;padding:14px 24px;font-size:15.5px;font-weight:600;color:#C9C9D3;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.14);border-radius:12px;transition:background .2s,border-color .2s">Licensing for studios</a>
+        <div style="border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:18px 20px;background:rgba(255,255,255,0.012)">
+          <div style="font-size:12.5px;font-family:'JetBrains Mono',monospace;color:#6EE7A0;margin-bottom:12px">// Conduit drives the editor — a verified live run, 24/24 tool calls on UE 5.7</div>
+          <div style="display:grid;gap:8px">
+            <div style="display:flex;gap:10px;align-items:flex-start;font-size:13.5px;color:#C9C9D3"><svg width="14" height="14" viewBox="0 0 12 12" style="flex-shrink:0;margin-top:3px"><path d="M2.5 6.4l2.4 2.4 4.6-5.6" stroke="#4ADE80" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Level created &amp; saved, floor actor with a real cube mesh</div>
+            <div style="display:flex;gap:10px;align-items:flex-start;font-size:13.5px;color:#C9C9D3"><svg width="14" height="14" viewBox="0 0 12 12" style="flex-shrink:0;margin-top:3px"><path d="M2.5 6.4l2.4 2.4 4.6-5.6" stroke="#4ADE80" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>BP_Coin with a StaticMesh component and a Score variable</div>
+            <div style="display:flex;gap:10px;align-items:flex-start;font-size:13.5px;color:#C9C9D3"><svg width="14" height="14" viewBox="0 0 12 12" style="flex-shrink:0;margin-top:3px"><path d="M2.5 6.4l2.4 2.4 4.6-5.6" stroke="#4ADE80" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Event graph: BeginPlay → PrintString → SET Score=5 → Branch, compiled clean</div>
+            <div style="display:flex;gap:10px;align-items:flex-start;font-size:13.5px;color:#C9C9D3"><svg width="14" height="14" viewBox="0 0 12 12" style="flex-shrink:0;margin-top:3px"><path d="M2.5 6.4l2.4 2.4 4.6-5.6" stroke="#4ADE80" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Coin spawned, BP_GameMode applied, Enhanced Input SpaceBar → IA_Jump</div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-  </main>
+      <!-- ARCHITECTURE -->
+      <section id="architecture" class="sec">
+        <div class="lbl">// core concepts</div>
+        <h2 class="h">Architecture</h2>
+        <p class="lede">The MCP server runs <em>inside</em> the editor process. No Python sidecar, no socket bridge, no glue. Your agent POSTs JSON-RPC 2.0 to a local endpoint; tools execute on the game thread against live editor subsystems.</p>
+        <div class="codeblock"><pre>+----------------+   HTTP / JSON-RPC 2.0   +-----------------------------------+
+|  AI agent      |  POST /mcp              |  Unreal Editor process            |
+| (Claude Code,  | ----------------------> |  +-----------------------------+  |
+|  Desktop, ...) |  127.0.0.1:30010/mcp    |  | AgentConduit (MCPCore)      |  |
+|                | <---------------------- |  |  embedded HTTP MCP server   |  |
++----------------+  results / images      |  |  67 tools -> subsystems     |  |
+                                          |  +-----------------------------+  |
+   no sidecar - runs in-process           |   GEditor - assets - BP - UMG     |
+                                          +-----------------------------------+</pre></div>
+        <p style="font-size:13.5px;color:#8E8E9A;margin:14px 0 0;line-height:1.6">The transport is content-negotiated: a request that sends <code class="ic">Accept: text/event-stream</code> gets an SSE-framed reply; otherwise plain JSON. Image-returning tools (screenshots, widget renders) stream encoded PNG bytes back inline.</p>
+      </section>
 
-  <!-- ===================== FOOTER ===================== -->
-  <footer style="position:relative;z-index:1;border-top:1px solid rgba(255,255,255,0.07);padding:48px 24px 40px">
-    <div style="max-width:1180px;margin:0 auto">
-      <div style="display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;margin-bottom:28px">
+      <!-- SAFETY -->
+      <section id="safety" class="sec">
+        <h2 class="h">Safety &amp; gates</h2>
+        <p class="lede">Conduit is built to be trusted in a real project. Every reference card below carries a badge showing which gate, if any, the tool needs.</p>
+        <div style="display:grid;gap:10px;margin-bottom:18px">
+          <div style="display:flex;gap:10px;align-items:flex-start;border:1px solid rgba(255,255,255,0.09);border-radius:12px;padding:14px 16px;background:rgba(255,255,255,0.012)"><span class="gate gr" style="flex-shrink:0;margin-top:1px">Read-only</span><span style="font-size:13.5px;color:#C9C9D3;line-height:1.55">Inspection tools always work — listing actors, reading properties, screenshots. No gate required.</span></div>
+          <div style="display:flex;gap:10px;align-items:flex-start;border:1px solid rgba(255,255,255,0.09);border-radius:12px;padding:14px 16px;background:rgba(255,255,255,0.012)"><span class="gate gw" style="flex-shrink:0;margin-top:1px">Editor mutations</span><span style="font-size:13.5px;color:#C9C9D3;line-height:1.55">Anything that writes — spawn, author Blueprints, edit assets — needs <strong style="color:#E6E6EC;font-weight:600">Allow Editor Mutations</strong>.</span></div>
+          <div style="display:flex;gap:10px;align-items:flex-start;border:1px solid rgba(255,255,255,0.09);border-radius:12px;padding:14px 16px;background:rgba(255,255,255,0.012)"><span class="gate gc" style="flex-shrink:0;margin-top:1px">Console gate</span><span style="font-size:13.5px;color:#C9C9D3;line-height:1.55">Console commands and CVars need <strong style="color:#E6E6EC;font-weight:600">Allow Console Commands</strong> — a separate switch.</span></div>
+          <div style="display:flex;gap:10px;align-items:flex-start;border:1px solid rgba(255,255,255,0.09);border-radius:12px;padding:14px 16px;background:rgba(255,255,255,0.012)"><span class="gate gp" style="flex-shrink:0;margin-top:1px">Python gate</span><span style="font-size:13.5px;color:#C9C9D3;line-height:1.55">The Python escape hatch needs <strong style="color:#E6E6EC;font-weight:600">Allow Python Execution</strong>. Enabling one gate never silently enables another.</span></div>
+        </div>
+      </section>
+
+      <!-- TRANSACTIONS -->
+      <section id="transactions" class="sec">
+        <h2 class="h">Transactions &amp; undo</h2>
+        <p class="lede">Every write runs inside an undo transaction — <strong style="color:#C9C9D3;font-weight:600">Ctrl-Z works</strong>, and a failed mutation rolls back automatically. Structural edits are serialized so overlapping requests can't corrupt an asset or the undo buffer. Many authoring tools mark an asset dirty in memory; persist with <code class="ic">save_asset</code> or <code class="ic">save_level</code> when you're done.</p>
+      </section>
+
+      <!-- SKILLS -->
+      <section id="skills" class="sec">
+        <div class="lbl">// agentic layer</div>
+        <h2 class="h">Skills — outcomes, not API calls</h2>
+        <p class="lede">Skills are expert workflows that encode design judgment. Install them into your project and your agent gets a head start on real game-building.</p>
+        <div class="codeblock" style="margin-bottom:16px"><pre>pwsh Scripts/Install-AgentConduitSkills.ps1 -ProjectRoot <span class="cg">"C:\Path\To\YourUnrealProject"</span></pre></div>
+        <div style="display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(min(330px,100%),1fr))">
+          <div style="border:1px solid rgba(255,255,255,0.1);border-radius:13px;padding:16px 18px;background:rgba(255,255,255,0.012)"><div style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#7CC4FF;margin-bottom:5px">game-bootstrapper</div><p style="font-size:13.5px;color:#A6A6B2;line-height:1.55;margin:0">A whole playable loop — level, pawn, input, GameMode, HUD, win/lose — proven in PIE.</p></div>
+          <div style="border:1px solid rgba(255,255,255,0.1);border-radius:13px;padding:16px 18px;background:rgba(255,255,255,0.012)"><div style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#7CC4FF;margin-bottom:5px">gameplay-logic-builder</div><p style="font-size:13.5px;color:#A6A6B2;line-height:1.55;margin:0">A wired, compiling Blueprint graph from a plain behavior description.</p></div>
+          <div style="border:1px solid rgba(255,255,255,0.1);border-radius:13px;padding:16px 18px;background:rgba(255,255,255,0.012)"><div style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#7CC4FF;margin-bottom:5px">game-ui-builder</div><p style="font-size:13.5px;color:#A6A6B2;line-height:1.55;margin:0">A designed UMG interface — HUD or menu — with layout, type scale, and styling.</p></div>
+          <div style="border:1px solid rgba(255,255,255,0.1);border-radius:13px;padding:16px 18px;background:rgba(255,255,255,0.012)"><div style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#7CC4FF;margin-bottom:5px">level-designer</div><p style="font-size:13.5px;color:#A6A6B2;line-height:1.55;margin:0">A blocked-out, lit, dressed scene with real composition.</p></div>
+        </div>
+      </section>
+
+      <!-- ===================== TOOL REFERENCE ===================== -->
+      <section id="g-world" class="sec">
+        <div class="lbl">// tool reference · 1 / 10</div>
+        <h2 class="h">World &amp; level</h2>
+        <p class="lede">Create, open, and save levels, and set the GameMode that governs play.</p>
+        <div class="tool" id="new_level"><div class="th"><code class="tn">new_level</code><span class="gate gw">Editor mutations</span></div><p class="td">Creates a new blank level and opens it for editing, replacing the current level. Optional <code class="ic">path</code> (e.g. "/Game/Maps/MyLevel") saves the new level to that asset. Not undoable.</p></div>
+        <div class="tool" id="load_level"><div class="th"><code class="tn">load_level</code><span class="gate gw">Editor mutations</span></div><p class="td">Opens an existing level asset for editing, replacing the current level. Args: <code class="ic">path</code> (e.g. "/Game/Maps/MyLevel"). Not undoable.</p></div>
+        <div class="tool" id="save_level"><div class="th"><code class="tn">save_level</code><span class="gate gu">Utility</span></div><p class="td">Saves the current editor level to disk, persisting the scene. Takes no arguments.</p></div>
+        <div class="tool" id="set_game_mode"><div class="th"><code class="tn">set_game_mode</code><span class="gate gw">Editor mutations</span></div><p class="td">Sets the GameMode for the current level (World Settings override). Args: <code class="ic">game_mode</code> (a GameMode class — native name or Blueprint class path ending in _C). Configure its DefaultPawn / PlayerController / HUD via <code class="ic">set_blueprint_default</code> on the GameMode Blueprint. Saves via save_level.</p></div>
+      </section>
+
+      <section id="g-actors" class="sec">
+        <div class="lbl">// tool reference · 2 / 10</div>
+        <h2 class="h">Actors &amp; scene</h2>
+        <p class="lede">Spawn, transform, organize, inspect, and dress the actors in your level.</p>
+        <div class="tool" id="spawn_actor"><div class="th"><code class="tn">spawn_actor</code><span class="gate gw">Editor mutations</span></div><p class="td">Spawns an actor into the current editor level. <code class="ic">class</code> (required) is a native class name (e.g. "StaticMeshActor", "PointLight") or a Blueprint class path (e.g. "/Game/.../BP_Foo.BP_Foo_C"). Optional <code class="ic">location</code> {x,y,z}, <code class="ic">rotation</code> {pitch,yaw,roll}, and <code class="ic">label</code>. Undoable.</p></div>
+        <div class="tool" id="duplicate_actor"><div class="th"><code class="tn">duplicate_actor</code><span class="gate gw">Editor mutations</span></div><p class="td">Duplicates the selected actor (or <code class="ic">actor_label</code>). Args: <code class="ic">offset</code> {x,y,z} applied per copy, <code class="ic">count</code> (number of copies, default 1). Great for repeating buildings / props. Undoable.</p></div>
+        <div class="tool" id="delete_actor"><div class="th"><code class="tn">delete_actor</code><span class="gate gw">Editor mutations</span></div><p class="td">Deletes actors from the current level. Provide <code class="ic">actor_label</code> (exact label; may match several), <code class="ic">name_contains</code> (delete every outliner actor whose label contains this substring), or neither to delete the current selection. Undoable.</p></div>
+        <div class="tool" id="set_actor_transform"><div class="th"><code class="tn">set_actor_transform</code><span class="gate gw">Editor mutations</span></div><p class="td">Sets world location, rotation, and/or scale of the selected actor (or <code class="ic">actor_label</code>). Each of <code class="ic">location</code> {x,y,z}, <code class="ic">rotation</code> {pitch,yaw,roll}, <code class="ic">scale</code> {x,y,z} is optional; provide at least one. Omitted axes keep their current value. Undoable.</p></div>
+        <div class="tool" id="set_actor_pose"><div class="th"><code class="tn">set_actor_pose</code><span class="gate gw">Editor mutations</span></div><p class="td">Sets a skeletal mesh actor's pose from an AnimSequence. Args: <code class="ic">animation</code> (required, AnimSequence asset path), optional <code class="ic">time</code> (seconds into the anim to freeze on, default 0), <code class="ic">play</code> (bool, loop instead of freezing). Use to give mannequins a natural pose. Undoable.</p></div>
+        <div class="tool" id="drop_to_ground"><div class="th"><code class="tn">drop_to_ground</code><span class="gate gw">Editor mutations</span></div><p class="td">Drops the selected actor(s) (or <code class="ic">actor_label</code>, or <code class="ic">name_contains</code>) straight down so their lowest point rests on the first surface below. Undoable.</p></div>
+        <div class="tool" id="scatter_actors"><div class="th"><code class="tn">scatter_actors</code><span class="gate gw">Editor mutations</span></div><p class="td">Scatters StaticMeshActors over an area. Args: <code class="ic">meshes</code> (array of static mesh paths, picked at random per instance), <code class="ic">count</code>, <code class="ic">center</code> {x,y,z}, <code class="ic">extent</code> {x,y} (half-size of the scatter box), <code class="ic">scale_min</code> / <code class="ic">scale_max</code> (uniform scale range, default 1), <code class="ic">random_yaw</code> (default true), <code class="ic">align_to_ground</code> (default true), <code class="ic">label_prefix</code> (default 'Scatter'). Undoable.</p></div>
+        <div class="tool" id="set_actor_folder"><div class="th"><code class="tn">set_actor_folder</code><span class="gate gu">Utility</span></div><p class="td">Files actors into a World Outliner folder. Args: <code class="ic">folder</code> (required, e.g. "AgentConduit/Buildings"; empty string moves to root), and either <code class="ic">actor_label</code> (exact) or <code class="ic">name_contains</code> (substring) to choose actors.</p></div>
+        <div class="tool" id="set_selection"><div class="th"><code class="tn">set_selection</code><span class="gate gu">Utility</span></div><p class="td">Sets the editor selection. Args: <code class="ic">actor_label</code> (select actors with this label), <code class="ic">name_contains</code> (select all outliner actors whose label contains this substring), or neither to clear the selection (useful to remove the move-gizmo before a screenshot).</p></div>
+        <div class="tool" id="get_selected_actors"><div class="th"><code class="tn">get_selected_actors</code><span class="gate gr">Read-only</span></div><p class="td">Returns the labels and classes of the actors currently selected in the Unreal editor viewport.</p></div>
+        <div class="tool" id="list_actors"><div class="th"><code class="tn">list_actors</code><span class="gate gr">Read-only</span></div><p class="td">Lists actors in the current editor level with a class-count summary, mirroring the World Outliner. Optional filters: <code class="ic">name_filter</code> (substring of the label), <code class="ic">class_filter</code> (substring of the class name, e.g. "Light" or "Fog"), and <code class="ic">limit</code> (default 200, max 1000).</p></div>
+        <div class="tool" id="get_actor_details"><div class="th"><code class="tn">get_actor_details</code><span class="gate gr">Read-only</span></div><p class="td">Returns transform, attachment, tags, and components for the selected actor(s). Pass <code class="ic">actor_label</code> to inspect a specific actor by its World Outliner label instead of the selection.</p></div>
+        <div class="tool" id="get_actor_bounds"><div class="th"><code class="tn">get_actor_bounds</code><span class="gate gr">Read-only</span></div><p class="td">Returns the world-space bounding box of the selected actor (or <code class="ic">actor_label</code>): center, full size (x/y/z), min/max corners, and the pivot offset (geometry center minus actor location). Use to size and align meshes whose pivots are off-center.</p></div>
+        <div class="tool" id="set_static_mesh"><div class="th"><code class="tn">set_static_mesh</code><span class="gate gw">Editor mutations</span></div><p class="td">Sets the Static Mesh on an actor's StaticMeshComponent (so a spawned StaticMeshActor shows geometry). Args: <code class="ic">mesh</code> (Static Mesh asset path), optional <code class="ic">actor_label</code> (else uses the selection), optional <code class="ic">component</code> (a specific StaticMeshComponent name). Applies to all matched actors.</p></div>
+        <div class="tool" id="add_component"><div class="th"><code class="tn">add_component</code><span class="gate gw">Editor mutations</span></div><p class="td">Adds a component to a level actor instance. Args: <code class="ic">component_class</code> (e.g. "PointLightComponent", "AudioComponent", "BoxComponent"), <code class="ic">name</code>, optional <code class="ic">actor_label</code> (else uses the selection). Scene components attach to the actor's root. Set its properties with <code class="ic">set_actor_property</code> (use the component name).</p></div>
+        <div class="tool" id="set_physics"><div class="th"><code class="tn">set_physics</code><span class="gate gw">Editor mutations</span></div><p class="td">Configures physics / collision on an actor's primitive component(s). Args: optional <code class="ic">simulate</code> (bool — enable rigid-body physics), optional <code class="ic">collision_preset</code> (e.g. "BlockAll", "OverlapAllDynamic", "PhysicsActor", "NoCollision"), optional <code class="ic">actor_label</code> (else selection). Provide at least one of simulate / collision_preset.</p></div>
+      </section>
+
+      <section id="g-blueprints" class="sec">
+        <div class="lbl">// tool reference · 3 / 10</div>
+        <h2 class="h">Blueprints &amp; logic</h2>
+        <p class="lede">Author Blueprint classes — structure (components, variables) and node-graph logic (events, functions, flow, casts, input). Build a graph, then <code class="ic">compile_blueprint</code> to validate.</p>
+        <div class="tool" id="create_blueprint"><div class="th"><code class="tn">create_blueprint</code><span class="gate gw">Editor mutations</span></div><p class="td">Creates a new Blueprint class asset from a parent class (default Actor). Args: <code class="ic">name</code>, <code class="ic">path</code> (content folder, e.g. "/Game/Blueprints"), optional <code class="ic">parent_class</code> (native class name or asset path, default "Actor"), optional <code class="ic">save</code> (default true). Flesh it out with add_blueprint_component / add_blueprint_variable / the node tools.</p></div>
+        <div class="tool" id="add_blueprint_component"><div class="th"><code class="tn">add_blueprint_component</code><span class="gate gw">Editor mutations</span></div><p class="td">Adds a component to a Blueprint's component hierarchy (SimpleConstructionScript). Args: <code class="ic">blueprint</code> (asset path), <code class="ic">component_class</code> (e.g. "StaticMeshComponent", "PointLightComponent"), <code class="ic">name</code> (the new component's variable name). Recompiles the Blueprint.</p></div>
+        <div class="tool" id="add_blueprint_variable"><div class="th"><code class="tn">add_blueprint_variable</code><span class="gate gw">Editor mutations</span></div><p class="td">Adds a member variable to a Blueprint. Args: <code class="ic">blueprint</code> (asset path), <code class="ic">name</code>, <code class="ic">type</code> (one of: bool, byte, int, int64, float, string, name, text, vector, rotator, transform, color; or a class / struct path for object references), optional <code class="ic">is_array</code> (default false), optional <code class="ic">default_value</code> (Unreal text form). Recompiles the Blueprint.</p></div>
+        <div class="tool" id="compile_blueprint"><div class="th"><code class="tn">compile_blueprint</code><span class="gate gu">Utility</span></div><p class="td">Compiles a Blueprint asset and reports the resulting status (errors / warnings). Args: <code class="ic">blueprint</code> (asset path). Call this after structural edits to validate the Blueprint.</p></div>
+        <div class="tool" id="set_blueprint_default"><div class="th"><code class="tn">set_blueprint_default</code><span class="gate gw">Editor mutations</span></div><p class="td">Sets a default property on a Blueprint's CDO and recompiles. Args: <code class="ic">blueprint</code> (required, BP asset path), <code class="ic">property</code> (required), <code class="ic">value</code> (required; string/number/boolean or asset path for object refs), <code class="ic">save</code> (default true).</p></div>
+        <div class="tool" id="add_blueprint_event_node"><div class="th"><code class="tn">add_blueprint_event_node</code><span class="gate gw">Editor mutations</span></div><p class="td">Adds an event node to a Blueprint's event graph. Args: <code class="ic">blueprint</code> (asset path), <code class="ic">event_name</code> (e.g. "ReceiveBeginPlay", "ReceiveTick", or any name when <code class="ic">custom</code> is true), optional <code class="ic">custom</code> (bool, default false — true makes a Custom Event), optional <code class="ic">target_class</code> (for overrides; defaults to the Blueprint's parent). Returns the node id and pin names.</p></div>
+        <div class="tool" id="add_blueprint_function_node"><div class="th"><code class="tn">add_blueprint_function_node</code><span class="gate gw">Editor mutations</span></div><p class="td">Adds a function-call node to a Blueprint's event graph. Args: <code class="ic">blueprint</code> (asset path), <code class="ic">function</code> (function name, e.g. "PrintString", "SetActorLocation"), optional <code class="ic">target_class</code> (class declaring the function, e.g. "KismetSystemLibrary"; defaults to the Blueprint's own class hierarchy). Returns the node id and pin names.</p></div>
+        <div class="tool" id="add_blueprint_variable_node"><div class="th"><code class="tn">add_blueprint_variable_node</code><span class="gate gw">Editor mutations</span></div><p class="td">Adds a variable node to the event graph. Args: <code class="ic">blueprint</code> (asset path), <code class="ic">variable</code> (an existing variable name), optional <code class="ic">mode</code> = "get" (default) or "set". Returns the node id and pins so you can wire it with connect_blueprint_pins.</p></div>
+        <div class="tool" id="add_blueprint_flow_node"><div class="th"><code class="tn">add_blueprint_flow_node</code><span class="gate gw">Editor mutations</span></div><p class="td">Adds a control-flow node to the event graph. Args: <code class="ic">blueprint</code> (asset path), <code class="ic">type</code> = "branch" (if/else) or "sequence" (run pins in order). Returns the node id and pins. For a Branch, set its 'Condition' input via connect_blueprint_pins or set_pin_default.</p></div>
+        <div class="tool" id="add_blueprint_cast_node"><div class="th"><code class="tn">add_blueprint_cast_node</code><span class="gate gw">Editor mutations</span><span class="gate gr" style="color:#6EE7A0">new in 1.1</span></div><p class="td">Adds a Cast node to the event graph (e.g. cast an overlap's OtherActor to a specific class before using it). Args: <code class="ic">blueprint</code> (asset path), <code class="ic">target_class</code> (the class to cast to — native name or Blueprint class path ending _C). Returns the node id and pins (Object in, As&lt;Type&gt; out, Cast Failed exec).</p></div>
+        <div class="tool" id="add_blueprint_input_action_node"><div class="th"><code class="tn">add_blueprint_input_action_node</code><span class="gate gw">Editor mutations</span><span class="gate gr" style="color:#6EE7A0">new in 1.1</span></div><p class="td">Adds an Enhanced Input action event node to the event graph, so an Input Action drives Blueprint logic. Args: <code class="ic">blueprint</code> (asset path — usually a Pawn / Character / PlayerController), <code class="ic">action</code> (Input Action asset path). Returns the node id and its trigger pins (Triggered, Started, Completed, …, plus ActionValue). Pair with add_input_mapping to bind keys.</p></div>
+        <div class="tool" id="connect_blueprint_pins"><div class="th"><code class="tn">connect_blueprint_pins</code><span class="gate gw">Editor mutations</span></div><p class="td">Connects two Blueprint node pins. Args: <code class="ic">blueprint</code> (asset path), <code class="ic">from_node</code> and <code class="ic">to_node</code> (node ids from add_blueprint_*_node), <code class="ic">from_pin</code> (an output pin name, e.g. "then") and <code class="ic">to_pin</code> (an input pin name, e.g. "execute"). Use "then" / "execute" for exec flow. Recompiles the Blueprint.</p></div>
+        <div class="tool" id="set_pin_default"><div class="th"><code class="tn">set_pin_default</code><span class="gate gw">Editor mutations</span></div><p class="td">Sets the default (literal) value on an unconnected INPUT pin of a Blueprint node — e.g. drop an asset onto a SystemTemplate / Sound pin, or set a number/bool/enum/string. Args: <code class="ic">blueprint</code> (asset path), <code class="ic">node</code> (node id), <code class="ic">pin</code> (input pin name), <code class="ic">value</code> (for object/class pins: an asset or class path, or "None" to clear; otherwise the literal text). Fails if the pin is connected. Recompiles the Blueprint.</p></div>
+      </section>
+
+      <section id="g-umg" class="sec">
+        <div class="lbl">// tool reference · 4 / 10</div>
+        <h2 class="h">UMG — game UI</h2>
+        <p class="lede">Build Widget Blueprints (HUDs, menus), set widget and layout-slot properties, and render the UI to an image so the agent can <em>see</em> it.</p>
+        <div class="tool" id="create_widget_blueprint"><div class="th"><code class="tn">create_widget_blueprint</code><span class="gate gw">Editor mutations</span></div><p class="td">Creates a UMG Widget Blueprint (game UI / HUD) with a root Canvas Panel. Args: <code class="ic">name</code>, <code class="ic">path</code> (e.g. "/Game/UI"), optional <code class="ic">parent_class</code> (default "UserWidget"), optional <code class="ic">save</code> (default true). Add widgets with add_widget.</p></div>
+        <div class="tool" id="add_widget"><div class="th"><code class="tn">add_widget</code><span class="gate gw">Editor mutations</span></div><p class="td">Adds a widget to a Widget Blueprint's tree. Args: <code class="ic">widget_blueprint</code> (asset path), <code class="ic">widget_class</code> (e.g. "Button", "TextBlock", "Image", "VerticalBox"), <code class="ic">name</code>, optional <code class="ic">parent</code> (name of an existing panel widget to nest under; defaults to the root panel). Recompiles the Blueprint.</p></div>
+        <div class="tool" id="set_widget_property"><div class="th"><code class="tn">set_widget_property</code><span class="gate gw">Editor mutations</span></div><p class="td">Sets a property on a widget inside a Widget Blueprint. Args: <code class="ic">widget_blueprint</code> (asset path), <code class="ic">widget</code> (the widget's name, e.g. "Title"), <code class="ic">property</code> (dotted path, e.g. "Text", "Font.Size", "ColorAndOpacity.SpecifiedColor"), <code class="ic">value</code> (string/number/bool or Unreal text form). Optional <code class="ic">target</code> = "widget" (default) or "slot" to edit the layout slot (anchors / position / padding). Optional <code class="ic">save</code> (default true). Recompiles the Blueprint.</p></div>
+        <div class="tool" id="render_widget"><div class="th"><code class="tn">render_widget</code><span class="gate gr">Read-only</span></div><p class="td">Renders a Widget Blueprint (UMG) to a PNG so the agent can SEE the UI (take_screenshot only captures the 3D viewport, not Slate / UMG). Args: <code class="ic">widget_blueprint</code> (asset path), optional <code class="ic">live</code> (bool — capture the LIVE in-viewport instance during Play In Editor, with real bound / runtime data, instead of a fresh static mock), <code class="ic">width</code>, <code class="ic">height</code>, <code class="ic">max_width</code> (downscale, default 1280, max 4096). Default renders the static design (no WidgetController bound).</p></div>
+      </section>
+
+      <section id="g-materials" class="sec">
+        <div class="lbl">// tool reference · 5 / 10</div>
+        <h2 class="h">Materials &amp; look</h2>
+        <p class="lede">Assign materials, tune them via dynamic instances, project decals, and grade the scene with post-processing.</p>
+        <div class="tool" id="set_material"><div class="th"><code class="tn">set_material</code><span class="gate gw">Editor mutations</span></div><p class="td">Sets a material on a mesh component of the selected actor (or <code class="ic">actor_label</code>). Args: <code class="ic">material</code> (required, asset path), <code class="ic">slot</code> (material index, default 0), optional <code class="ic">component</code> (mesh component name; defaults to the actor's first mesh component). Undoable.</p></div>
+        <div class="tool" id="set_material_param"><div class="th"><code class="tn">set_material_param</code><span class="gate gw">Editor mutations</span></div><p class="td">Tunes the material on a mesh component by creating a dynamic instance and setting parameters. Args: <code class="ic">actor_label</code> (or selection), optional <code class="ic">component</code> and <code class="ic">slot</code> (default 0), <code class="ic">scalar_params</code> (object of name-&gt;number, e.g. tiling/roughness), <code class="ic">vector_params</code> (object of name-&gt;{r,g,b,a}, e.g. tint). Use get_material_params first for the real names. Undoable.</p></div>
+        <div class="tool" id="get_material_params"><div class="th"><code class="tn">get_material_params</code><span class="gate gr">Read-only</span></div><p class="td">Lists a material's editable parameters and current values. Source: <code class="ic">material</code> (asset path), or <code class="ic">actor_label</code> (+ optional <code class="ic">component</code>, <code class="ic">slot</code>) to read the material on a mesh component slot. Use before set_material_param to learn the real parameter names.</p></div>
+        <div class="tool" id="spawn_decal"><div class="th"><code class="tn">spawn_decal</code><span class="gate gw">Editor mutations</span></div><p class="td">Spawns a decal projecting a material onto surfaces. Args: <code class="ic">material</code> (required, decal material path), <code class="ic">location</code> {x,y,z}, <code class="ic">rotation</code> {pitch,yaw,roll} (default projects downward onto the ground), <code class="ic">size</code> {x,y,z} (projection box half-extents, default 256/512/512), <code class="ic">label</code>. Undoable.</p></div>
+        <div class="tool" id="set_postprocess"><div class="th"><code class="tn">set_postprocess</code><span class="gate gw">Editor mutations</span></div><p class="td">Adjusts global post-processing (creates an unbound PostProcessVolume if needed). Optional: <code class="ic">exposure</code> (EV compensation), <code class="ic">saturation</code> (1=neutral), <code class="ic">contrast</code> (1=neutral), <code class="ic">bloom</code> (intensity), <code class="ic">vignette</code> (0-1), <code class="ic">temperature</code> (white temp Kelvin, ~6500 neutral). Undoable.</p></div>
+      </section>
+
+      <section id="g-data" class="sec">
+        <div class="lbl">// tool reference · 6 / 10</div>
+        <h2 class="h">Data, assets &amp; properties</h2>
+        <p class="lede">Create and import assets, read and write properties anywhere by reflection, edit nested struct/array/map paths, and populate CurveTables.</p>
+        <div class="tool" id="create_asset"><div class="th"><code class="tn">create_asset</code><span class="gate gw">Editor mutations</span></div><p class="td">Creates a new asset and saves it. Args: <code class="ic">class</code> (required, asset class name or /Script path, e.g. "LevelUpInfo", "CurveTable", "DataAsset"), <code class="ic">path</code> (required, content folder), <code class="ic">name</code> (required), <code class="ic">save</code> (default true). Then use set_asset_property to populate it. Best for UDataAsset subclasses and CurveTables; Blueprints / Materials need their own factories.</p></div>
+        <div class="tool" id="import_asset"><div class="th"><code class="tn">import_asset</code><span class="gate gw">Editor mutations</span></div><p class="td">Imports a source file from disk into the project. Args: <code class="ic">source</code> (a file path, e.g. an .fbx / .png / .wav), <code class="ic">destination</code> (content folder, e.g. "/Game/Meshes"), optional <code class="ic">name</code>, optional <code class="ic">replace</code> (default false), optional <code class="ic">save</code> (default true). Returns the imported asset path(s).</p></div>
+        <div class="tool" id="save_asset"><div class="th"><code class="tn">save_asset</code><span class="gate gu">Utility</span></div><p class="td">Saves an asset to disk, persisting any in-memory edits (e.g. after add_blueprint_* / add_blueprint_variable, which only mark the asset dirty). Args: <code class="ic">asset</code> (asset path).</p></div>
+        <div class="tool" id="list_assets"><div class="th"><code class="tn">list_assets</code><span class="gate gr">Read-only</span></div><p class="td">Searches the project's Asset Registry. Optional filters: <code class="ic">class_filter</code> (asset type, e.g. "StaticMesh", "Material", "Blueprint", "SkeletalMesh"), <code class="ic">name_filter</code> (substring of the asset name), <code class="ic">path</code> (content path, default "/Game"), and <code class="ic">limit</code> (default 100, max 1000). Returns object paths usable with spawn_actor / set_actor_property.</p></div>
+        <div class="tool" id="get_asset_properties"><div class="th"><code class="tn">get_asset_properties</code><span class="gate gr">Read-only</span></div><p class="td">Reads an asset's properties by reflection. Args: <code class="ic">asset</code> (required, asset path, e.g. a UDataAsset), optional <code class="ic">property</code> (a single property name; if omitted, lists all editor-visible properties and values).</p></div>
+        <div class="tool" id="set_asset_property"><div class="th"><code class="tn">set_asset_property</code><span class="gate gw">Editor mutations</span></div><p class="td">Sets a property on an asset (e.g. a UDataAsset) by reflection. Args: <code class="ic">asset</code> (required, path), <code class="ic">property</code> (required), <code class="ic">value</code> (required; string/number/boolean map directly, struct types take Unreal text form), <code class="ic">save</code> (default true). Note: DataTables are not edited this way — they need row-level editing.</p></div>
+        <div class="tool" id="get_actor_property"><div class="th"><code class="tn">get_actor_property</code><span class="gate gr">Read-only</span></div><p class="td">Reads a property value from the selected actor or <code class="ic">actor_label</code>. With <code class="ic">property</code>, returns that value; without it, lists all editor-visible properties and their values. Optional <code class="ic">component</code> targets a named component instead of the actor.</p></div>
+        <div class="tool" id="set_actor_property"><div class="th"><code class="tn">set_actor_property</code><span class="gate gw">Editor mutations</span></div><p class="td">Sets a property (by name, via reflection) on the selected actor or <code class="ic">actor_label</code>. Args: <code class="ic">property</code> (required), <code class="ic">value</code> (required; string/number/boolean map directly, struct types take Unreal text form e.g. "(X=1,Y=2,Z=3)"), optional <code class="ic">component</code> to target a named component. Undoable.</p></div>
+        <div class="tool" id="set_component_property"><div class="th"><code class="tn">set_component_property</code><span class="gate gw">Editor mutations</span></div><p class="td">Sets a property on a named component of a level actor. Args: <code class="ic">component</code> (the component name, e.g. "PointLight"), <code class="ic">property</code> (dotted path, e.g. "Intensity", "LightColor", "Sound"), <code class="ic">value</code> (string/number/bool, or an asset path for object references like a Sound/Texture), optional <code class="ic">actor_label</code> (else selection). Use add_component first.</p></div>
+        <div class="tool" id="set_property_path"><div class="th"><code class="tn">set_property_path</code><span class="gate gw">Editor mutations</span></div><p class="td">Sets a value at a nested property path. Root: <code class="ic">asset</code> (asset path) or <code class="ic">actor_label</code>. <code class="ic">path</code> (required) navigates struct members, array indices, and TMap keys-by-name, e.g. "LevelUpInformation[1].LevelUpRequirement" or "CharacterClassInformation[Bruiser].XPReward.Value". Maps are keyed by NAME, not by ordinal. <code class="ic">value</code> (required). For assets, <code class="ic">save</code> (default true).</p></div>
+        <div class="tool" id="array_op"><div class="th"><code class="tn">array_op</code><span class="gate gw">Editor mutations</span></div><p class="td">Edits an array property. Root: <code class="ic">asset</code> (path) or <code class="ic">actor_label</code>. <code class="ic">path</code> (required) = the array property (may itself be nested). <code class="ic">op</code> (required): 'add' (append empty), 'add_n' (append <code class="ic">count</code> empties), 'remove' (at <code class="ic">index</code>), 'clear', or 'size' (resize to <code class="ic">count</code>). For assets, <code class="ic">save</code> (default true). Then set elements with set_property_path.</p></div>
+        <div class="tool" id="set_curve_table_row"><div class="th"><code class="tn">set_curve_table_row</code><span class="gate gw">Editor mutations</span></div><p class="td">Sets a row of a CurveTable to a rich curve of keys. Args: <code class="ic">curve_table</code> (required, path), <code class="ic">row</code> (required, row name e.g. "XP_Bruiser"), <code class="ic">keys</code> (required, array of {x,y} points, e.g. [{"x":1,"y":0},{"x":2,"y":100}] for level→XP), <code class="ic">interp</code> ("linear" | "constant" | "cubic", default linear), <code class="ic">save</code> (default true). Replaces the row if it exists.</p></div>
+      </section>
+
+      <section id="g-gameplay" class="sec">
+        <div class="lbl">// tool reference · 7 / 10</div>
+        <h2 class="h">Gameplay &amp; input</h2>
+        <p class="lede">Wire Enhanced Input. Set the GameMode with <code class="ic">set_game_mode</code> (under World &amp; level), drive logic from input with <code class="ic">add_blueprint_input_action_node</code> (under Blueprints), and bind keys here.</p>
+        <div class="tool" id="add_input_mapping"><div class="th"><code class="tn">add_input_mapping</code><span class="gate gw">Editor mutations</span></div><p class="td">Maps a key to an Input Action in an Enhanced Input Mapping Context. Args: <code class="ic">context</code> (Input Mapping Context asset path), <code class="ic">action</code> (Input Action asset path), <code class="ic">key</code> (e.g. "W", "SpaceBar", "Gamepad_FaceButton_Bottom", "LeftMouseButton"). Create the IA / IMC assets with create_asset (class "InputAction" / "InputMappingContext"). Saves the context.</p></div>
+      </section>
+
+      <section id="g-verify" class="sec">
+        <div class="lbl">// tool reference · 8 / 10</div>
+        <h2 class="h">Camera, play &amp; verify</h2>
+        <p class="lede">Frame the viewport, run Play-In-Editor, and close the loop — screenshots, reference diffs, and the output log let the agent see and confirm its own work.</p>
+        <div class="tool" id="set_viewport_camera"><div class="th"><code class="tn">set_viewport_camera</code><span class="gate gr">Read-only</span></div><p class="td">Aims the active level-editor perspective viewport. Optional <code class="ic">location</code> {x,y,z}, <code class="ic">rotation</code> {pitch,yaw,roll}, and <code class="ic">fov</code> (degrees). Omitted values keep their current setting. Use before take_screenshot to frame a shot.</p></div>
+        <div class="tool" id="focus_camera_on_actor"><div class="th"><code class="tn">focus_camera_on_actor</code><span class="gate gr">Read-only</span></div><p class="td">Aims the perspective viewport at the selected actor (or <code class="ic">actor_label</code>), framing it using its bounds. Optional <code class="ic">distance</code> (multiplier of the actor's size, default 2.5) and <code class="ic">yaw</code> / <code class="ic">pitch</code> for the viewing angle in degrees.</p></div>
+        <div class="tool" id="start_play_in_editor"><div class="th"><code class="tn">start_play_in_editor</code><span class="gate gw">Editor mutations</span></div><p class="td">Starts a Play-In-Editor (PIE) session in the active level. PIE initializes over the next frame(s), so this returns once the start is requested; confirm with a follow-up tool (e.g. take_screenshot). No-op if already playing.</p></div>
+        <div class="tool" id="stop_play_in_editor"><div class="th"><code class="tn">stop_play_in_editor</code><span class="gate gu">Utility</span></div><p class="td">Stops the active Play-In-Editor (PIE) session and returns to editing. No-op if not currently playing. Takes no arguments.</p></div>
+        <div class="tool" id="take_screenshot"><div class="th"><code class="tn">take_screenshot</code><span class="gate gr">Read-only</span></div><p class="td">Captures the active editor viewport and returns it as a PNG image. Optional <code class="ic">max_width</code> (default 1280, max 4096) downscales large captures to keep the payload small.</p></div>
+        <div class="tool" id="compare_to_reference"><div class="th"><code class="tn">compare_to_reference</code><span class="gate gr">Read-only</span></div><p class="td">Compares the current viewport against a reference image. Args: <code class="ic">reference</code> (required, image file path on disk), <code class="ic">height</code> (composite height in px, default 400). Returns the two images side-by-side (reference left, current right) plus a rough pixel-similarity percentage.</p></div>
+        <div class="tool" id="get_output_log"><div class="th"><code class="tn">get_output_log</code><span class="gate gr">Read-only</span></div><p class="td">Returns recent Unreal editor log lines (newest last). Optional args: <code class="ic">count</code> (default 100, max 1000), <code class="ic">contains</code> (substring filter), and <code class="ic">min_verbosity</code> (one of all | display | warning | error; default all).</p></div>
+      </section>
+
+      <section id="g-bulk" class="sec">
+        <div class="lbl">// tool reference · 9 / 10</div>
+        <h2 class="h">Bulk &amp; orchestration</h2>
+        <p class="lede">Collapse many calls into one request for bulk work.</p>
+        <div class="tool" id="batch"><div class="th"><code class="tn">batch</code><span class="gate gu">Utility</span></div><p class="td">Runs several tool calls in order in a single request (fewer round-trips for bulk work). Args: <code class="ic">calls</code> (array of objects, each { "tool": name, "arguments": { … } }), optional <code class="ic">stop_on_error</code> (default false — continue past failures). Returns a numbered per-call result summary. Each sub-call still enforces its own safety gate. Image results are noted, not embedded.</p></div>
+      </section>
+
+      <section id="g-escape" class="sec">
+        <div class="lbl">// tool reference · 10 / 10</div>
+        <h2 class="h">Escape hatches</h2>
+        <p class="lede">For anything without a dedicated tool. These sit behind their own gates and are off by default.</p>
+        <div class="tool" id="execute_python"><div class="th"><code class="tn">execute_python</code><span class="gate gp">Python gate</span></div><p class="td">Executes a Python script in Unreal's embedded interpreter (the <code class="ic">unreal</code> module is available) and returns captured stdout / stderr and the final expression's value. Use this for anything without a dedicated tool — asset edits, reflection, bulk operations. Multi-line scripts are supported. Runs inside one undo transaction. Requires 'Allow Python Execution' and the Python Editor Script Plugin.</p></div>
+        <div class="tool" id="exec_console_command"><div class="th"><code class="tn">exec_console_command</code><span class="gate gc">Console gate</span></div><p class="td">Runs an Unreal console command and returns its console output (e.g. "stat fps", "r.ScreenPercentage 50", "show Collision"). Targets the running game when in play mode, otherwise the editor world. Output written via UE_LOG appears in get_output_log instead. Requires 'Allow Console Commands'.</p></div>
+        <div class="tool" id="get_cvar"><div class="th"><code class="tn">get_cvar</code><span class="gate gr">Read-only</span></div><p class="td">Reads a console variable's current value and help text. Args: <code class="ic">name</code> (e.g. "r.ScreenPercentage"). Read-only.</p></div>
+        <div class="tool" id="set_cvar"><div class="th"><code class="tn">set_cvar</code><span class="gate gc">Console gate</span></div><p class="td">Sets a console variable. Args: <code class="ic">name</code>, <code class="ic">value</code>. Requires 'Allow Console Commands'.</p></div>
+      </section>
+
+      <!-- FINAL CTA -->
+      <section class="sec">
+        <div style="position:relative;border:1px solid rgba(10,132,255,0.4);border-radius:20px;padding:clamp(28px,4vw,44px);text-align:center;background:linear-gradient(180deg, rgba(10,132,255,0.12), rgba(255,255,255,0.008));box-shadow:0 40px 90px -40px rgba(10,132,255,0.6);overflow:hidden;margin-top:8px">
+          <div aria-hidden="true" style="position:absolute;inset:0;background:radial-gradient(600px 300px at 50% 0%, rgba(10,132,255,0.18), transparent 70%);pointer-events:none"></div>
+          <div style="position:relative">
+            <h2 style="font-size:clamp(1.6rem,3vw,2.3rem);line-height:1.08;letter-spacing:-0.03em;font-weight:780;margin:0 0 12px;text-wrap:balance">Ready to build? It's free for indies.</h2>
+            <p style="font-size:clamp(0.98rem,1.3vw,1.12rem);color:#B7C2D0;line-height:1.6;margin:0 auto 26px;max-width:500px">Install in minutes, prompt your first level today, and ship when you're ready.</p>
+            <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center">
+              <a class="cta-buy" href="https://buy.polar.sh/polar_cl_1FGJ3RGFEE5f2nqXGHt7n7UGcCq32avE6Ge8n3gKW5R" style="display:inline-flex;align-items:center;gap:8px;padding:13px 24px;font-size:15px;font-weight:650;color:#fff;background:#0A84FF;border-radius:12px;box-shadow:0 1px 0 rgba(255,255,255,0.18) inset, 0 14px 38px -12px rgba(10,132,255,0.9);transition:background .2s">Get Conduit free<span style="width:7px;height:7px;border-radius:999px;background:#fff;opacity:.9;animation:acGlow 2s ease-in-out infinite"></span></a>
+              <a class="btn-secondary" href="https://buy.polar.sh/polar_cl_TU4MkqtbaaudWQkSDZzI8md9sLWMuNqvMPNQR3IQiht" style="display:inline-flex;align-items:center;gap:8px;padding:13px 22px;font-size:15px;font-weight:600;color:#C9C9D3;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.14);border-radius:12px;transition:background .2s,border-color .2s">Licensing for studios</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- FOOTER -->
+  <footer style="position:relative;z-index:1;border-top:1px solid rgba(255,255,255,0.07);padding:44px 24px 40px;margin-top:40px">
+    <div style="max-width:1200px;margin:0 auto">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;margin-bottom:24px">
         <a href="/" style="display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:-0.02em;font-size:17px">
           <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><rect x="2.5" y="2.5" width="17" height="17" rx="4.5" fill="none" stroke="#0A84FF" stroke-width="1.6"/><path d="M7 11h8M11 7v8" stroke="#4DB2FF" stroke-width="1.6" stroke-linecap="round"/></svg>
           Conduit
