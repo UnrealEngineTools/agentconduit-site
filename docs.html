@@ -217,15 +217,41 @@ YourProject/
         <div class="lbl">// core concepts</div>
         <h2 class="h">Architecture</h2>
         <p class="lede">The MCP server runs <em>inside</em> the editor process. No Python sidecar, no socket bridge, no glue. Your agent POSTs JSON-RPC 2.0 to a local endpoint; tools execute on the game thread against live editor subsystems.</p>
-        <div class="codeblock"><pre>+----------------+   HTTP / JSON-RPC 2.0   +-----------------------------------+
-|  AI agent      |  POST /mcp              |  Unreal Editor process            |
-| (Claude Code,  | ----------------------> |  +-----------------------------+  |
-|  Desktop, ...) |  127.0.0.1:30010/mcp    |  | AgentConduit (MCPCore)      |  |
-|                | <---------------------- |  |  embedded HTTP MCP server   |  |
-+----------------+  results / images      |  |  67 tools -> subsystems     |  |
-                                          |  +-----------------------------+  |
-   no sidecar - runs in-process           |   GEditor - assets - BP - UMG     |
-                                          +-----------------------------------+</pre></div>
+        <div style="background:#0C0C11;border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:20px 18px">
+          <svg viewBox="0 0 920 300" width="100%" role="img" aria-label="Architecture diagram: an MCP agent POSTs JSON-RPC 2.0 to a local endpoint at 127.0.0.1:30010/mcp, served by AgentConduit running inside the Unreal Editor process with no sidecar; 67 tools drive editor subsystems and results and images stream back." style="display:block;font-family:'Inter',system-ui,sans-serif">
+            <defs>
+              <marker id="ahReq" markerWidth="9" markerHeight="9" refX="6.5" refY="3.2" orient="auto"><path d="M0 0L6.6 3.2L0 6.4Z" fill="#4DB2FF"/></marker>
+              <marker id="ahRes" markerWidth="9" markerHeight="9" refX="6.5" refY="3.2" orient="auto"><path d="M0 0L6.6 3.2L0 6.4Z" fill="#7E97BE"/></marker>
+            </defs>
+
+            <!-- Agent box -->
+            <rect x="40" y="70" width="210" height="150" rx="13" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.16)"/>
+            <circle cx="68" cy="98" r="4" fill="#4ADE80"/>
+            <text x="84" y="102" font-family="'JetBrains Mono',monospace" font-size="11" fill="#6B6B76">mcp client</text>
+            <text x="145" y="146" text-anchor="middle" font-size="18" font-weight="700" fill="#EDEDF2">AI agent</text>
+            <text x="145" y="172" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#8E8E9A">Claude Code,</text>
+            <text x="145" y="190" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#8E8E9A">Desktop, …</text>
+            <text x="145" y="248" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11.5" fill="#6EE7A0">no sidecar · in-process</text>
+
+            <!-- Editor process box -->
+            <rect x="470" y="50" width="410" height="210" rx="15" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.16)"/>
+            <text x="494" y="82" font-size="14.5" font-weight="650" fill="#C9C9D3">Unreal Editor process</text>
+            <!-- AgentConduit inner box -->
+            <rect x="494" y="98" width="362" height="100" rx="11" fill="rgba(10,132,255,0.09)" stroke="rgba(10,132,255,0.5)"/>
+            <text x="675" y="130" text-anchor="middle" font-size="14.5" font-weight="650" fill="#DCEBFF">AgentConduit · MCPCore</text>
+            <text x="675" y="153" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#9FC4F0">embedded HTTP MCP server</text>
+            <text x="675" y="176" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#9FC4F0">67 tools → subsystems</text>
+            <text x="675" y="234" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12.5" fill="#8E8E9A">GEditor · assets · Blueprints · UMG</text>
+
+            <!-- Transport label + arrows -->
+            <text x="360" y="92" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11.5" fill="#6B6B76">HTTP / JSON-RPC 2.0</text>
+            <text x="360" y="121" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11.5" fill="#C9C9D3">POST /mcp</text>
+            <line x1="256" y1="132" x2="462" y2="132" stroke="#4DB2FF" stroke-width="1.7" marker-end="url(#ahReq)"/>
+            <text x="360" y="152" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11.5" fill="#7CC4FF">127.0.0.1:30010/mcp</text>
+            <line x1="462" y1="180" x2="256" y2="180" stroke="#7E97BE" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#ahRes)"/>
+            <text x="360" y="200" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11.5" fill="#8E8E9A">results / images</text>
+          </svg>
+        </div>
         <p style="font-size:13.5px;color:#8E8E9A;margin:14px 0 0;line-height:1.6">The transport is content-negotiated: a request that sends <code class="ic">Accept: text/event-stream</code> gets an SSE-framed reply; otherwise plain JSON. Image-returning tools (screenshots, widget renders) stream encoded PNG bytes back inline.</p>
       </section>
 
