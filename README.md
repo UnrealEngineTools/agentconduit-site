@@ -1,6 +1,6 @@
-# AgentConduit — landing page
+# Conduit — landing page
 
-Marketing site for **AgentConduit**, a native in-engine Model Context Protocol (MCP)
+Marketing site for **Conduit**, a native in-engine Model Context Protocol (MCP)
 server for Unreal Engine that lets AI agents build games from prompts.
 
 A single self-contained static page (`index.html`) — no build step, no dependencies.
