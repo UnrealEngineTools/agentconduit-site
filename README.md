@@ -19,6 +19,14 @@ python -m http.server 8080   # then visit http://localhost:8080
 - Action CTAs read "Coming soon" until the product is live.
 - Independent project, not affiliated with Epic Games or Unreal Engine.
 
+## Pages
+
+- `index.html` — the marketing landing page.
+- `success.html` — post-purchase confirmation. Set this as the Polar checkout **success URL**
+  (`https://conduit.unrealtools.com/success`). It explains the four onboarding steps: receipt
+  email, GitHub repo invite, download the Release zip, drop into `Plugins/` and compile. Both
+  files are uploaded together on every deploy.
+
 ## Deploy / update
 
 Hosted on **Cloudflare Pages** (project `agentconduit-site`, domain `conduit.unrealtools.com`)

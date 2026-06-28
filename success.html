@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>You're in — Conduit</title>
+<meta name="description" content="Thank you for purchasing a Conduit commercial license. Here's how to get set up.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#09090C">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  html { scroll-behavior: smooth; }
+  body { margin:0; background:#09090C; color:#F2F2F5; font-family:'Inter',system-ui,sans-serif; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility; }
+  ::selection { background:rgba(10,132,255,0.35); }
+  a { color:inherit; text-decoration:none; }
+  :focus-visible { outline:2px solid #4DB2FF; outline-offset:3px; border-radius:4px; }
+  @keyframes acGlow { 0%,100%{opacity:.45} 50%{opacity:.85} }
+  @keyframes acPop { from{opacity:0; transform:scale(.82)} to{opacity:1; transform:none} }
+  @keyframes acReveal { from{opacity:0; transform:translateY(16px)} to{opacity:1; transform:none} }
+  .acPop { animation:acPop .5s cubic-bezier(.2,.9,.3,1.2) both; }
+  .acR { animation:acReveal .6s ease both; }
+  .foot-link:hover { color:#F2F2F5; }
+  .step:hover { border-color:rgba(10,132,255,0.45); background:rgba(10,132,255,0.04); }
+  .step { transition:border-color .2s, background .2s; }
+  .btn-primary:hover { background:#1f90ff; }
+  .btn-secondary:hover { background:rgba(255,255,255,0.08); border-color:rgba(255,255,255,0.2); }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:.001ms!important; animation-iteration-count:1!important}
+  }
+</style>
+</head>
+<body>
+
+<div style="background:#09090C;overflow-x:hidden;min-height:100vh;display:flex;flex-direction:column">
+
+  <!-- background glow -->
+  <div aria-hidden="true" style="position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(900px 520px at 50% -10%, rgba(10,132,255,0.18), transparent 60%), radial-gradient(700px 600px at 6% 8%, rgba(80,180,255,0.06), transparent 55%)"></div>
+
+  <!-- ===================== NAV ===================== -->
+  <header style="position:sticky;top:0;z-index:50;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);background:rgba(9,9,12,0.72);border-bottom:1px solid rgba(255,255,255,0.06)">
+    <nav aria-label="Primary" style="max-width:1180px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap">
+      <a href="/" style="display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:-0.02em;font-size:17px">
+        <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><rect x="2.5" y="2.5" width="17" height="17" rx="4.5" fill="none" stroke="#0A84FF" stroke-width="1.6"/><path d="M7 11h8M11 7v8" stroke="#4DB2FF" stroke-width="1.6" stroke-linecap="round"/></svg>
+        Conduit
+      </a>
+      <a class="btn-secondary" href="/" style="padding:8px 14px;font-size:14px;color:#A6A6B2;border:1px solid rgba(255,255,255,0.12);border-radius:9px;transition:background .2s,border-color .2s">Back to site</a>
+    </nav>
+  </header>
+
+  <main style="position:relative;z-index:1;flex:1">
+    <section style="max-width:760px;margin:0 auto;padding:clamp(48px,8vw,96px) 24px clamp(40px,5vw,64px);text-align:center">
+
+      <!-- success mark -->
+      <div class="acPop" style="width:74px;height:74px;margin:0 auto 28px;border-radius:999px;background:radial-gradient(circle at 50% 35%, rgba(74,222,128,0.28), rgba(74,222,128,0.06));border:1px solid rgba(74,222,128,0.5);display:flex;align-items:center;justify-content:center;box-shadow:0 0 50px -8px rgba(74,222,128,0.5)">
+        <svg width="34" height="34" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.4 4.4L19 7.2" stroke="#6EE7A0" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+
+      <div class="acR" style="display:inline-flex;align-items:center;gap:9px;padding:6px 12px;border:1px solid rgba(74,222,128,0.3);border-radius:999px;font-size:12.5px;color:#9FE9BE;font-family:'JetBrains Mono',monospace;margin-bottom:22px">
+        <span style="width:7px;height:7px;border-radius:999px;background:#4ADE80;box-shadow:0 0 10px #4ADE80;animation:acGlow 2.4s ease-in-out infinite"></span>
+        Payment confirmed
+      </div>
+
+      <h1 class="acR" style="font-size:clamp(2.2rem,5vw,3.2rem);line-height:1.05;letter-spacing:-0.035em;font-weight:800;margin:0 0 18px;text-wrap:balance">You're in. Welcome to Conduit.</h1>
+      <p class="acR" style="font-size:clamp(1rem,1.4vw,1.18rem);line-height:1.6;color:#A6A6B2;max-width:560px;margin:0 auto 14px">
+        Thank you for your purchase. Your commercial license is active, and a receipt is on its way to your inbox. Here's how to get building.
+      </p>
+      <p class="acR" style="font-size:13px;color:#6B6B76;font-family:'JetBrains Mono',monospace;margin:0 0 44px">A confirmation email with your receipt and license details has been sent by Polar.</p>
+
+      <!-- steps -->
+      <div style="display:grid;gap:14px;text-align:left;margin-bottom:40px">
+
+        <div class="step" style="display:flex;gap:16px;align-items:flex-start;border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:22px 24px;background:rgba(255,255,255,0.015)">
+          <div style="flex-shrink:0;width:30px;height:30px;border-radius:9px;background:rgba(10,132,255,0.14);border:1px solid rgba(10,132,255,0.4);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:600;color:#7CC4FF">1</div>
+          <div>
+            <div style="font-size:15.5px;font-weight:650;margin-bottom:5px">Check your inbox</div>
+            <p style="font-size:14px;color:#A6A6B2;line-height:1.6;margin:0">Polar has emailed your receipt and license key. Keep it safe — you'll use it to manage seats and re-download anytime from the <strong style="color:#C9C9D3;font-weight:600">customer portal</strong> linked in that email.</p>
+          </div>
+        </div>
+
+        <div class="step" style="display:flex;gap:16px;align-items:flex-start;border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:22px 24px;background:rgba(255,255,255,0.015)">
+          <div style="flex-shrink:0;width:30px;height:30px;border-radius:9px;background:rgba(10,132,255,0.14);border:1px solid rgba(10,132,255,0.4);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:600;color:#7CC4FF">2</div>
+          <div>
+            <div style="font-size:15.5px;font-weight:650;margin-bottom:5px">Accept your GitHub invite</div>
+            <p style="font-size:14px;color:#A6A6B2;line-height:1.6;margin:0">Within a few minutes you'll receive a GitHub invitation to the private <code style="font-family:'JetBrains Mono',monospace;font-size:12.5px;color:#7CC4FF;background:rgba(10,132,255,0.08);border:1px solid rgba(10,132,255,0.25);padding:1px 6px;border-radius:5px">UnrealEngineTools/AgentConduit</code> repository. Accept it to unlock the source and all releases.</p>
+          </div>
+        </div>
+
+        <div class="step" style="display:flex;gap:16px;align-items:flex-start;border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:22px 24px;background:rgba(255,255,255,0.015)">
+          <div style="flex-shrink:0;width:30px;height:30px;border-radius:9px;background:rgba(10,132,255,0.14);border:1px solid rgba(10,132,255,0.4);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:600;color:#7CC4FF">3</div>
+          <div>
+            <div style="font-size:15.5px;font-weight:650;margin-bottom:5px">Download the latest release</div>
+            <p style="font-size:14px;color:#A6A6B2;line-height:1.6;margin:0">Grab <code style="font-family:'JetBrains Mono',monospace;font-size:12.5px;color:#7CC4FF;background:rgba(10,132,255,0.08);border:1px solid rgba(10,132,255,0.25);padding:1px 6px;border-radius:5px">AgentConduit-vX.Y.Z.zip</code> from the repository's <strong style="color:#C9C9D3;font-weight:600">Releases</strong> tab.</p>
+          </div>
+        </div>
+
+        <div class="step" style="display:flex;gap:16px;align-items:flex-start;border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:22px 24px;background:rgba(255,255,255,0.015)">
+          <div style="flex-shrink:0;width:30px;height:30px;border-radius:9px;background:rgba(10,132,255,0.14);border:1px solid rgba(10,132,255,0.4);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:600;color:#7CC4FF">4</div>
+          <div>
+            <div style="font-size:15.5px;font-weight:650;margin-bottom:5px">Drop in and compile</div>
+            <p style="font-size:14px;color:#A6A6B2;line-height:1.6;margin:0">Place the <code style="font-family:'JetBrains Mono',monospace;font-size:12.5px;color:#7CC4FF;background:rgba(10,132,255,0.08);border:1px solid rgba(10,132,255,0.25);padding:1px 6px;border-radius:5px">AgentConduit/</code> folder in your project's <code style="font-family:'JetBrains Mono',monospace;font-size:12.5px;color:#7CC4FF;background:rgba(10,132,255,0.08);border:1px solid rgba(10,132,255,0.25);padding:1px 6px;border-radius:5px">Plugins/</code> directory and launch the editor — it compiles on first run. The MCP server starts on <code style="font-family:'JetBrains Mono',monospace;font-size:12.5px;color:#7CC4FF;background:rgba(10,132,255,0.08);border:1px solid rgba(10,132,255,0.25);padding:1px 6px;border-radius:5px">127.0.0.1:30010/mcp</code>.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- CTAs -->
+      <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-bottom:36px">
+        <a class="btn-primary" href="https://github.com/UnrealEngineTools/AgentConduit/releases" style="display:inline-flex;align-items:center;gap:8px;padding:13px 22px;font-size:15px;font-weight:600;color:#fff;background:#0A84FF;border-radius:11px;box-shadow:0 1px 0 rgba(255,255,255,0.18) inset, 0 12px 34px -10px rgba(10,132,255,0.8);transition:background .2s">
+          <svg width="17" height="17" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+          Go to Releases
+        </a>
+        <a class="btn-secondary" href="/" style="display:inline-flex;align-items:center;gap:8px;padding:13px 22px;font-size:15px;font-weight:600;color:#C9C9D3;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.12);border-radius:11px;transition:background .2s,border-color .2s">Back to site</a>
+      </div>
+
+      <p style="font-size:13.5px;color:#7B7B86;line-height:1.6;margin:0 auto;max-width:480px">
+        Didn't get the GitHub invite or need a hand? Reply directly to your receipt email, or open an issue in the repository once you have access — we'll sort it out fast.
+      </p>
+
+    </section>
+  </main>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer style="position:relative;z-index:1;border-top:1px solid rgba(255,255,255,0.07);padding:40px 24px 36px">
+    <div style="max-width:1180px;margin:0 auto">
+      <p style="font-size:12px;color:#62626C;line-height:1.65;margin:0 0 16px;max-width:780px">
+        Conduit is an independent, third-party tool made for Unreal Engine developers. Unreal Engine, Unreal, and their logos are trademarks or registered trademarks of Epic Games, Inc. in the United States and elsewhere, used here only to describe compatibility. Conduit is not affiliated with, endorsed by, or sponsored by Epic Games.
+      </p>
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">
+        <span style="font-size:12.5px;color:#5E5E69">© 2026 Conduit · MCP Streamable-HTTP transport · UE 5.7 / 5.8</span>
+        <a class="foot-link" href="/" style="font-size:12.5px;color:#5E5E69">conduit.unrealtools.com</a>
+      </div>
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>
