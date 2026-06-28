@@ -22,10 +22,14 @@ python -m http.server 8080   # then visit http://localhost:8080
 ## Pages
 
 - `index.html` — the marketing landing page.
+- `docs.html` — getting-started docs (`/docs`): requirements, five-step install, agent
+  connection, first prompt, skills, safety, and the tool groups. Hype-forward with CTAs to the
+  Indie checkout throughout. Linked from the home nav, hero, and footer.
 - `success.html` — post-purchase confirmation. Set this as the Polar checkout **success URL**
   (`https://conduit.unrealtools.com/success`). It explains the four onboarding steps: receipt
-  email, GitHub repo invite, download the Release zip, drop into `Plugins/` and compile. Both
-  files are uploaded together on every deploy.
+  email, GitHub repo invite, download the Release zip, drop into `Plugins/` and compile.
+
+All three files are uploaded together on every deploy (the deploy copies the whole folder).
 
 ## Deploy / update
 

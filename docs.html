@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Docs — Get started with Conduit in minutes</title>
+<meta name="description" content="Install Conduit, connect your agent, and build a playable Unreal Engine game from a single prompt. Five steps, about ten minutes. Free for indie developers.">
+<meta property="og:title" content="Conduit Docs — From zero to a playable game in minutes">
+<meta property="og:description" content="Install, connect your agent, prompt. Build Unreal Engine games by talking to an AI agent. Free for indies.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#09090C">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  html { scroll-behavior: smooth; }
+  body { margin:0; background:#09090C; color:#F2F2F5; font-family:'Inter',system-ui,sans-serif; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility; }
+  ::selection { background:rgba(10,132,255,0.35); }
+  a { color:inherit; text-decoration:none; }
+  :focus-visible { outline:2px solid #4DB2FF; outline-offset:3px; border-radius:4px; }
+  @keyframes acGlow { 0%,100%{opacity:.45} 50%{opacity:.85} }
+  @keyframes acReveal { from{opacity:0; transform:translateY(18px)} to{opacity:1; transform:none} }
+  .acReveal { animation:acReveal both; animation-timeline:view(); animation-range:entry 2% cover 26%; }
+  .nav-link:hover { color:#F2F2F5; background:rgba(255,255,255,0.04); }
+  .foot-link:hover { color:#F2F2F5; }
+  .cta-buy:hover { background:#1f90ff; }
+  .btn-secondary:hover { background:rgba(255,255,255,0.08); border-color:rgba(255,255,255,0.2); }
+  .step:hover { border-color:rgba(10,132,255,0.4); }
+  .step { transition:border-color .2s; }
+  code { font-family:'JetBrains Mono',monospace; }
+  .ic { font-family:'JetBrains Mono',monospace; font-size:12.5px; color:#7CC4FF; background:rgba(10,132,255,0.08); border:1px solid rgba(10,132,255,0.25); padding:1px 6px; border-radius:5px; white-space:nowrap; }
+  pre { margin:0; }
+  .codeblock { background:#0C0C11; border:1px solid rgba(255,255,255,0.1); border-radius:12px; overflow:auto; }
+  .codeblock pre { padding:16px 18px; font-family:'JetBrains Mono',monospace; font-size:13px; line-height:1.65; color:#D6D6E0; }
+  .cm { color:#6B6B76; }     /* comment */
+  .cg { color:#6EE7A0; }     /* green / prompt */
+  .cb { color:#7CC4FF; }     /* blue / value */
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    .acReveal{animation:none!important; opacity:1!important; transform:none!important}
+    *{animation-duration:.001ms!important}
+  }
+</style>
+</head>
+<body>
+
+<div style="background:#09090C;overflow-x:hidden">
+
+  <!-- background glow -->
+  <div aria-hidden="true" style="position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(900px 520px at 80% -8%, rgba(10,132,255,0.15), transparent 60%), radial-gradient(700px 600px at 4% 6%, rgba(80,180,255,0.06), transparent 55%)"></div>
+
+  <!-- ===================== NAV ===================== -->
+  <header style="position:sticky;top:0;z-index:50;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);background:rgba(9,9,12,0.72);border-bottom:1px solid rgba(255,255,255,0.06)">
+    <nav aria-label="Primary" style="max-width:1180px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap">
+      <a href="/" style="display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:-0.02em;font-size:17px">
+        <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><rect x="2.5" y="2.5" width="17" height="17" rx="4.5" fill="none" stroke="#0A84FF" stroke-width="1.6"/><path d="M7 11h8M11 7v8" stroke="#4DB2FF" stroke-width="1.6" stroke-linecap="round"/></svg>
+        Conduit
+      </a>
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+        <div style="display:flex;align-items:center;gap:4px;margin-right:6px">
+          <a class="nav-link" href="#install" style="padding:8px 12px;font-size:14px;color:#A6A6B2;border-radius:8px">Install</a>
+          <a class="nav-link" href="#connect" style="padding:8px 12px;font-size:14px;color:#A6A6B2;border-radius:8px">Connect</a>
+          <a class="nav-link" href="#skills" style="padding:8px 12px;font-size:14px;color:#A6A6B2;border-radius:8px">Skills</a>
+          <a class="nav-link" href="/#pricing" style="padding:8px 12px;font-size:14px;color:#A6A6B2;border-radius:8px">Pricing</a>
+        </div>
+        <a class="cta-buy" href="https://buy.polar.sh/polar_cl_1FGJ3RGFEE5f2nqXGHt7n7UGcCq32avE6Ge8n3gKW5R" style="display:inline-flex;align-items:center;gap:7px;padding:9px 16px;font-size:14px;font-weight:600;color:#fff;background:#0A84FF;border-radius:9px;box-shadow:0 1px 0 rgba(255,255,255,0.18) inset, 0 8px 24px -8px rgba(10,132,255,0.7);transition:background .2s">Get it free</a>
+      </div>
+    </nav>
+  </header>
+
+  <main style="position:relative;z-index:1">
+
+    <!-- ===================== HERO ===================== -->
+    <section style="max-width:880px;margin:0 auto;padding:clamp(44px,7vw,88px) 24px clamp(32px,4vw,52px);text-align:center">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:12.5px;color:#4DB2FF;margin-bottom:16px">// documentation</div>
+      <h1 style="font-size:clamp(2.3rem,5.4vw,3.6rem);line-height:1.04;letter-spacing:-0.035em;font-weight:800;margin:0 0 20px;text-wrap:balance">From zero to a playable game in minutes.</h1>
+      <p style="font-size:clamp(1.04rem,1.5vw,1.24rem);line-height:1.6;color:#A6A6B2;max-width:620px;margin:0 auto 30px">
+        Install the plugin, point your agent at one local endpoint, and start prompting. Conduit turns natural language into levels, Blueprints, UMG, input, and a play-tested game — inside the real Unreal Editor. No sidecar, no glue code.
+      </p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-bottom:18px">
+        <a class="cta-buy" href="https://buy.polar.sh/polar_cl_1FGJ3RGFEE5f2nqXGHt7n7UGcCq32avE6Ge8n3gKW5R" style="display:inline-flex;align-items:center;gap:8px;padding:13px 24px;font-size:15px;font-weight:600;color:#fff;background:#0A84FF;border-radius:11px;box-shadow:0 1px 0 rgba(255,255,255,0.18) inset, 0 12px 34px -10px rgba(10,132,255,0.8);transition:background .2s">
+          Start free — it's free for indies
+          <span style="width:7px;height:7px;border-radius:999px;background:#fff;opacity:.9;animation:acGlow 2s ease-in-out infinite"></span>
+        </a>
+        <a class="btn-secondary" href="#install" style="display:inline-flex;align-items:center;gap:8px;padding:13px 22px;font-size:15px;font-weight:600;color:#C9C9D3;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.12);border-radius:11px;transition:background .2s,border-color .2s">Jump to install</a>
+      </div>
+      <p style="font-size:13px;color:#6B6B76;font-family:'JetBrains Mono',monospace;margin:0">5 steps · ~10 minutes · Claude Code, Claude Desktop &amp; any MCP client</p>
+    </section>
+
+    <!-- ===================== STAT BAND ===================== -->
+    <section class="acReveal" style="max-width:1000px;margin:0 auto 8px;padding:0 24px">
+      <div style="display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(min(200px,100%),1fr))">
+        <div style="border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:20px 22px;background:rgba(255,255,255,0.015)"><div style="font-size:30px;font-weight:780;letter-spacing:-0.03em">65</div><div style="font-size:13.5px;color:#9A9AA6">typed, safety-gated tools</div></div>
+        <div style="border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:20px 22px;background:rgba(255,255,255,0.015)"><div style="font-size:30px;font-weight:780;letter-spacing:-0.03em">4</div><div style="font-size:13.5px;color:#9A9AA6">agentic skills that ship outcomes</div></div>
+        <div style="border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:20px 22px;background:rgba(255,255,255,0.015)"><div style="font-size:30px;font-weight:780;letter-spacing:-0.03em">0</div><div style="font-size:13.5px;color:#9A9AA6">sidecars — native, in-engine</div></div>
+      </div>
+    </section>
+
+    <!-- ===================== REQUIREMENTS ===================== -->
+    <section class="acReveal" style="max-width:880px;margin:0 auto;padding:clamp(36px,5vw,64px) 24px 8px">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:12.5px;color:#4DB2FF;margin-bottom:14px">// before you start</div>
+      <h2 style="font-size:clamp(1.6rem,3vw,2.2rem);line-height:1.1;letter-spacing:-0.03em;font-weight:700;margin:0 0 18px">What you need</h2>
+      <div style="display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr))">
+        <div style="display:flex;gap:11px;align-items:flex-start;border:1px solid rgba(255,255,255,0.1);border-radius:13px;padding:16px 18px;background:rgba(255,255,255,0.015)"><svg width="15" height="15" viewBox="0 0 12 12" style="flex-shrink:0;margin-top:3px"><path d="M2.5 6.4l2.4 2.4 4.6-5.6" stroke="#4ADE80" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><span style="font-size:14px;color:#C9C9D3;line-height:1.55"><strong style="font-weight:650;color:#E6E6EC">Unreal Engine 5.7 or 5.8</strong> (broader 5.5–5.8 in progress)</span></div>
+        <div style="display:flex;gap:11px;align-items:flex-start;border:1px solid rgba(255,255,255,0.1);border-radius:13px;padding:16px 18px;background:rgba(255,255,255,0.015)"><svg width="15" height="15" viewBox="0 0 12 12" style="flex-shrink:0;margin-top:3px"><path d="M2.5 6.4l2.4 2.4 4.6-5.6" stroke="#4ADE80" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><span style="font-size:14px;color:#C9C9D3;line-height:1.55"><strong style="font-weight:650;color:#E6E6EC">A C++ project</strong> with the Visual Studio toolchain (Windows)</span></div>
+        <div style="display:flex;gap:11px;align-items:flex-start;border:1px solid rgba(255,255,255,0.1);border-radius:13px;padding:16px 18px;background:rgba(255,255,255,0.015)"><svg width="15" height="15" viewBox="0 0 12 12" style="flex-shrink:0;margin-top:3px"><path d="M2.5 6.4l2.4 2.4 4.6-5.6" stroke="#4ADE80" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><span style="font-size:14px;color:#C9C9D3;line-height:1.55"><strong style="font-weight:650;color:#E6E6EC">An MCP-capable agent</strong> — Claude Code, Claude Desktop, or similar</span></div>
+      </div>
+      <p style="font-size:13px;color:#6B6B76;margin:16px 0 0;line-height:1.6">Python Editor Script Plugin and Enhanced Input are auto-enabled as plugin dependencies — nothing to install by hand.</p>
+    </section>
+
+    <!-- ===================== INSTALL ===================== -->
+    <section id="install" class="acReveal" style="max-width:880px;margin:0 auto;padding:clamp(40px,5vw,72px) 24px 8px">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:12.5px;color:#4DB2FF;margin-bottom:14px">// install</div>
+      <h2 style="font-size:clamp(1.7rem,3.2vw,2.4rem);line-height:1.08;letter-spacing:-0.03em;font-weight:700;margin:0 0 8px">Install in five steps</h2>
+      <p style="color:#A6A6B2;font-size:16px;line-height:1.6;margin:0 0 32px;max-width:600px">It's a drop-in source plugin. Place it, build it, flip the switches you want, connect, and prompt.</p>
+
+      <div style="display:grid;gap:14px">
+
+        <!-- step 1 -->
+        <div class="step" style="border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:24px;background:rgba(255,255,255,0.015)">
+          <div style="display:flex;gap:14px;align-items:center;margin-bottom:14px">
+            <div style="flex-shrink:0;width:30px;height:30px;border-radius:9px;background:rgba(10,132,255,0.14);border:1px solid rgba(10,132,255,0.4);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:600;color:#7CC4FF">1</div>
+            <div style="font-size:17px;font-weight:650">Get the plugin</div>
+          </div>
+          <p style="font-size:14.5px;color:#A6A6B2;line-height:1.65;margin:0 0 14px">Grab a license (free for indies), accept your GitHub invite, and download <code class="ic">AgentConduit-vX.Y.Z.zip</code> from the repository's Releases tab. Unzip the <code class="ic">AgentConduit/</code> folder.</p>
+          <a class="cta-buy" href="https://buy.polar.sh/polar_cl_1FGJ3RGFEE5f2nqXGHt7n7UGcCq32avE6Ge8n3gKW5R" style="display:inline-flex;align-items:center;gap:8px;padding:10px 18px;font-size:14px;font-weight:600;color:#fff;background:#0A84FF;border-radius:10px;transition:background .2s">Get Conduit free</a>
+        </div>
+
+        <!-- step 2 -->
+        <div class="step" style="border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:24px;background:rgba(255,255,255,0.015)">
+          <div style="display:flex;gap:14px;align-items:center;margin-bottom:14px">
+            <div style="flex-shrink:0;width:30px;height:30px;border-radius:9px;background:rgba(10,132,255,0.14);border:1px solid rgba(10,132,255,0.4);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:600;color:#7CC4FF">2</div>
+            <div style="font-size:17px;font-weight:650">Drop it in &amp; build</div>
+          </div>
+          <p style="font-size:14.5px;color:#A6A6B2;line-height:1.65;margin:0 0 14px">Place the folder at <code class="ic">YourProject/Plugins/AgentConduit/</code>, regenerate project files, and build the <strong style="color:#C9C9D3;font-weight:600">Development Editor</strong> target.</p>
+          <div class="codeblock"><pre><span class="cm"># your project layout</span>
+YourProject/
+  YourProject.uproject
+  Source/
+  Plugins/
+    <span class="cb">AgentConduit/</span>        <span class="cm">&lt;- drop the folder here</span>
+      AgentConduit.uplugin</pre></div>
+        </div>
+
+        <!-- step 3 -->
+        <div class="step" style="border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:24px;background:rgba(255,255,255,0.015)">
+          <div style="display:flex;gap:14px;align-items:center;margin-bottom:14px">
+            <div style="flex-shrink:0;width:30px;height:30px;border-radius:9px;background:rgba(10,132,255,0.14);border:1px solid rgba(10,132,255,0.4);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:600;color:#7CC4FF">3</div>
+            <div style="font-size:17px;font-weight:650">Enable &amp; launch</div>
+          </div>
+          <p style="font-size:14.5px;color:#A6A6B2;line-height:1.65;margin:0 0 14px">Open the editor, enable <strong style="color:#C9C9D3;font-weight:600">Edit → Plugins → AgentConduit</strong>, and restart. On startup the Output Log confirms the server is live:</p>
+          <div class="codeblock"><pre><span class="cg">AgentConduit</span> MCP server listening on <span class="cb">http://127.0.0.1:30010/mcp</span></pre></div>
+        </div>
+
+        <!-- step 4 -->
+        <div class="step" style="border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:24px;background:rgba(255,255,255,0.015)">
+          <div style="display:flex;gap:14px;align-items:center;margin-bottom:14px">
+            <div style="flex-shrink:0;width:30px;height:30px;border-radius:9px;background:rgba(10,132,255,0.14);border:1px solid rgba(10,132,255,0.4);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:600;color:#7CC4FF">4</div>
+            <div style="font-size:17px;font-weight:650">Flip the safety gates you want</div>
+          </div>
+          <p style="font-size:14.5px;color:#A6A6B2;line-height:1.65;margin:0 0 14px">Conduit is <strong style="color:#C9C9D3;font-weight:600">read-only until you opt in</strong>. In <strong style="color:#C9C9D3;font-weight:600">Project Settings → Plugins → AgentConduit</strong>, enable only what you need — each is an independent switch:</p>
+          <div style="display:grid;gap:8px">
+            <div style="display:flex;gap:9px;align-items:center;font-size:14px;color:#C9C9D3"><span class="ic">Allow Editor Mutations</span><span style="color:#7B7B86">write tools (spawn, author, edit)</span></div>
+            <div style="display:flex;gap:9px;align-items:center;font-size:14px;color:#C9C9D3"><span class="ic">Allow Console Commands</span><span style="color:#7B7B86">exec console + CVars</span></div>
+            <div style="display:flex;gap:9px;align-items:center;font-size:14px;color:#C9C9D3"><span class="ic">Allow Python Execution</span><span style="color:#7B7B86">the Python escape hatch</span></div>
+          </div>
+        </div>
+
+        <!-- step 5 -->
+        <div class="step" style="border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:24px;background:rgba(255,255,255,0.015)">
+          <div style="display:flex;gap:14px;align-items:center;margin-bottom:14px">
+            <div style="flex-shrink:0;width:30px;height:30px;border-radius:9px;background:rgba(10,132,255,0.14);border:1px solid rgba(10,132,255,0.4);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:600;color:#7CC4FF">5</div>
+            <div style="font-size:17px;font-weight:650">Connect your agent &amp; prompt</div>
+          </div>
+          <p style="font-size:14.5px;color:#A6A6B2;line-height:1.65;margin:0 0 8px">Point any MCP client at the endpoint — full details in the next section. Then just talk to it.</p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===================== CONNECT ===================== -->
+    <section id="connect" class="acReveal" style="max-width:880px;margin:0 auto;padding:clamp(40px,5vw,72px) 24px 8px">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:12.5px;color:#4DB2FF;margin-bottom:14px">// connect your agent</div>
+      <h2 style="font-size:clamp(1.7rem,3.2vw,2.4rem);line-height:1.08;letter-spacing:-0.03em;font-weight:700;margin:0 0 8px">One endpoint. Any MCP client.</h2>
+      <p style="color:#A6A6B2;font-size:16px;line-height:1.6;margin:0 0 26px;max-width:620px">Conduit speaks the Model Context Protocol over Streamable-HTTP. If your agent talks MCP, it works.</p>
+
+      <div style="margin-bottom:18px">
+        <div style="font-size:14px;font-weight:650;color:#E6E6EC;margin-bottom:10px">Claude Code — one command</div>
+        <div class="codeblock"><pre>claude mcp add --transport http agentconduit <span class="cb">http://127.0.0.1:30010/mcp</span></pre></div>
+      </div>
+
+      <div>
+        <div style="font-size:14px;font-weight:650;color:#E6E6EC;margin-bottom:10px">Claude Desktop / config-based clients</div>
+        <div class="codeblock"><pre>{
+  <span class="cb">"mcpServers"</span>: {
+    <span class="cb">"agentconduit"</span>: {
+      <span class="cb">"type"</span>: <span class="cg">"http"</span>,
+      <span class="cb">"url"</span>:  <span class="cg">"http://127.0.0.1:30010/mcp"</span>
+    }
+  }
+}</pre></div>
+      </div>
+
+      <div style="display:flex;gap:11px;align-items:flex-start;border:1px solid rgba(10,132,255,0.25);background:rgba(10,132,255,0.06);border-radius:13px;padding:16px 18px;margin-top:18px">
+        <svg width="16" height="16" viewBox="0 0 16 16" style="flex-shrink:0;margin-top:2px" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="none" stroke="#4DB2FF" stroke-width="1.4"/><path d="M8 7.2v4M8 4.8v.01" stroke="#4DB2FF" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <p style="font-size:13.5px;color:#B7C9DC;line-height:1.6;margin:0">Locked-down setup? Set an <strong style="color:#E6E6EC;font-weight:600">Auth Token</strong> in settings and every request must carry <code class="ic">Authorization: Bearer &lt;token&gt;</code>. Empty by default for open local connections.</p>
+      </div>
+    </section>
+
+    <!-- ===================== FIRST PROMPT ===================== -->
+    <section class="acReveal" style="max-width:880px;margin:0 auto;padding:clamp(40px,5vw,72px) 24px 8px">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:12.5px;color:#4DB2FF;margin-bottom:14px">// your first prompt</div>
+      <h2 style="font-size:clamp(1.7rem,3.2vw,2.4rem);line-height:1.08;letter-spacing:-0.03em;font-weight:700;margin:0 0 8px">Say it. Watch it build.</h2>
+      <p style="color:#A6A6B2;font-size:16px;line-height:1.6;margin:0 0 24px;max-width:620px">Describe what you want. The agent picks the tools, makes the edits inside the real editor, and verifies the result with screenshots and play-in-editor.</p>
+
+      <div class="codeblock" style="margin-bottom:16px"><pre><span class="cg">You ></span> Make a coin-collector: a floor, a coin Blueprint with a Score
+      variable and a BeginPlay graph, spawn one, a GameMode, and
+      SpaceBar mapped to jump.</pre></div>
+
+      <div style="border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:22px 24px;background:rgba(255,255,255,0.015)">
+        <div style="font-size:12.5px;font-family:'JetBrains Mono',monospace;color:#6EE7A0;margin-bottom:14px">// Conduit drives the editor</div>
+        <div style="display:grid;gap:9px">
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:14px;color:#C9C9D3"><svg width="14" height="14" viewBox="0 0 12 12" style="flex-shrink:0;margin-top:3px"><path d="M2.5 6.4l2.4 2.4 4.6-5.6" stroke="#4ADE80" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>New level created and saved, floor actor with a real cube mesh</div>
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:14px;color:#C9C9D3"><svg width="14" height="14" viewBox="0 0 12 12" style="flex-shrink:0;margin-top:3px"><path d="M2.5 6.4l2.4 2.4 4.6-5.6" stroke="#4ADE80" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>BP_Coin with a StaticMesh component and a Score variable</div>
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:14px;color:#C9C9D3"><svg width="14" height="14" viewBox="0 0 12 12" style="flex-shrink:0;margin-top:3px"><path d="M2.5 6.4l2.4 2.4 4.6-5.6" stroke="#4ADE80" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Event graph: BeginPlay → PrintString → SET Score=5 → Branch, compiled clean</div>
+          <div style="display:flex;gap:10px;align-items:flex-start;font-size:14px;color:#C9C9D3"><svg width="14" height="14" viewBox="0 0 12 12" style="flex-shrink:0;margin-top:3px"><path d="M2.5 6.4l2.4 2.4 4.6-5.6" stroke="#4ADE80" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Coin spawned, BP_GameMode applied, Enhanced Input SpaceBar → IA_Jump</div>
+        </div>
+        <p style="font-size:13px;color:#7B7B86;margin:16px 0 0;line-height:1.6;font-style:italic">A verified live run — 24 of 24 tool calls succeeded against Unreal Engine 5.7.</p>
+      </div>
+    </section>
+
+    <!-- ===================== SKILLS ===================== -->
+    <section id="skills" class="acReveal" style="max-width:880px;margin:0 auto;padding:clamp(40px,5vw,72px) 24px 8px">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:12.5px;color:#4DB2FF;margin-bottom:14px">// skills</div>
+      <h2 style="font-size:clamp(1.7rem,3.2vw,2.4rem);line-height:1.08;letter-spacing:-0.03em;font-weight:700;margin:0 0 8px">Outcomes, not API calls</h2>
+      <p style="color:#A6A6B2;font-size:16px;line-height:1.6;margin:0 0 24px;max-width:620px">Conduit ships expert Skills — workflows that encode design judgment. Install them into your project and your agent gets a head start on real game-building.</p>
+
+      <div class="codeblock" style="margin-bottom:20px"><pre>pwsh Scripts/Install-AgentConduitSkills.ps1 -ProjectRoot <span class="cg">"C:\Path\To\YourUnrealProject"</span></pre></div>
+
+      <div style="display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(min(360px,100%),1fr))">
+        <div style="border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:18px 20px;background:rgba(255,255,255,0.015)"><div style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#7CC4FF;margin-bottom:6px">game-bootstrapper</div><p style="font-size:14px;color:#A6A6B2;line-height:1.55;margin:0">A whole playable loop — level, pawn, input, GameMode, HUD, win/lose — proven in PIE.</p></div>
+        <div style="border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:18px 20px;background:rgba(255,255,255,0.015)"><div style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#7CC4FF;margin-bottom:6px">gameplay-logic-builder</div><p style="font-size:14px;color:#A6A6B2;line-height:1.55;margin:0">A wired, compiling Blueprint graph from a plain behavior description.</p></div>
+        <div style="border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:18px 20px;background:rgba(255,255,255,0.015)"><div style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#7CC4FF;margin-bottom:6px">game-ui-builder</div><p style="font-size:14px;color:#A6A6B2;line-height:1.55;margin:0">A designed UMG interface — HUD or menu — with layout, type scale, and styling.</p></div>
+        <div style="border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:18px 20px;background:rgba(255,255,255,0.015)"><div style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#7CC4FF;margin-bottom:6px">level-designer</div><p style="font-size:14px;color:#A6A6B2;line-height:1.55;margin:0">A blocked-out, lit, dressed scene with real composition.</p></div>
+      </div>
+    </section>
+
+    <!-- ===================== TOOLS ===================== -->
+    <section class="acReveal" style="max-width:880px;margin:0 auto;padding:clamp(40px,5vw,72px) 24px 8px">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:12.5px;color:#4DB2FF;margin-bottom:14px">// the toolbox</div>
+      <h2 style="font-size:clamp(1.7rem,3.2vw,2.4rem);line-height:1.08;letter-spacing:-0.03em;font-weight:700;margin:0 0 8px">65 typed tools, grouped by job</h2>
+      <p style="color:#A6A6B2;font-size:16px;line-height:1.6;margin:0 0 24px;max-width:620px">Every tool has a real schema, validation, and an undo transaction. The full, always-current reference ships in the repo as <code class="ic">docs/Tools.md</code>.</p>
+      <div style="display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr))">
+        <div style="border:1px solid rgba(255,255,255,0.1);border-radius:13px;padding:16px 18px;background:rgba(255,255,255,0.015)"><div style="font-size:14px;font-weight:650;margin-bottom:5px">World &amp; level</div><div style="font-size:13px;color:#8E8E9A;line-height:1.5">new/load/save level, game mode</div></div>
+        <div style="border:1px solid rgba(255,255,255,0.1);border-radius:13px;padding:16px 18px;background:rgba(255,255,255,0.015)"><div style="font-size:14px;font-weight:650;margin-bottom:5px">Actors &amp; scene</div><div style="font-size:13px;color:#8E8E9A;line-height:1.5">spawn, transform, pose, scatter, components, physics</div></div>
+        <div style="border:1px solid rgba(255,255,255,0.1);border-radius:13px;padding:16px 18px;background:rgba(255,255,255,0.015)"><div style="font-size:14px;font-weight:650;margin-bottom:5px">Blueprints &amp; logic</div><div style="font-size:13px;color:#8E8E9A;line-height:1.5">create, variables, components, node graphs, connect pins, compile</div></div>
+        <div style="border:1px solid rgba(255,255,255,0.1);border-radius:13px;padding:16px 18px;background:rgba(255,255,255,0.015)"><div style="font-size:14px;font-weight:650;margin-bottom:5px">UMG — game UI</div><div style="font-size:13px;color:#8E8E9A;line-height:1.5">widget blueprints, add widget, properties, render-to-image</div></div>
+        <div style="border:1px solid rgba(255,255,255,0.1);border-radius:13px;padding:16px 18px;background:rgba(255,255,255,0.015)"><div style="font-size:14px;font-weight:650;margin-bottom:5px">Materials &amp; look</div><div style="font-size:13px;color:#8E8E9A;line-height:1.5">materials, params, decals, post-process</div></div>
+        <div style="border:1px solid rgba(255,255,255,0.1);border-radius:13px;padding:16px 18px;background:rgba(255,255,255,0.015)"><div style="font-size:14px;font-weight:650;margin-bottom:5px">Data &amp; assets</div><div style="font-size:13px;color:#8E8E9A;line-height:1.5">create/import/save assets, properties, arrays, curve tables</div></div>
+        <div style="border:1px solid rgba(255,255,255,0.1);border-radius:13px;padding:16px 18px;background:rgba(255,255,255,0.015)"><div style="font-size:14px;font-weight:650;margin-bottom:5px">Play &amp; verify</div><div style="font-size:13px;color:#8E8E9A;line-height:1.5">camera, PIE, screenshots, reference diff, output log</div></div>
+        <div style="border:1px solid rgba(255,255,255,0.1);border-radius:13px;padding:16px 18px;background:rgba(255,255,255,0.015)"><div style="font-size:14px;font-weight:650;margin-bottom:5px">Batch &amp; escape hatches</div><div style="font-size:13px;color:#8E8E9A;line-height:1.5">batch calls, Python, console, CVars (gated)</div></div>
+      </div>
+    </section>
+
+    <!-- ===================== SAFETY ===================== -->
+    <section class="acReveal" style="max-width:880px;margin:0 auto;padding:clamp(40px,5vw,72px) 24px 8px">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:12.5px;color:#4DB2FF;margin-bottom:14px">// safety</div>
+      <h2 style="font-size:clamp(1.7rem,3.2vw,2.4rem);line-height:1.08;letter-spacing:-0.03em;font-weight:700;margin:0 0 18px">Trusted in a real project</h2>
+      <div style="display:grid;gap:12px">
+        <div style="display:flex;gap:12px;align-items:flex-start;border:1px solid rgba(255,255,255,0.1);border-radius:13px;padding:16px 18px;background:rgba(255,255,255,0.015)"><svg width="15" height="15" viewBox="0 0 12 12" style="flex-shrink:0;margin-top:3px"><path d="M2.5 6.4l2.4 2.4 4.6-5.6" stroke="#4ADE80" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><span style="font-size:14.5px;color:#C9C9D3;line-height:1.55"><strong style="color:#E6E6EC;font-weight:650">Read-only by default.</strong> The agent can inspect everything but change nothing until you opt in.</span></div>
+        <div style="display:flex;gap:12px;align-items:flex-start;border:1px solid rgba(255,255,255,0.1);border-radius:13px;padding:16px 18px;background:rgba(255,255,255,0.015)"><svg width="15" height="15" viewBox="0 0 12 12" style="flex-shrink:0;margin-top:3px"><path d="M2.5 6.4l2.4 2.4 4.6-5.6" stroke="#4ADE80" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><span style="font-size:14.5px;color:#C9C9D3;line-height:1.55"><strong style="color:#E6E6EC;font-weight:650">Transactional.</strong> Every write runs in an undo transaction — Ctrl-Z works, and failures roll back.</span></div>
+        <div style="display:flex;gap:12px;align-items:flex-start;border:1px solid rgba(255,255,255,0.1);border-radius:13px;padding:16px 18px;background:rgba(255,255,255,0.015)"><svg width="15" height="15" viewBox="0 0 12 12" style="flex-shrink:0;margin-top:3px"><path d="M2.5 6.4l2.4 2.4 4.6-5.6" stroke="#4ADE80" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><span style="font-size:14.5px;color:#C9C9D3;line-height:1.55"><strong style="color:#E6E6EC;font-weight:650">Serialized.</strong> Structural edits are queued so overlapping requests can't corrupt an asset.</span></div>
+      </div>
+    </section>
+
+    <!-- ===================== FINAL CTA ===================== -->
+    <section class="acReveal" style="max-width:880px;margin:0 auto;padding:clamp(48px,6vw,88px) 24px clamp(40px,5vw,72px)">
+      <div style="position:relative;border:1px solid rgba(10,132,255,0.4);border-radius:22px;padding:clamp(36px,5vw,56px) clamp(28px,4vw,48px);text-align:center;background:linear-gradient(180deg, rgba(10,132,255,0.12), rgba(255,255,255,0.008));box-shadow:0 40px 90px -40px rgba(10,132,255,0.6);overflow:hidden">
+        <div aria-hidden="true" style="position:absolute;inset:0;background:radial-gradient(600px 300px at 50% 0%, rgba(10,132,255,0.18), transparent 70%);pointer-events:none"></div>
+        <div style="position:relative">
+          <h2 style="font-size:clamp(1.8rem,3.6vw,2.7rem);line-height:1.06;letter-spacing:-0.03em;font-weight:780;margin:0 0 14px;text-wrap:balance">Your next game starts with a sentence.</h2>
+          <p style="font-size:clamp(1rem,1.4vw,1.16rem);color:#B7C2D0;line-height:1.6;margin:0 auto 30px;max-width:520px">Free for indie developers. Install in minutes, prompt your first level today, and ship when you're ready.</p>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center">
+            <a class="cta-buy" href="https://buy.polar.sh/polar_cl_1FGJ3RGFEE5f2nqXGHt7n7UGcCq32avE6Ge8n3gKW5R" style="display:inline-flex;align-items:center;gap:8px;padding:14px 26px;font-size:15.5px;font-weight:650;color:#fff;background:#0A84FF;border-radius:12px;box-shadow:0 1px 0 rgba(255,255,255,0.18) inset, 0 14px 38px -12px rgba(10,132,255,0.9);transition:background .2s">
+              Get Conduit free
+              <span style="width:7px;height:7px;border-radius:999px;background:#fff;opacity:.9;animation:acGlow 2s ease-in-out infinite"></span>
+            </a>
+            <a class="btn-secondary" href="https://buy.polar.sh/polar_cl_TU4MkqtbaaudWQkSDZzI8md9sLWMuNqvMPNQR3IQiht" style="display:inline-flex;align-items:center;gap:8px;padding:14px 24px;font-size:15.5px;font-weight:600;color:#C9C9D3;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.14);border-radius:12px;transition:background .2s,border-color .2s">Licensing for studios</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer style="position:relative;z-index:1;border-top:1px solid rgba(255,255,255,0.07);padding:48px 24px 40px">
+    <div style="max-width:1180px;margin:0 auto">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;margin-bottom:28px">
+        <a href="/" style="display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:-0.02em;font-size:17px">
+          <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><rect x="2.5" y="2.5" width="17" height="17" rx="4.5" fill="none" stroke="#0A84FF" stroke-width="1.6"/><path d="M7 11h8M11 7v8" stroke="#4DB2FF" stroke-width="1.6" stroke-linecap="round"/></svg>
+          Conduit
+        </a>
+        <div style="display:flex;gap:18px;flex-wrap:wrap">
+          <a class="foot-link" href="/" style="font-size:14px;color:#A6A6B2">Home</a>
+          <a class="foot-link" href="/#features" style="font-size:14px;color:#A6A6B2">Features</a>
+          <a class="foot-link" href="/#pricing" style="font-size:14px;color:#A6A6B2">Pricing</a>
+          <a class="foot-link" href="#install" style="font-size:14px;color:#A6A6B2">Install</a>
+        </div>
+      </div>
+      <p style="font-size:12px;color:#62626C;line-height:1.65;margin:0 0 16px;max-width:780px">
+        Conduit is an independent, third-party tool made for Unreal Engine developers. Unreal Engine, Unreal, and their logos are trademarks or registered trademarks of Epic Games, Inc. in the United States and elsewhere, used here only to describe compatibility. Conduit is not affiliated with, endorsed by, or sponsored by Epic Games.
+      </p>
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">
+        <span style="font-size:12.5px;color:#5E5E69">© 2026 Conduit · MCP Streamable-HTTP transport · UE 5.7 / 5.8</span>
+        <span style="font-size:12.5px;color:#5E5E69">Built for Unreal Engine developers.</span>
+      </div>
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>
