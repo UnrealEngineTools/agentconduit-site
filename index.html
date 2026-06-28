@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AgentConduit — Build games in Unreal Engine by prompting an agent</title>
+<meta name="description" content="AgentConduit embeds a Model Context Protocol server inside the Unreal Editor, so any MCP-compatible agent can design, build, and verify your game. Native, in-process, 65 typed tools, 4 agentic skills.">
+<meta property="og:title" content="AgentConduit — Build games in Unreal Engine by prompting an agent">
+<meta property="og:description" content="A native in-engine MCP server for Unreal Engine. Build games by prompting an agent.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#09090C">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  html { scroll-behavior: smooth; }
+  body { margin:0; background:#09090C; color:#F2F2F5; font-family:'Inter',system-ui,sans-serif; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility; }
+  ::selection { background:rgba(10,132,255,0.35); }
+  a { color:inherit; text-decoration:none; }
+  :focus-visible { outline:2px solid #4DB2FF; outline-offset:3px; border-radius:4px; }
+  @keyframes acBlink { 0%,49%{opacity:1} 50%,100%{opacity:0} }
+  @keyframes acReveal { from{opacity:0; transform:translateY(24px)} to{opacity:1; transform:none} }
+  @keyframes acGlow { 0%,100%{opacity:.45} 50%{opacity:.85} }
+  @keyframes acRow { from{opacity:0; transform:translateY(4px)} to{opacity:1; transform:none} }
+  .acReveal { animation:acReveal both; animation-timeline:view(); animation-range:entry 2% cover 30%; }
+  .nav-link:hover { color:#F2F2F5; background:rgba(255,255,255,0.04); }
+  .foot-link:hover { color:#F2F2F5; }
+  .btn-secondary:hover { background:rgba(255,255,255,0.08); border-color:rgba(255,255,255,0.2); }
+  .feature-card { transition:border-color .2s, background .2s; }
+  .feature-card:hover { border-color:rgba(10,132,255,0.45); background:rgba(10,132,255,0.04); }
+  .cta-soon { cursor:not-allowed; user-select:none; }
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{animation-duration:.001ms!important; animation-iteration-count:1!important; animation-delay:0ms!important; transition-duration:.001ms!important}
+    .acReveal{animation:none!important; opacity:1!important; transform:none!important}
+  }
+</style>
+</head>
+<body>
+
+<div style="background:#09090C;overflow-x:hidden">
+
+  <!-- background glow -->
+  <div aria-hidden="true" style="position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(900px 520px at 78% -8%, rgba(10,132,255,0.16), transparent 60%), radial-gradient(700px 600px at 6% 8%, rgba(80,180,255,0.06), transparent 55%)"></div>
+
+  <!-- ===================== NAV ===================== -->
+  <header style="position:sticky;top:0;z-index:50;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);background:rgba(9,9,12,0.72);border-bottom:1px solid rgba(255,255,255,0.06)">
+    <nav aria-label="Primary" style="max-width:1180px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap">
+      <a href="#top" style="display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:-0.02em;font-size:17px">
+        <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><rect x="2.5" y="2.5" width="17" height="17" rx="4.5" fill="none" stroke="#0A84FF" stroke-width="1.6"/><path d="M7 11h8M11 7v8" stroke="#4DB2FF" stroke-width="1.6" stroke-linecap="round"/></svg>
+        AgentConduit
+      </a>
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+        <div style="display:flex;align-items:center;gap:4px;margin-right:6px">
+          <a class="nav-link" href="#features" style="padding:8px 12px;font-size:14px;color:#A6A6B2;border-radius:8px">Features</a>
+          <a class="nav-link" href="#how" style="padding:8px 12px;font-size:14px;color:#A6A6B2;border-radius:8px">How it works</a>
+          <a class="nav-link" href="#safety" style="padding:8px 12px;font-size:14px;color:#A6A6B2;border-radius:8px">Safety</a>
+          <a class="nav-link" href="#pricing" style="padding:8px 12px;font-size:14px;color:#A6A6B2;border-radius:8px">Pricing</a>
+        </div>
+        <span class="cta-soon" aria-disabled="true" title="Coming soon" style="display:inline-flex;align-items:center;gap:7px;padding:9px 16px;font-size:14px;font-weight:600;color:#fff;background:#0A84FF;border-radius:9px;box-shadow:0 1px 0 rgba(255,255,255,0.18) inset, 0 8px 24px -8px rgba(10,132,255,0.7)">Coming soon</span>
+      </div>
+    </nav>
+  </header>
+
+  <main id="top" style="position:relative;z-index:1">
+
+    <!-- ===================== HERO ===================== -->
+    <section style="max-width:1180px;margin:0 auto;padding:clamp(48px,8vw,104px) 24px clamp(40px,5vw,72px)">
+      <div style="display:grid;gap:clamp(36px,5vw,64px);grid-template-columns:repeat(auto-fit,minmax(min(440px,100%),1fr));align-items:center">
+        <div>
+          <div style="display:inline-flex;align-items:center;gap:9px;padding:6px 12px;border:1px solid rgba(255,255,255,0.1);border-radius:999px;font-size:12.5px;color:#B7B7C4;font-family:'JetBrains Mono',monospace;margin-bottom:24px">
+            <span style="width:7px;height:7px;border-radius:999px;background:#4ADE80;box-shadow:0 0 10px #4ADE80;animation:acGlow 2.4s ease-in-out infinite"></span>
+            Native in-engine MCP server · UE 5.7 / 5.8
+          </div>
+          <h1 style="font-size:clamp(2.45rem,5.6vw,4.05rem);line-height:1.03;letter-spacing:-0.035em;font-weight:800;margin:0 0 22px;text-wrap:balance">
+            Build games in Unreal Engine by prompting an agent.
+          </h1>
+          <p style="font-size:clamp(1.02rem,1.4vw,1.22rem);line-height:1.6;color:#A6A6B2;max-width:560px;margin:0 0 32px">
+            AgentConduit embeds a Model Context Protocol server inside the Unreal Editor. Any MCP-compatible agent designs, builds, and verifies your game, closing the loop with screenshots and play-in-editor.
+          </p>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+            <span class="cta-soon" aria-disabled="true" title="Coming soon" style="display:inline-flex;align-items:center;gap:8px;padding:13px 22px;font-size:15px;font-weight:600;color:#fff;background:#0A84FF;border-radius:11px;box-shadow:0 1px 0 rgba(255,255,255,0.18) inset, 0 12px 34px -10px rgba(10,132,255,0.8)">
+              Coming soon
+              <span style="width:7px;height:7px;border-radius:999px;background:#fff;opacity:.9;animation:acGlow 2s ease-in-out infinite"></span>
+            </span>
+            <span class="cta-soon" aria-disabled="true" title="Coming soon" style="display:inline-flex;align-items:center;gap:8px;padding:13px 22px;font-size:15px;font-weight:600;color:#9A9AA6;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.12);border-radius:11px">Docs coming soon</span>
+          </div>
+          <p style="margin:22px 0 0;font-size:13px;color:#6B6B76;font-family:'JetBrains Mono',monospace">Free for noncommercial use · 65 typed tools · 4 agentic skills</p>
+        </div>
+
+        <!-- TERMINAL -->
+        <div style="position:relative">
+          <div aria-hidden="true" style="position:absolute;inset:-1px;border-radius:16px;background:linear-gradient(140deg, rgba(10,132,255,0.5), rgba(75,123,255,0.12) 40%, transparent 70%);filter:blur(0.5px);opacity:0.6"></div>
+          <div role="img" aria-label="Terminal showing an agent executing Unreal Engine tool calls" style="position:relative;background:#0C0C11;border:1px solid rgba(255,255,255,0.1);border-radius:15px;overflow:hidden;box-shadow:0 40px 90px -30px rgba(0,0,0,0.8)">
+            <div style="display:flex;align-items:center;gap:10px;padding:12px 15px;border-bottom:1px solid rgba(255,255,255,0.07);background:rgba(255,255,255,0.015)">
+              <span style="display:flex;gap:6px"><span style="width:11px;height:11px;border-radius:999px;background:#3a3a44"></span><span style="width:11px;height:11px;border-radius:999px;background:#3a3a44"></span><span style="width:11px;height:11px;border-radius:999px;background:#3a3a44"></span></span>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#8A8A96;margin-left:4px">agent · unreal-mcp</span>
+              <span style="margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:11px;color:#4DB2FF;background:rgba(10,132,255,0.12);border:1px solid rgba(10,132,255,0.3);padding:3px 8px;border-radius:6px">127.0.0.1:30010/mcp</span>
+            </div>
+            <div style="padding:16px;font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.5">
+              <div style="background:rgba(255,255,255,0.025);border:1px solid rgba(255,255,255,0.07);border-radius:9px;padding:11px 13px;margin-bottom:14px">
+                <span style="color:#4DB2FF">prompt ›</span> <span style="color:#D6D6DE">make a coin-collector: floor, a coin Blueprint with a score variable and a BeginPlay graph, spawn one, a GameMode, SpaceBar to jump</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;color:#63636E;font-size:11.5px;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.08em">
+                <span style="height:1px;flex:1;background:rgba(255,255,255,0.07)"></span>tool calls<span style="height:1px;flex:1;background:rgba(255,255,255,0.07)"></span>
+              </div>
+              <div id="tool-rows">
+                <div class="tool-row" data-d="/Game/CoinCollector" style="display:flex;align-items:baseline;gap:9px;padding:3px 0"><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true" style="flex-shrink:0;position:relative;top:1px"><path d="M2.5 6.4l2.4 2.4 4.6-5.6" stroke="#4ADE80" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><span style="color:#C9C9D3">new_level</span><span style="color:#5E5E69;font-size:12px">/Game/CoinCollector</span></div>
+                <div class="tool-row" style="display:flex;align-items:baseline;gap:9px;padding:3px 0"><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true" style="flex-shrink:0;position:relative;top:1px"><path d="M2.5 6.4l2.4 2.4 4.6-5.6" stroke="#4ADE80" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><span style="color:#C9C9D3">add_static_mesh</span><span style="color:#5E5E69;font-size:12px">Floor · plane 20×20</span></div>
+                <div class="tool-row" style="display:flex;align-items:baseline;gap:9px;padding:3px 0"><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true" style="flex-shrink:0;position:relative;top:1px"><path d="M2.5 6.4l2.4 2.4 4.6-5.6" stroke="#4ADE80" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><span style="color:#C9C9D3">create_blueprint</span><span style="color:#5E5E69;font-size:12px">BP_Coin : Actor</span></div>
+                <div class="tool-row" style="display:flex;align-items:baseline;gap:9px;padding:3px 0"><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true" style="flex-shrink:0;position:relative;top:1px"><path d="M2.5 6.4l2.4 2.4 4.6-5.6" stroke="#4ADE80" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><span style="color:#C9C9D3">add_variable</span><span style="color:#5E5E69;font-size:12px">Score : int</span></div>
+                <div class="tool-row" style="display:flex;align-items:baseline;gap:9px;padding:3px 0"><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true" style="flex-shrink:0;position:relative;top:1px"><path d="M2.5 6.4l2.4 2.4 4.6-5.6" stroke="#4ADE80" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><span style="color:#C9C9D3">add_graph_node</span><span style="color:#5E5E69;font-size:12px">Event BeginPlay</span></div>
+                <div class="tool-row" style="display:flex;align-items:baseline;gap:9px;padding:3px 0"><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true" style="flex-shrink:0;position:relative;top:1px"><path d="M2.5 6.4l2.4 2.4 4.6-5.6" stroke="#4ADE80" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><span style="color:#C9C9D3">add_graph_node</span><span style="color:#5E5E69;font-size:12px">PrintString</span></div>
+                <div class="tool-row" style="display:flex;align-items:baseline;gap:9px;padding:3px 0"><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true" style="flex-shrink:0;position:relative;top:1px"><path d="M2.5 6.4l2.4 2.4 4.6-5.6" stroke="#4ADE80" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><span style="color:#C9C9D3">connect_blueprint_pins</span><span style="color:#5E5E69;font-size:12px">BeginPlay → PrintString</span></div>
+                <div class="tool-row" style="display:flex;align-items:baseline;gap:9px;padding:3px 0"><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true" style="flex-shrink:0;position:relative;top:1px"><path d="M2.5 6.4l2.4 2.4 4.6-5.6" stroke="#4ADE80" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><span style="color:#C9C9D3">add_graph_node</span><span style="color:#5E5E69;font-size:12px">Set Score · Branch</span></div>
+                <div class="tool-row" style="display:flex;align-items:baseline;gap:9px;padding:3px 0"><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true" style="flex-shrink:0;position:relative;top:1px"><path d="M2.5 6.4l2.4 2.4 4.6-5.6" stroke="#4ADE80" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><span style="color:#C9C9D3">compile_blueprint</span><span style="color:#5E5E69;font-size:12px">BP_Coin · 0 errors</span></div>
+                <div class="tool-row" style="display:flex;align-items:baseline;gap:9px;padding:3px 0"><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true" style="flex-shrink:0;position:relative;top:1px"><path d="M2.5 6.4l2.4 2.4 4.6-5.6" stroke="#4ADE80" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><span style="color:#C9C9D3">spawn_actor</span><span style="color:#5E5E69;font-size:12px">BP_Coin @ (0,0,50)</span></div>
+                <div class="tool-row" style="display:flex;align-items:baseline;gap:9px;padding:3px 0"><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true" style="flex-shrink:0;position:relative;top:1px"><path d="M2.5 6.4l2.4 2.4 4.6-5.6" stroke="#4ADE80" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><span style="color:#C9C9D3">create_gamemode</span><span style="color:#5E5E69;font-size:12px">GM_Coin</span></div>
+                <div class="tool-row" style="display:flex;align-items:baseline;gap:9px;padding:3px 0"><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true" style="flex-shrink:0;position:relative;top:1px"><path d="M2.5 6.4l2.4 2.4 4.6-5.6" stroke="#4ADE80" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><span style="color:#C9C9D3">add_input_mapping</span><span style="color:#5E5E69;font-size:12px">SpaceBar → Jump</span></div>
+                <div class="tool-row" style="display:flex;align-items:baseline;gap:9px;padding:3px 0"><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true" style="flex-shrink:0;position:relative;top:1px"><path d="M2.5 6.4l2.4 2.4 4.6-5.6" stroke="#4ADE80" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><span style="color:#C9C9D3">play_in_editor</span><span style="color:#5E5E69;font-size:12px">verify · screenshot</span></div>
+              </div>
+              <div id="term-cursor" style="display:none;align-items:center;gap:9px;padding:4px 0;color:#4DB2FF">
+                <span style="display:inline-block;width:8px;height:14px;background:#4DB2FF;animation:acBlink 1s step-end infinite"></span>
+                <span style="color:#63636E;font-size:12px">executing…</span>
+              </div>
+              <div id="term-verified" style="margin-top:12px;padding-top:11px;border-top:1px solid rgba(255,255,255,0.07);display:flex;align-items:center;gap:9px;font-size:12.5px">
+                <span style="color:#4ADE80;font-weight:600">24/24 verified</span>
+                <span style="color:#5E5E69">·</span>
+                <span style="color:#8A8A96">level saved · Blueprint compiled · play-in-editor passed</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== ONE PROMPT ===================== -->
+    <section class="acReveal" style="max-width:1180px;margin:0 auto;padding:clamp(40px,6vw,80px) 24px">
+      <div style="border:1px solid rgba(255,255,255,0.08);border-radius:20px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0));overflow:hidden">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(380px,100%),1fr))">
+          <div style="padding:clamp(28px,3.5vw,46px);border-right:1px solid rgba(255,255,255,0.06)">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:12.5px;color:#4DB2FF;margin-bottom:14px">// one prompt → a playable game</div>
+            <h2 style="font-size:clamp(1.7rem,3vw,2.4rem);line-height:1.1;letter-spacing:-0.03em;font-weight:700;margin:0 0 18px;text-wrap:balance">The agent designs, builds, and verifies, in one pass.</h2>
+            <p style="color:#A6A6B2;font-size:15.5px;line-height:1.6;margin:0 0 22px;max-width:460px">In a verified live demo, a single natural-language prompt drove 24 typed tool calls against Unreal Engine 5.7, producing a real, compiling, playable result with no manual editing.</p>
+            <div style="background:#0C0C11;border:1px solid rgba(255,255,255,0.09);border-radius:11px;padding:15px;font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.55;color:#D6D6DE">
+              <span style="color:#4DB2FF">$</span> "make a coin-collector: a floor, a coin Blueprint with a score variable and a BeginPlay graph, spawn one, a GameMode, and SpaceBar to jump"
+            </div>
+          </div>
+          <div style="padding:clamp(28px,3.5vw,46px);background:rgba(255,255,255,0.012)">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:8px">
+              <span style="font-family:'JetBrains Mono',monospace;font-size:12.5px;color:#8A8A96">build result</span>
+              <span style="display:inline-flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:12px;color:#4ADE80;background:rgba(74,222,128,0.08);border:1px solid rgba(74,222,128,0.25);padding:4px 10px;border-radius:7px">24 / 24 tool calls · UE 5.7</span>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:11px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,0.05)"><span style="flex-shrink:0;width:19px;height:19px;border-radius:6px;background:rgba(74,222,128,0.12);border:1px solid rgba(74,222,128,0.3);display:flex;align-items:center;justify-content:center;margin-top:1px"><svg width="11" height="11" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 6.4l2.4 2.4 4.6-5.6" stroke="#4ADE80" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><div style="font-size:14.5px;color:#E6E6EC;font-weight:500">Level saved with a meshed floor</div><div style="font-size:12.5px;color:#6B6B76;font-family:'JetBrains Mono',monospace;margin-top:2px">/Game/CoinCollector</div></div></div>
+            <div style="display:flex;align-items:flex-start;gap:11px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,0.05)"><span style="flex-shrink:0;width:19px;height:19px;border-radius:6px;background:rgba(74,222,128,0.12);border:1px solid rgba(74,222,128,0.3);display:flex;align-items:center;justify-content:center;margin-top:1px"><svg width="11" height="11" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 6.4l2.4 2.4 4.6-5.6" stroke="#4ADE80" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><div style="font-size:14.5px;color:#E6E6EC;font-weight:500">BP_Coin Blueprint with a Score variable</div><div style="font-size:12.5px;color:#6B6B76;font-family:'JetBrains Mono',monospace;margin-top:2px">Score : int</div></div></div>
+            <div style="display:flex;align-items:flex-start;gap:11px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,0.05)"><span style="flex-shrink:0;width:19px;height:19px;border-radius:6px;background:rgba(74,222,128,0.12);border:1px solid rgba(74,222,128,0.3);display:flex;align-items:center;justify-content:center;margin-top:1px"><svg width="11" height="11" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 6.4l2.4 2.4 4.6-5.6" stroke="#4ADE80" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><div style="font-size:14.5px;color:#E6E6EC;font-weight:500">Wired, compiling event graph</div><div style="font-size:12.5px;color:#6B6B76;font-family:'JetBrains Mono',monospace;margin-top:2px">BeginPlay → PrintString → Set Score → Branch</div></div></div>
+            <div style="display:flex;align-items:flex-start;gap:11px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,0.05)"><span style="flex-shrink:0;width:19px;height:19px;border-radius:6px;background:rgba(74,222,128,0.12);border:1px solid rgba(74,222,128,0.3);display:flex;align-items:center;justify-content:center;margin-top:1px"><svg width="11" height="11" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 6.4l2.4 2.4 4.6-5.6" stroke="#4ADE80" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><div style="font-size:14.5px;color:#E6E6EC;font-weight:500">One coin instance spawned</div><div style="font-size:12.5px;color:#6B6B76;font-family:'JetBrains Mono',monospace;margin-top:2px">BP_Coin</div></div></div>
+            <div style="display:flex;align-items:flex-start;gap:11px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,0.05)"><span style="flex-shrink:0;width:19px;height:19px;border-radius:6px;background:rgba(74,222,128,0.12);border:1px solid rgba(74,222,128,0.3);display:flex;align-items:center;justify-content:center;margin-top:1px"><svg width="11" height="11" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 6.4l2.4 2.4 4.6-5.6" stroke="#4ADE80" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><div style="font-size:14.5px;color:#E6E6EC;font-weight:500">GameMode set on the world</div><div style="font-size:12.5px;color:#6B6B76;font-family:'JetBrains Mono',monospace;margin-top:2px">GM_Coin</div></div></div>
+            <div style="display:flex;align-items:flex-start;gap:11px;padding:9px 0"><span style="flex-shrink:0;width:19px;height:19px;border-radius:6px;background:rgba(74,222,128,0.12);border:1px solid rgba(74,222,128,0.3);display:flex;align-items:center;justify-content:center;margin-top:1px"><svg width="11" height="11" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 6.4l2.4 2.4 4.6-5.6" stroke="#4ADE80" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><div style="font-size:14.5px;color:#E6E6EC;font-weight:500">Jump bound via Enhanced Input</div><div style="font-size:12.5px;color:#6B6B76;font-family:'JetBrains Mono',monospace;margin-top:2px">SpaceBar → Jump</div></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== HOW IT WORKS ===================== -->
+    <section id="how" class="acReveal" style="max-width:1180px;margin:0 auto;padding:clamp(44px,6vw,90px) 24px">
+      <div style="text-align:center;max-width:680px;margin:0 auto 52px">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:12.5px;color:#4DB2FF;margin-bottom:14px">// how it works</div>
+        <h2 style="font-size:clamp(1.8rem,3.4vw,2.7rem);line-height:1.08;letter-spacing:-0.03em;font-weight:700;margin:0 0 14px;text-wrap:balance">No sidecar. No socket bridge. No glue process.</h2>
+        <p style="color:#A6A6B2;font-size:16px;line-height:1.6;margin:0">The MCP server runs in-process inside the Unreal Editor and speaks directly to the engine. The agent connects over HTTP and calls typed tools.</p>
+      </div>
+
+      <div style="display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr));margin-bottom:44px">
+        <div style="border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:26px;background:rgba(255,255,255,0.015)"><div style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#4DB2FF;border:1px solid rgba(10,132,255,0.35);width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;margin-bottom:18px">01</div><h3 style="font-size:17.5px;font-weight:650;margin:0 0 8px;letter-spacing:-0.01em">Prompt</h3><p style="color:#9A9AA6;font-size:14.5px;line-height:1.55;margin:0">Describe the game in plain language to any MCP-compatible agent, Claude Code or Claude Desktop.</p></div>
+        <div style="border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:26px;background:rgba(255,255,255,0.015)"><div style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#4DB2FF;border:1px solid rgba(10,132,255,0.35);width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;margin-bottom:18px">02</div><h3 style="font-size:17.5px;font-weight:650;margin:0 0 8px;letter-spacing:-0.01em">Native MCP server in the editor</h3><p style="color:#9A9AA6;font-size:14.5px;line-height:1.55;margin:0">The agent connects over HTTP to the in-process server at :30010/mcp and calls typed, validated tools.</p></div>
+        <div style="border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:26px;background:rgba(255,255,255,0.015)"><div style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#4DB2FF;border:1px solid rgba(10,132,255,0.35);width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;margin-bottom:18px">03</div><h3 style="font-size:17.5px;font-weight:650;margin:0 0 8px;letter-spacing:-0.01em">Built &amp; verified</h3><p style="color:#9A9AA6;font-size:14.5px;line-height:1.55;margin:0">The agent authors assets, compiles Blueprints, and closes the loop with screenshots and play-in-editor.</p></div>
+      </div>
+
+      <!-- architecture diagram -->
+      <div style="border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:clamp(24px,4vw,40px);background:#0B0B0F">
+        <div style="display:flex;align-items:stretch;justify-content:center;gap:14px;flex-wrap:wrap">
+          <div style="flex:1;min-width:170px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:18px;text-align:center">
+            <div style="font-weight:650;font-size:15px;margin-bottom:5px">AI Agent</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#6B6B76;line-height:1.5">Claude Code<br>Claude Desktop</div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:120px;padding:6px 0">
+            <svg width="36" height="18" viewBox="0 0 36 18" aria-hidden="true"><path d="M11 4 L4 9 L11 14 M4 9 H32 M25 4 L32 9 L25 14" stroke="#0A84FF" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#4DB2FF;margin-top:7px;text-align:center;line-height:1.45">HTTP · MCP<br>JSON-RPC / SSE</div>
+          </div>
+          <div style="flex:1;min-width:180px;background:rgba(10,132,255,0.07);border:1px solid rgba(10,132,255,0.4);border-radius:12px;padding:18px;text-align:center">
+            <div style="font-weight:650;font-size:15px;margin-bottom:5px">In-editor MCP server</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#7CC4FF;line-height:1.5">in-process<br>:30010/mcp</div>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:center;min-width:56px;padding:6px 0">
+            <svg width="36" height="18" viewBox="0 0 36 18" aria-hidden="true"><path d="M11 4 L4 9 L11 14 M4 9 H32 M25 4 L32 9 L25 14" stroke="#0A84FF" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div style="flex:1;min-width:180px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:18px;text-align:center">
+            <div style="font-weight:650;font-size:15px;margin-bottom:5px">Unreal Engine</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#6B6B76;line-height:1.5">GEditor · Assets<br>Blueprints · UMG</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== FEATURE GRID ===================== -->
+    <section id="features" class="acReveal" style="max-width:1180px;margin:0 auto;padding:clamp(44px,6vw,90px) 24px">
+      <div style="max-width:680px;margin:0 0 46px">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:12.5px;color:#4DB2FF;margin-bottom:14px">// 65 typed, safety-gated tools</div>
+        <h2 style="font-size:clamp(1.8rem,3.4vw,2.7rem);line-height:1.08;letter-spacing:-0.03em;font-weight:700;margin:0 0 14px;text-wrap:balance">First-class tools for every layer of the engine.</h2>
+        <p style="color:#A6A6B2;font-size:16px;line-height:1.6;margin:0">Not one <span style="font-family:'JetBrains Mono',monospace;color:#C9C9D3">execute_python</span> catch-all, typed, validated authoring across levels, Blueprints, UI, materials, physics, and gameplay.</p>
+      </div>
+      <div style="display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(min(290px,100%),1fr))">
+        <div class="feature-card" style="border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:22px;background:rgba(255,255,255,0.015)"><div style="width:30px;height:30px;border-radius:8px;background:rgba(10,132,255,0.1);border:1px solid rgba(10,132,255,0.3);display:flex;align-items:center;justify-content:center;margin-bottom:15px;color:#7CC4FF;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600">01</div><h3 style="font-size:16px;font-weight:650;margin:0 0 7px;letter-spacing:-0.01em">Levels &amp; World</h3><p style="color:#9A9AA6;font-size:13.8px;line-height:1.5;margin:0 0 14px">Create, save, and stream levels; configure world settings and lighting.</p><div style="display:flex;gap:6px;flex-wrap:wrap"><span style="font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#8E8E9A;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);padding:3px 8px;border-radius:6px">new_level</span><span style="font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#8E8E9A;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);padding:3px 8px;border-radius:6px">save_level</span><span style="font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#8E8E9A;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);padding:3px 8px;border-radius:6px">set_lighting</span></div></div>
+        <div class="feature-card" style="border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:22px;background:rgba(255,255,255,0.015)"><div style="width:30px;height:30px;border-radius:8px;background:rgba(10,132,255,0.1);border:1px solid rgba(10,132,255,0.3);display:flex;align-items:center;justify-content:center;margin-bottom:15px;color:#7CC4FF;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600">02</div><h3 style="font-size:16px;font-weight:650;margin:0 0 7px;letter-spacing:-0.01em">Actors &amp; Scene</h3><p style="color:#9A9AA6;font-size:13.8px;line-height:1.5;margin:0 0 14px">Spawn, transform, and configure actors anywhere in the scene.</p><div style="display:flex;gap:6px;flex-wrap:wrap"><span style="font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#8E8E9A;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);padding:3px 8px;border-radius:6px">spawn_actor</span><span style="font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#8E8E9A;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);padding:3px 8px;border-radius:6px">set_transform</span><span style="font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#8E8E9A;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);padding:3px 8px;border-radius:6px">set_property</span></div></div>
+        <div class="feature-card" style="border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:22px;background:rgba(255,255,255,0.015)"><div style="width:30px;height:30px;border-radius:8px;background:rgba(10,132,255,0.1);border:1px solid rgba(10,132,255,0.3);display:flex;align-items:center;justify-content:center;margin-bottom:15px;color:#7CC4FF;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600">03</div><h3 style="font-size:16px;font-weight:650;margin:0 0 7px;letter-spacing:-0.01em">Blueprints</h3><p style="color:#9A9AA6;font-size:13.8px;line-height:1.5;margin:0 0 14px">Author Blueprint structure and the node-graph visual scripting that drives it.</p><div style="display:flex;gap:6px;flex-wrap:wrap"><span style="font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#8E8E9A;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);padding:3px 8px;border-radius:6px">create_blueprint</span><span style="font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#8E8E9A;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);padding:3px 8px;border-radius:6px">add_variable</span><span style="font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#8E8E9A;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);padding:3px 8px;border-radius:6px">connect_blueprint_pins</span></div></div>
+        <div class="feature-card" style="border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:22px;background:rgba(255,255,255,0.015)"><div style="width:30px;height:30px;border-radius:8px;background:rgba(10,132,255,0.1);border:1px solid rgba(10,132,255,0.3);display:flex;align-items:center;justify-content:center;margin-bottom:15px;color:#7CC4FF;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600">04</div><h3 style="font-size:16px;font-weight:650;margin:0 0 7px;letter-spacing:-0.01em">UMG Game UI</h3><p style="color:#9A9AA6;font-size:13.8px;line-height:1.5;margin:0 0 14px">Build designed UMG widgets, HUDs, menus, and in-game interfaces.</p><div style="display:flex;gap:6px;flex-wrap:wrap"><span style="font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#8E8E9A;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);padding:3px 8px;border-radius:6px">create_widget</span><span style="font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#8E8E9A;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);padding:3px 8px;border-radius:6px">add_widget_element</span><span style="font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#8E8E9A;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);padding:3px 8px;border-radius:6px">bind_widget</span></div></div>
+        <div class="feature-card" style="border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:22px;background:rgba(255,255,255,0.015)"><div style="width:30px;height:30px;border-radius:8px;background:rgba(10,132,255,0.1);border:1px solid rgba(10,132,255,0.3);display:flex;align-items:center;justify-content:center;margin-bottom:15px;color:#7CC4FF;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600">05</div><h3 style="font-size:16px;font-weight:650;margin:0 0 7px;letter-spacing:-0.01em">Materials</h3><p style="color:#9A9AA6;font-size:13.8px;line-height:1.5;margin:0 0 14px">Create materials and drive their parameters and instances.</p><div style="display:flex;gap:6px;flex-wrap:wrap"><span style="font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#8E8E9A;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);padding:3px 8px;border-radius:6px">create_material</span><span style="font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#8E8E9A;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);padding:3px 8px;border-radius:6px">set_material_param</span></div></div>
+        <div class="feature-card" style="border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:22px;background:rgba(255,255,255,0.015)"><div style="width:30px;height:30px;border-radius:8px;background:rgba(10,132,255,0.1);border:1px solid rgba(10,132,255,0.3);display:flex;align-items:center;justify-content:center;margin-bottom:15px;color:#7CC4FF;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600">06</div><h3 style="font-size:16px;font-weight:650;margin:0 0 7px;letter-spacing:-0.01em">Data Assets</h3><p style="color:#9A9AA6;font-size:13.8px;line-height:1.5;margin:0 0 14px">Define and populate data assets for content-driven gameplay.</p><div style="display:flex;gap:6px;flex-wrap:wrap"><span style="font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#8E8E9A;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);padding:3px 8px;border-radius:6px">create_data_asset</span><span style="font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#8E8E9A;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);padding:3px 8px;border-radius:6px">set_data_property</span></div></div>
+        <div class="feature-card" style="border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:22px;background:rgba(255,255,255,0.015)"><div style="width:30px;height:30px;border-radius:8px;background:rgba(10,132,255,0.1);border:1px solid rgba(10,132,255,0.3);display:flex;align-items:center;justify-content:center;margin-bottom:15px;color:#7CC4FF;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600">07</div><h3 style="font-size:16px;font-weight:650;margin:0 0 7px;letter-spacing:-0.01em">Asset Import</h3><p style="color:#9A9AA6;font-size:13.8px;line-height:1.5;margin:0 0 14px">Bring meshes, textures, and other content into the project.</p><div style="display:flex;gap:6px;flex-wrap:wrap"><span style="font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#8E8E9A;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);padding:3px 8px;border-radius:6px">import_asset</span><span style="font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#8E8E9A;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);padding:3px 8px;border-radius:6px">import_mesh</span></div></div>
+        <div class="feature-card" style="border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:22px;background:rgba(255,255,255,0.015)"><div style="width:30px;height:30px;border-radius:8px;background:rgba(10,132,255,0.1);border:1px solid rgba(10,132,255,0.3);display:flex;align-items:center;justify-content:center;margin-bottom:15px;color:#7CC4FF;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600">08</div><h3 style="font-size:16px;font-weight:650;margin:0 0 7px;letter-spacing:-0.01em">Components &amp; Physics</h3><p style="color:#9A9AA6;font-size:13.8px;line-height:1.5;margin:0 0 14px">Attach components, set collision, and configure physics on actors.</p><div style="display:flex;gap:6px;flex-wrap:wrap"><span style="font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#8E8E9A;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);padding:3px 8px;border-radius:6px">add_component</span><span style="font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#8E8E9A;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);padding:3px 8px;border-radius:6px">set_collision</span><span style="font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#8E8E9A;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);padding:3px 8px;border-radius:6px">set_physics</span></div></div>
+        <div class="feature-card" style="border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:22px;background:rgba(255,255,255,0.015)"><div style="width:30px;height:30px;border-radius:8px;background:rgba(10,132,255,0.1);border:1px solid rgba(10,132,255,0.3);display:flex;align-items:center;justify-content:center;margin-bottom:15px;color:#7CC4FF;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600">09</div><h3 style="font-size:16px;font-weight:650;margin:0 0 7px;letter-spacing:-0.01em">Gameplay &amp; Input</h3><p style="color:#9A9AA6;font-size:13.8px;line-height:1.5;margin:0 0 14px">Wire GameModes, player starts, and Enhanced Input mappings.</p><div style="display:flex;gap:6px;flex-wrap:wrap"><span style="font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#8E8E9A;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);padding:3px 8px;border-radius:6px">create_gamemode</span><span style="font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#8E8E9A;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);padding:3px 8px;border-radius:6px">add_input_mapping</span><span style="font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#8E8E9A;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);padding:3px 8px;border-radius:6px">set_player_start</span></div></div>
+        <div class="feature-card" style="border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:22px;background:rgba(255,255,255,0.015)"><div style="width:30px;height:30px;border-radius:8px;background:rgba(10,132,255,0.1);border:1px solid rgba(10,132,255,0.3);display:flex;align-items:center;justify-content:center;margin-bottom:15px;color:#7CC4FF;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600">10</div><h3 style="font-size:16px;font-weight:650;margin:0 0 7px;letter-spacing:-0.01em">Play-in-Editor</h3><p style="color:#9A9AA6;font-size:13.8px;line-height:1.5;margin:0 0 14px">Launch and stop PIE to exercise the game the agent just built.</p><div style="display:flex;gap:6px;flex-wrap:wrap"><span style="font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#8E8E9A;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);padding:3px 8px;border-radius:6px">play_in_editor</span><span style="font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#8E8E9A;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);padding:3px 8px;border-radius:6px">stop_pie</span></div></div>
+        <div class="feature-card" style="border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:22px;background:rgba(255,255,255,0.015)"><div style="width:30px;height:30px;border-radius:8px;background:rgba(10,132,255,0.1);border:1px solid rgba(10,132,255,0.3);display:flex;align-items:center;justify-content:center;margin-bottom:15px;color:#7CC4FF;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600">11</div><h3 style="font-size:16px;font-weight:650;margin:0 0 7px;letter-spacing:-0.01em">Visual Feedback Loop</h3><p style="color:#9A9AA6;font-size:13.8px;line-height:1.5;margin:0 0 14px">Screenshots, reference-image diff, and off-screen UMG render to verify results.</p><div style="display:flex;gap:6px;flex-wrap:wrap"><span style="font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#8E8E9A;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);padding:3px 8px;border-radius:6px">take_screenshot</span><span style="font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#8E8E9A;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);padding:3px 8px;border-radius:6px">diff_reference</span><span style="font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#8E8E9A;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);padding:3px 8px;border-radius:6px">render_umg</span></div></div>
+        <div class="feature-card" style="border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:22px;background:rgba(255,255,255,0.015)"><div style="width:30px;height:30px;border-radius:8px;background:rgba(10,132,255,0.1);border:1px solid rgba(10,132,255,0.3);display:flex;align-items:center;justify-content:center;margin-bottom:15px;color:#7CC4FF;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600">12</div><h3 style="font-size:16px;font-weight:650;margin:0 0 7px;letter-spacing:-0.01em">Batch &amp; Escape Hatches</h3><p style="color:#9A9AA6;font-size:13.8px;line-height:1.5;margin:0 0 14px">Batch many tools in one call; gated Python, console, and cvar fallbacks.</p><div style="display:flex;gap:6px;flex-wrap:wrap"><span style="font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#8E8E9A;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);padding:3px 8px;border-radius:6px">batch_call</span><span style="font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#8E8E9A;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);padding:3px 8px;border-radius:6px">run_python</span><span style="font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#8E8E9A;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);padding:3px 8px;border-radius:6px">run_console</span></div></div>
+      </div>
+    </section>
+
+    <!-- ===================== SKILLS ===================== -->
+    <section class="acReveal" style="max-width:1180px;margin:0 auto;padding:clamp(44px,6vw,80px) 24px">
+      <div style="max-width:680px;margin:0 0 46px">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:12.5px;color:#4DB2FF;margin-bottom:14px">// 4 agentic skills</div>
+        <h2 style="font-size:clamp(1.8rem,3.4vw,2.7rem);line-height:1.08;letter-spacing:-0.03em;font-weight:700;margin:0 0 14px;text-wrap:balance">Expert workflows layered on the tools.</h2>
+        <p style="color:#A6A6B2;font-size:16px;line-height:1.6;margin:0">Skills compose the typed tools into reliable, end-to-end authoring routines, the agent reaches for them when a goal needs more than a single call.</p>
+      </div>
+      <div style="display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr))">
+        <div style="border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:24px;background:linear-gradient(180deg, rgba(10,132,255,0.05), rgba(255,255,255,0.008))"><div style="font-family:'JetBrains Mono',monospace;font-size:12.5px;color:#4DB2FF;margin-bottom:14px">game-bootstrapper</div><h3 style="font-size:17px;font-weight:650;margin:0 0 8px;letter-spacing:-0.01em">Game Bootstrapper</h3><p style="color:#9A9AA6;font-size:14px;line-height:1.55;margin:0">Turns a single prompt into a whole playable loop, level, actors, logic, input, and a GameMode.</p></div>
+        <div style="border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:24px;background:linear-gradient(180deg, rgba(10,132,255,0.05), rgba(255,255,255,0.008))"><div style="font-family:'JetBrains Mono',monospace;font-size:12.5px;color:#4DB2FF;margin-bottom:14px">gameplay-logic-builder</div><h3 style="font-size:17px;font-weight:650;margin:0 0 8px;letter-spacing:-0.01em">Gameplay Logic Builder</h3><p style="color:#9A9AA6;font-size:14px;line-height:1.55;margin:0">Translates described behavior into a wired, compiling Blueprint event graph.</p></div>
+        <div style="border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:24px;background:linear-gradient(180deg, rgba(10,132,255,0.05), rgba(255,255,255,0.008))"><div style="font-family:'JetBrains Mono',monospace;font-size:12.5px;color:#4DB2FF;margin-bottom:14px">game-ui-builder</div><h3 style="font-size:17px;font-weight:650;margin:0 0 8px;letter-spacing:-0.01em">Game UI Builder</h3><p style="color:#9A9AA6;font-size:14px;line-height:1.55;margin:0">Designs and assembles UMG interfaces, then renders them off-screen to verify layout.</p></div>
+        <div style="border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:24px;background:linear-gradient(180deg, rgba(10,132,255,0.05), rgba(255,255,255,0.008))"><div style="font-family:'JetBrains Mono',monospace;font-size:12.5px;color:#4DB2FF;margin-bottom:14px">level-designer</div><h3 style="font-size:17px;font-weight:650;margin:0 0 8px;letter-spacing:-0.01em">Level Designer</h3><p style="color:#9A9AA6;font-size:14px;line-height:1.55;margin:0">Handles blockout, lighting, and set dressing to bring a level from empty to playable.</p></div>
+      </div>
+    </section>
+
+    <!-- ===================== COMPARISON ===================== -->
+    <section class="acReveal" style="max-width:1180px;margin:0 auto;padding:clamp(44px,6vw,80px) 24px">
+      <div style="max-width:680px;margin:0 0 40px">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:12.5px;color:#4DB2FF;margin-bottom:14px">// why it's different</div>
+        <h2 style="font-size:clamp(1.8rem,3.4vw,2.7rem);line-height:1.08;letter-spacing:-0.03em;font-weight:700;margin:0;text-wrap:balance">AgentConduit vs. a typical UE MCP server.</h2>
+      </div>
+      <div style="border:1px solid rgba(255,255,255,0.08);border-radius:16px;overflow:hidden">
+        <div style="display:grid;grid-template-columns:1.1fr 1.4fr 1.4fr;min-width:0">
+          <div style="padding:16px 20px;border-bottom:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.015)"></div>
+          <div style="padding:16px 20px;border-bottom:1px solid rgba(10,132,255,0.3);border-left:1px solid rgba(255,255,255,0.06);background:rgba(10,132,255,0.07);font-weight:700;font-size:15px;display:flex;align-items:center;gap:9px">
+            <svg width="18" height="18" viewBox="0 0 22 22" aria-hidden="true"><rect x="2.5" y="2.5" width="17" height="17" rx="4.5" fill="none" stroke="#4DB2FF" stroke-width="1.6"/><path d="M7 11h8M11 7v8" stroke="#4DB2FF" stroke-width="1.6" stroke-linecap="round"/></svg>
+            AgentConduit
+          </div>
+          <div style="padding:16px 20px;border-bottom:1px solid rgba(255,255,255,0.08);border-left:1px solid rgba(255,255,255,0.06);font-weight:600;font-size:15px;color:#9A9AA6">Typical UE MCP server</div>
+
+          <div style="padding:16px 20px;border-bottom:1px solid rgba(255,255,255,0.05);font-size:13px;color:#8E8E9A;font-family:'JetBrains Mono',monospace;display:flex;align-items:center">architecture</div>
+          <div style="padding:16px 20px;border-bottom:1px solid rgba(255,255,255,0.05);border-left:1px solid rgba(255,255,255,0.06);background:rgba(10,132,255,0.035);font-size:14px;color:#E6E6EC;line-height:1.5;display:flex;align-items:flex-start;gap:9px"><svg width="14" height="14" viewBox="0 0 12 12" aria-hidden="true" style="flex-shrink:0;margin-top:3px"><path d="M2.5 6.4l2.4 2.4 4.6-5.6" stroke="#4ADE80" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Native, in-process inside the editor, no sidecar</span></div>
+          <div style="padding:16px 20px;border-bottom:1px solid rgba(255,255,255,0.05);border-left:1px solid rgba(255,255,255,0.06);font-size:14px;color:#8A8A96;line-height:1.5;display:flex;align-items:flex-start;gap:9px"><span style="flex-shrink:0;margin-top:1px;color:#54545E">-</span><span>External Python or Node bridge process</span></div>
+
+          <div style="padding:16px 20px;border-bottom:1px solid rgba(255,255,255,0.05);font-size:13px;color:#8E8E9A;font-family:'JetBrains Mono',monospace;display:flex;align-items:center">tool design</div>
+          <div style="padding:16px 20px;border-bottom:1px solid rgba(255,255,255,0.05);border-left:1px solid rgba(255,255,255,0.06);background:rgba(10,132,255,0.035);font-size:14px;color:#E6E6EC;line-height:1.5;display:flex;align-items:flex-start;gap:9px"><svg width="14" height="14" viewBox="0 0 12 12" aria-hidden="true" style="flex-shrink:0;margin-top:3px"><path d="M2.5 6.4l2.4 2.4 4.6-5.6" stroke="#4ADE80" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><span>65 first-class typed, validated tools</span></div>
+          <div style="padding:16px 20px;border-bottom:1px solid rgba(255,255,255,0.05);border-left:1px solid rgba(255,255,255,0.06);font-size:14px;color:#8A8A96;line-height:1.5;display:flex;align-items:flex-start;gap:9px"><span style="flex-shrink:0;margin-top:1px;color:#54545E">-</span><span>A single execute_python catch-all</span></div>
+
+          <div style="padding:16px 20px;border-bottom:1px solid rgba(255,255,255,0.05);font-size:13px;color:#8E8E9A;font-family:'JetBrains Mono',monospace;display:flex;align-items:center">safety</div>
+          <div style="padding:16px 20px;border-bottom:1px solid rgba(255,255,255,0.05);border-left:1px solid rgba(255,255,255,0.06);background:rgba(10,132,255,0.035);font-size:14px;color:#E6E6EC;line-height:1.5;display:flex;align-items:flex-start;gap:9px"><svg width="14" height="14" viewBox="0 0 12 12" aria-hidden="true" style="flex-shrink:0;margin-top:3px"><path d="M2.5 6.4l2.4 2.4 4.6-5.6" stroke="#4ADE80" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Read-only default, three opt-in gates, undo per write</span></div>
+          <div style="padding:16px 20px;border-bottom:1px solid rgba(255,255,255,0.05);border-left:1px solid rgba(255,255,255,0.06);font-size:14px;color:#8A8A96;line-height:1.5;display:flex;align-items:flex-start;gap:9px"><span style="flex-shrink:0;margin-top:1px;color:#54545E">-</span><span>Arbitrary code execution by default</span></div>
+
+          <div style="padding:16px 20px;border-bottom:1px solid rgba(255,255,255,0.05);font-size:13px;color:#8E8E9A;font-family:'JetBrains Mono',monospace;display:flex;align-items:center">feedback loop</div>
+          <div style="padding:16px 20px;border-bottom:1px solid rgba(255,255,255,0.05);border-left:1px solid rgba(255,255,255,0.06);background:rgba(10,132,255,0.035);font-size:14px;color:#E6E6EC;line-height:1.5;display:flex;align-items:flex-start;gap:9px"><svg width="14" height="14" viewBox="0 0 12 12" aria-hidden="true" style="flex-shrink:0;margin-top:3px"><path d="M2.5 6.4l2.4 2.4 4.6-5.6" stroke="#4ADE80" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Screenshots, reference diff, off-screen UMG render</span></div>
+          <div style="padding:16px 20px;border-bottom:1px solid rgba(255,255,255,0.05);border-left:1px solid rgba(255,255,255,0.06);font-size:14px;color:#8A8A96;line-height:1.5;display:flex;align-items:flex-start;gap:9px"><span style="flex-shrink:0;margin-top:1px;color:#54545E">-</span><span>None, fire and forget</span></div>
+
+          <div style="padding:16px 20px;border-bottom:1px solid rgba(255,255,255,0.05);font-size:13px;color:#8E8E9A;font-family:'JetBrains Mono',monospace;display:flex;align-items:center">agentic layer</div>
+          <div style="padding:16px 20px;border-bottom:1px solid rgba(255,255,255,0.05);border-left:1px solid rgba(255,255,255,0.06);background:rgba(10,132,255,0.035);font-size:14px;color:#E6E6EC;line-height:1.5;display:flex;align-items:flex-start;gap:9px"><svg width="14" height="14" viewBox="0 0 12 12" aria-hidden="true" style="flex-shrink:0;margin-top:3px"><path d="M2.5 6.4l2.4 2.4 4.6-5.6" stroke="#4ADE80" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Four expert skills compose the tools</span></div>
+          <div style="padding:16px 20px;border-bottom:1px solid rgba(255,255,255,0.05);border-left:1px solid rgba(255,255,255,0.06);font-size:14px;color:#8A8A96;line-height:1.5;display:flex;align-items:flex-start;gap:9px"><span style="flex-shrink:0;margin-top:1px;color:#54545E">-</span><span>No higher-level workflows</span></div>
+        </div>
+      </div>
+      <p style="margin:18px 0 0;font-size:13.5px;color:#6B6B76;line-height:1.5">The only thing matching the native, no-sidecar architecture is Epic's own experimental plugin, AgentConduit goes deeper on typed authoring, safety, and the skill layer.</p>
+    </section>
+
+    <!-- ===================== SAFETY ===================== -->
+    <section id="safety" class="acReveal" style="max-width:1180px;margin:0 auto;padding:clamp(44px,6vw,80px) 24px">
+      <div style="display:grid;gap:clamp(32px,5vw,60px);grid-template-columns:repeat(auto-fit,minmax(min(320px,100%),1fr));align-items:start">
+        <div style="position:sticky;top:90px">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:12.5px;color:#4DB2FF;margin-bottom:14px">// safety by default</div>
+          <h2 style="font-size:clamp(1.8rem,3.4vw,2.7rem);line-height:1.08;letter-spacing:-0.03em;font-weight:700;margin:0 0 16px;text-wrap:balance">An agent in your editor, on a short leash.</h2>
+          <p style="color:#A6A6B2;font-size:16px;line-height:1.6;margin:0">Every capability that can change your project is off until you turn it on, and every change it does make is reversible.</p>
+        </div>
+        <div style="display:grid;gap:12px">
+          <div style="border:1px solid rgba(255,255,255,0.08);border-radius:13px;padding:22px;background:rgba(255,255,255,0.015);display:flex;gap:15px;align-items:flex-start"><div style="flex-shrink:0;width:32px;height:32px;border-radius:9px;border:1px solid rgba(10,132,255,0.35);background:rgba(10,132,255,0.08);display:flex;align-items:center;justify-content:center;color:#7CC4FF"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.5l5 2v3.5c0 3.4-2.1 5.6-5 7.5-2.9-1.9-5-4.1-5-7.5V3.5l5-2z" fill="none" stroke="#7CC4FF" stroke-width="1.3" stroke-linejoin="round"/></svg></div><div><h3 style="font-size:16px;font-weight:650;margin:0 0 6px;letter-spacing:-0.01em">Read-only by default</h3><p style="color:#9A9AA6;font-size:14px;line-height:1.55;margin:0">Mutations, console, and Python are three independent gates, each stays off until you explicitly opt in.</p></div></div>
+          <div style="border:1px solid rgba(255,255,255,0.08);border-radius:13px;padding:22px;background:rgba(255,255,255,0.015);display:flex;gap:15px;align-items:flex-start"><div style="flex-shrink:0;width:32px;height:32px;border-radius:9px;border:1px solid rgba(10,132,255,0.35);background:rgba(10,132,255,0.08);display:flex;align-items:center;justify-content:center;color:#7CC4FF"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.5l5 2v3.5c0 3.4-2.1 5.6-5 7.5-2.9-1.9-5-4.1-5-7.5V3.5l5-2z" fill="none" stroke="#7CC4FF" stroke-width="1.3" stroke-linejoin="round"/></svg></div><div><h3 style="font-size:16px;font-weight:650;margin:0 0 6px;letter-spacing:-0.01em">Every write is undoable</h3><p style="color:#9A9AA6;font-size:14px;line-height:1.55;margin:0">Each mutating call is wrapped in an Unreal undo transaction, so any change can be rolled back.</p></div></div>
+          <div style="border:1px solid rgba(255,255,255,0.08);border-radius:13px;padding:22px;background:rgba(255,255,255,0.015);display:flex;gap:15px;align-items:flex-start"><div style="flex-shrink:0;width:32px;height:32px;border-radius:9px;border:1px solid rgba(10,132,255,0.35);background:rgba(10,132,255,0.08);display:flex;align-items:center;justify-content:center;color:#7CC4FF"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.5l5 2v3.5c0 3.4-2.1 5.6-5 7.5-2.9-1.9-5-4.1-5-7.5V3.5l5-2z" fill="none" stroke="#7CC4FF" stroke-width="1.3" stroke-linejoin="round"/></svg></div><div><h3 style="font-size:16px;font-weight:650;margin:0 0 6px;letter-spacing:-0.01em">Structural edits serialized</h3><p style="color:#9A9AA6;font-size:14px;line-height:1.55;margin:0">Blueprint and asset structure changes run one at a time to keep the project consistent.</p></div></div>
+          <div style="border:1px solid rgba(255,255,255,0.08);border-radius:13px;padding:22px;background:rgba(255,255,255,0.015);display:flex;gap:15px;align-items:flex-start"><div style="flex-shrink:0;width:32px;height:32px;border-radius:9px;border:1px solid rgba(10,132,255,0.35);background:rgba(10,132,255,0.08);display:flex;align-items:center;justify-content:center;color:#7CC4FF"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.5l5 2v3.5c0 3.4-2.1 5.6-5 7.5-2.9-1.9-5-4.1-5-7.5V3.5l5-2z" fill="none" stroke="#7CC4FF" stroke-width="1.3" stroke-linejoin="round"/></svg></div><div><h3 style="font-size:16px;font-weight:650;margin:0 0 6px;letter-spacing:-0.01em">Optional endpoint auth</h3><p style="color:#9A9AA6;font-size:14px;line-height:1.55;margin:0">Protect the local MCP endpoint with bearer-token authentication when you need it.</p></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== STATS BAND ===================== -->
+    <section class="acReveal" style="padding:clamp(36px,5vw,60px) 24px;border-top:1px solid rgba(255,255,255,0.07);border-bottom:1px solid rgba(255,255,255,0.07);background:rgba(10,132,255,0.025)">
+      <div style="max-width:1180px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:24px;text-align:center">
+        <div><div style="font-size:clamp(1.9rem,3.2vw,2.6rem);font-weight:750;letter-spacing:-0.03em;color:#F2F2F5">65</div><div style="font-family:'JetBrains Mono',monospace;font-size:12.5px;color:#8E8E9A;margin-top:6px">typed tools</div></div>
+        <div><div style="font-size:clamp(1.9rem,3.2vw,2.6rem);font-weight:750;letter-spacing:-0.03em;color:#F2F2F5">4</div><div style="font-family:'JetBrains Mono',monospace;font-size:12.5px;color:#8E8E9A;margin-top:6px">agentic skills</div></div>
+        <div><div style="font-size:clamp(1.9rem,3.2vw,2.6rem);font-weight:750;letter-spacing:-0.03em;color:#F2F2F5">native</div><div style="font-family:'JetBrains Mono',monospace;font-size:12.5px;color:#8E8E9A;margin-top:6px">in-engine, no sidecar</div></div>
+        <div><div style="font-size:clamp(1.9rem,3.2vw,2.6rem);font-weight:750;letter-spacing:-0.03em;color:#F2F2F5">5.7 / 5.8</div><div style="font-family:'JetBrains Mono',monospace;font-size:12.5px;color:#8E8E9A;margin-top:6px">Unreal Engine</div></div>
+      </div>
+    </section>
+
+    <!-- ===================== PRICING ===================== -->
+    <section id="pricing" class="acReveal" style="max-width:1180px;margin:0 auto;padding:clamp(48px,6vw,96px) 24px">
+      <div style="text-align:center;max-width:680px;margin:0 auto 50px">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:12.5px;color:#4DB2FF;margin-bottom:14px">// pricing</div>
+        <h2 style="font-size:clamp(1.9rem,3.6vw,2.9rem);line-height:1.08;letter-spacing:-0.03em;font-weight:700;margin:0 0 14px;text-wrap:balance">Free to learn. Licensed to ship.</h2>
+        <p style="color:#A6A6B2;font-size:16px;line-height:1.6;margin:0">Full access to all 65 tools and 4 skills on both tiers. Commercial use requires a paid license.</p>
+      </div>
+      <div style="display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));max-width:840px;margin:0 auto">
+        <div style="border:1px solid rgba(255,255,255,0.1);border-radius:18px;padding:32px;background:rgba(255,255,255,0.015)">
+          <div style="font-size:14px;font-weight:600;color:#A6A6B2;margin-bottom:14px">Noncommercial</div>
+          <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:6px"><span style="font-size:42px;font-weight:780;letter-spacing:-0.03em">Free</span></div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:12.5px;color:#6B6B76;margin-bottom:24px">PolyForm Noncommercial license</div>
+          <span class="cta-soon" aria-disabled="true" title="Coming soon" style="display:flex;align-items:center;justify-content:center;padding:12px;font-size:15px;font-weight:600;color:#9A9AA6;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.14);border-radius:11px;margin-bottom:24px">Coming soon</span>
+          <div style="display:flex;align-items:flex-start;gap:10px;padding:7px 0;font-size:14px;color:#C9C9D3"><svg width="13" height="13" viewBox="0 0 12 12" aria-hidden="true" style="flex-shrink:0;margin-top:3px"><path d="M2.5 6.4l2.4 2.4 4.6-5.6" stroke="#4ADE80" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>All 65 typed tools and 4 skills</div>
+          <div style="display:flex;align-items:flex-start;gap:10px;padding:7px 0;font-size:14px;color:#C9C9D3"><svg width="13" height="13" viewBox="0 0 12 12" aria-hidden="true" style="flex-shrink:0;margin-top:3px"><path d="M2.5 6.4l2.4 2.4 4.6-5.6" stroke="#4ADE80" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Personal, learning, and research projects</div>
+          <div style="display:flex;align-items:flex-start;gap:10px;padding:7px 0;font-size:14px;color:#C9C9D3"><svg width="13" height="13" viewBox="0 0 12 12" aria-hidden="true" style="flex-shrink:0;margin-top:3px"><path d="M2.5 6.4l2.4 2.4 4.6-5.6" stroke="#4ADE80" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Full safety controls and undo</div>
+          <div style="display:flex;align-items:flex-start;gap:10px;padding:7px 0;font-size:14px;color:#C9C9D3"><svg width="13" height="13" viewBox="0 0 12 12" aria-hidden="true" style="flex-shrink:0;margin-top:3px"><path d="M2.5 6.4l2.4 2.4 4.6-5.6" stroke="#4ADE80" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Community support</div>
+        </div>
+        <div style="position:relative;border:1px solid rgba(10,132,255,0.5);border-radius:18px;padding:32px;background:linear-gradient(180deg, rgba(10,132,255,0.1), rgba(255,255,255,0.008));box-shadow:0 30px 70px -30px rgba(10,132,255,0.5)">
+          <div style="position:absolute;top:-11px;left:32px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#fff;background:#0A84FF;padding:4px 10px;border-radius:6px;font-weight:600">COMMERCIAL</div>
+          <div style="font-size:14px;font-weight:600;color:#7CC4FF;margin-bottom:14px">Commercial</div>
+          <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:6px"><span style="font-size:42px;font-weight:780;letter-spacing:-0.03em">Paid</span><span style="font-size:15px;color:#8E8E9A">license</span></div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:12.5px;color:#7CC4FF;margin-bottom:24px">For shipping commercial games</div>
+          <span class="cta-soon" aria-disabled="true" title="Coming soon" style="display:flex;align-items:center;justify-content:center;gap:8px;padding:12px;font-size:15px;font-weight:600;color:#fff;background:#0A84FF;border-radius:11px;margin-bottom:24px;box-shadow:0 1px 0 rgba(255,255,255,0.18) inset">Coming soon</span>
+          <div style="display:flex;align-items:flex-start;gap:10px;padding:7px 0;font-size:14px;color:#E6E6EC"><svg width="13" height="13" viewBox="0 0 12 12" aria-hidden="true" style="flex-shrink:0;margin-top:3px"><path d="M2.5 6.4l2.4 2.4 4.6-5.6" stroke="#4DB2FF" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Everything in noncommercial</div>
+          <div style="display:flex;align-items:flex-start;gap:10px;padding:7px 0;font-size:14px;color:#E6E6EC"><svg width="13" height="13" viewBox="0 0 12 12" aria-hidden="true" style="flex-shrink:0;margin-top:3px"><path d="M2.5 6.4l2.4 2.4 4.6-5.6" stroke="#4DB2FF" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Rights to ship commercial titles</div>
+          <div style="display:flex;align-items:flex-start;gap:10px;padding:7px 0;font-size:14px;color:#E6E6EC"><svg width="13" height="13" viewBox="0 0 12 12" aria-hidden="true" style="flex-shrink:0;margin-top:3px"><path d="M2.5 6.4l2.4 2.4 4.6-5.6" stroke="#4DB2FF" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Team and studio licensing</div>
+          <div style="display:flex;align-items:flex-start;gap:10px;padding:7px 0;font-size:14px;color:#E6E6EC"><svg width="13" height="13" viewBox="0 0 12 12" aria-hidden="true" style="flex-shrink:0;margin-top:3px"><path d="M2.5 6.4l2.4 2.4 4.6-5.6" stroke="#4DB2FF" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Priority support</div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer style="position:relative;z-index:1;border-top:1px solid rgba(255,255,255,0.07);padding:56px 24px 40px">
+    <div style="max-width:1180px;margin:0 auto">
+      <div style="display:grid;gap:36px;grid-template-columns:repeat(auto-fit,minmax(min(220px,100%),1fr));margin-bottom:44px">
+        <div>
+          <a href="#top" style="display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:-0.02em;font-size:17px;margin-bottom:14px">
+            <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><rect x="2.5" y="2.5" width="17" height="17" rx="4.5" fill="none" stroke="#0A84FF" stroke-width="1.6"/><path d="M7 11h8M11 7v8" stroke="#4DB2FF" stroke-width="1.6" stroke-linecap="round"/></svg>
+            AgentConduit
+          </a>
+          <p style="color:#7B7B86;font-size:13.5px;line-height:1.6;max-width:280px;margin:0">A native in-engine MCP server for Unreal Engine. Build games by prompting an agent.</p>
+        </div>
+        <div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#6B6B76;margin-bottom:14px;text-transform:uppercase;letter-spacing:0.08em">Product</div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <a class="foot-link" href="#features" style="font-size:14px;color:#A6A6B2">Features</a>
+            <a class="foot-link" href="#how" style="font-size:14px;color:#A6A6B2">How it works</a>
+            <a class="foot-link" href="#safety" style="font-size:14px;color:#A6A6B2">Safety</a>
+            <a class="foot-link" href="#pricing" style="font-size:14px;color:#A6A6B2">Pricing</a>
+          </div>
+        </div>
+        <div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#6B6B76;margin-bottom:14px;text-transform:uppercase;letter-spacing:0.08em">Resources</div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <span style="font-size:14px;color:#5E5E69">Documentation · soon</span>
+            <span style="font-size:14px;color:#5E5E69">Tool reference · soon</span>
+            <span style="font-size:14px;color:#5E5E69">License · soon</span>
+            <span style="font-size:14px;color:#5E5E69">Changelog · soon</span>
+          </div>
+        </div>
+        <div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#6B6B76;margin-bottom:14px;text-transform:uppercase;letter-spacing:0.08em">Connect</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:12.5px;color:#4DB2FF;border:1px solid rgba(10,132,255,0.3);background:rgba(10,132,255,0.08);padding:8px 11px;border-radius:8px;display:inline-block">127.0.0.1:30010/mcp</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-top:24px;border-top:1px solid rgba(255,255,255,0.06)">
+        <span style="font-size:12.5px;color:#5E5E69">© 2026 AgentConduit · MCP Streamable-HTTP transport · UE 5.7 / 5.8</span>
+        <span style="font-size:12.5px;color:#5E5E69">Independent project, not affiliated with Epic Games or Unreal Engine.</span>
+      </div>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+  (function () {
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var rows = Array.prototype.slice.call(document.querySelectorAll('#tool-rows .tool-row'));
+    var cursor = document.getElementById('term-cursor');
+    var verified = document.getElementById('term-verified');
+    if (!rows.length || reduce) { return; } // no-JS / reduced-motion: finished state already shown
+    rows.forEach(function (r) { r.style.opacity = '0'; });
+    cursor.style.display = 'flex';
+    verified.style.display = 'none';
+    var i = 0;
+    var timer = setInterval(function () {
+      if (i >= rows.length) {
+        clearInterval(timer);
+        cursor.style.display = 'none';
+        verified.style.display = 'flex';
+        return;
+      }
+      var row = rows[i++];
+      row.style.opacity = '1';
+      row.style.animation = 'acRow .3s ease both';
+    }, 340);
+  })();
+</script>
+</body>
+</html>
