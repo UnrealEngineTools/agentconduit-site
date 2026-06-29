@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Docs — Conduit for Unreal Engine</title>
-<meta name="description" content="Full documentation for Conduit: install, connect your agent, core concepts, the agentic skills, and a detailed reference for all 67 typed tools. Free for indie developers.">
-<meta property="og:title" content="Conduit Docs — install, concepts, and the full 67-tool reference">
+<meta name="description" content="Full documentation for Conduit: install, connect your agent, core concepts, the agentic skills, and a detailed reference for all 68 typed tools. Free for indie developers.">
+<meta property="og:title" content="Conduit Docs — install, concepts, and the full 68-tool reference">
 <meta property="og:description" content="Everything you need to build Unreal Engine games by prompting an agent. Free for indies.">
 <meta property="og:type" content="website">
 <meta name="theme-color" content="#09090C">
@@ -218,7 +218,7 @@ YourProject/
         <h2 class="h">Architecture</h2>
         <p class="lede">The MCP server runs <em>inside</em> the editor process. No Python sidecar, no socket bridge, no glue. Your agent POSTs JSON-RPC 2.0 to a local endpoint; tools execute on the game thread against live editor subsystems.</p>
         <div style="background:#0C0C11;border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:20px 18px">
-          <svg viewBox="0 0 920 300" width="100%" role="img" aria-label="Architecture diagram: an MCP agent POSTs JSON-RPC 2.0 to a local endpoint at 127.0.0.1:30010/mcp, served by AgentConduit running inside the Unreal Editor process with no sidecar; 67 tools drive editor subsystems and results and images stream back." style="display:block;font-family:'Inter',system-ui,sans-serif">
+          <svg viewBox="0 0 920 300" width="100%" role="img" aria-label="Architecture diagram: an MCP agent POSTs JSON-RPC 2.0 to a local endpoint at 127.0.0.1:30010/mcp, served by AgentConduit running inside the Unreal Editor process with no sidecar; 68 tools drive editor subsystems and results and images stream back." style="display:block;font-family:'Inter',system-ui,sans-serif">
             <defs>
               <marker id="ahReq" markerWidth="9" markerHeight="9" refX="6.5" refY="3.2" orient="auto"><path d="M0 0L6.6 3.2L0 6.4Z" fill="#4DB2FF"/></marker>
               <marker id="ahRes" markerWidth="9" markerHeight="9" refX="6.5" refY="3.2" orient="auto"><path d="M0 0L6.6 3.2L0 6.4Z" fill="#7E97BE"/></marker>
@@ -240,7 +240,7 @@ YourProject/
             <rect x="494" y="98" width="362" height="100" rx="11" fill="rgba(10,132,255,0.09)" stroke="rgba(10,132,255,0.5)"/>
             <text x="675" y="130" text-anchor="middle" font-size="14.5" font-weight="650" fill="#DCEBFF">AgentConduit · MCPCore</text>
             <text x="675" y="153" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#9FC4F0">embedded HTTP MCP server</text>
-            <text x="675" y="176" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#9FC4F0">67 tools → subsystems</text>
+            <text x="675" y="176" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#9FC4F0">68 tools → subsystems</text>
             <text x="675" y="234" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12.5" fill="#8E8E9A">GEditor · assets · Blueprints · UMG</text>
 
             <!-- Transport label + arrows -->
@@ -365,6 +365,7 @@ YourProject/
         <h2 class="h">Data, assets &amp; properties</h2>
         <p class="lede">Create and import assets, read and write properties anywhere by reflection, edit nested struct/array/map paths, and populate CurveTables.</p>
         <div class="tool" id="create_asset"><div class="th"><code class="tn">create_asset</code><span class="gate gw">Editor mutations</span></div><p class="td">Creates a new asset and saves it. Args: <code class="ic">class</code> (required, asset class name or /Script path, e.g. "LevelUpInfo", "CurveTable", "DataAsset"), <code class="ic">path</code> (required, content folder), <code class="ic">name</code> (required), <code class="ic">save</code> (default true). Then use set_asset_property to populate it. Best for UDataAsset subclasses and CurveTables; Blueprints / Materials need their own factories.</p></div>
+        <div class="tool" id="create_font"><div class="th"><code class="tn">create_font</code><span class="gate gw">Editor mutations</span></div><p class="td">Builds a runtime <code class="ic">UFont</code> from imported <code class="ic">UFontFace</code> assets so UMG TextBlocks can use them (the Unreal Python API can't construct the font composite — this does it natively). Args: <code class="ic">name</code>, <code class="ic">path</code> (content folder), <code class="ic">faces</code> (array of {<code class="ic">typeface</code>, <code class="ic">fontface</code>}), <code class="ic">save</code> (default true). In UMG, set the TextBlock Font's FontObject to the created UFont and TypefaceFontName to a typeface name.</p></div>
         <div class="tool" id="import_asset"><div class="th"><code class="tn">import_asset</code><span class="gate gw">Editor mutations</span></div><p class="td">Imports a source file from disk into the project. Args: <code class="ic">source</code> (a file path, e.g. an .fbx / .png / .wav), <code class="ic">destination</code> (content folder, e.g. "/Game/Meshes"), optional <code class="ic">name</code>, optional <code class="ic">replace</code> (default false), optional <code class="ic">save</code> (default true). Returns the imported asset path(s).</p></div>
         <div class="tool" id="save_asset"><div class="th"><code class="tn">save_asset</code><span class="gate gu">Utility</span></div><p class="td">Saves an asset to disk, persisting any in-memory edits (e.g. after add_blueprint_* / add_blueprint_variable, which only mark the asset dirty). Args: <code class="ic">asset</code> (asset path).</p></div>
         <div class="tool" id="list_assets"><div class="th"><code class="tn">list_assets</code><span class="gate gr">Read-only</span></div><p class="td">Searches the project's Asset Registry. Optional filters: <code class="ic">class_filter</code> (asset type, e.g. "StaticMesh", "Material", "Blueprint", "SkeletalMesh"), <code class="ic">name_filter</code> (substring of the asset name), <code class="ic">path</code> (content path, default "/Game"), and <code class="ic">limit</code> (default 100, max 1000). Returns object paths usable with spawn_actor / set_actor_property.</p></div>
