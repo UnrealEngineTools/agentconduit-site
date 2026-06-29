@@ -1,0 +1,8 @@
+# Files that must NOT be served as public static assets on Pages.
+wrangler.toml
+schema.sql
+README.md
+.gitignore
+.assetsignore
+.wrangler
+node_modules

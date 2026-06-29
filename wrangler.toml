@@ -1,0 +1,19 @@
+# Cloudflare Pages config for agentconduit-site (conduit.unrealtools.com).
+# Static site + Pages Functions (functions/). Deploy: npx wrangler pages deploy
+name = "agentconduit-site"
+pages_build_output_dir = "."
+compatibility_date = "2026-06-01"
+
+# Jam submissions database.
+[[d1_databases]]
+binding = "DB"
+database_name = "conduit-jam"
+database_id = "b35c4018-65e9-4014-b509-604ef635e00f"
+
+# TURNSTILE_SECRET is set as an encrypted Pages secret (not here, so a redeploy can't
+# overwrite it with a plaintext value):
+#   npx wrangler pages secret put TURNSTILE_SECRET --project-name agentconduit-site
+# Real Turnstile widget "Conduit Jam" (sitekey in jam.html: 0x4AAAAAADs4CS0b2XS0r7Yu).
+# Optional: set RESEND_API_KEY (secret) + JAM_EMAIL_FROM to enable confirmation emails.
+[vars]
+JAM_DEADLINE = "2026-07-28T23:59:00-07:00"

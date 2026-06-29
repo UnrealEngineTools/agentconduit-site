@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Conduit Launch Jam — build something in Unreal in 7 days</title>
+<meta name="description" content="Build the best thing you can with Conduit in 7 days. $500 top prize, Conduit commercial seats, and featuring. You direct the agent; you keep the credit.">
+<meta property="og:title" content="The Conduit Launch Jam">
+<meta property="og:description" content="Build the best thing you can with Conduit in 7 days. $500 top prize. You direct, you keep the credit.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#09090C">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  html { scroll-behavior: smooth; }
+  body { margin:0; background:#09090C; color:#F2F2F5; font-family:'Inter',system-ui,sans-serif; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility; }
+  ::selection { background:rgba(10,132,255,0.35); }
+  a { color:inherit; text-decoration:none; }
+  :focus-visible { outline:2px solid #4DB2FF; outline-offset:3px; border-radius:4px; }
+  @keyframes acGlow { 0%,100%{opacity:.45} 50%{opacity:.85} }
+  @keyframes acReveal { from{opacity:0; transform:translateY(24px)} to{opacity:1; transform:none} }
+  .acReveal { animation:acReveal both; animation-timeline:view(); animation-range:entry 2% cover 30%; }
+  .nav-link:hover { color:#F2F2F5; background:rgba(255,255,255,0.04); }
+  .foot-link:hover { color:#F2F2F5; }
+  .btn-secondary:hover { background:rgba(255,255,255,0.08); border-color:rgba(255,255,255,0.2); }
+  .cta-buy:hover { background:#1f90ff; }
+  .jam-field { width:100%; box-sizing:border-box; background:#0C0C11; border:1px solid rgba(255,255,255,0.12); border-radius:10px; padding:12px 14px; font-size:14.5px; color:#F2F2F5; font-family:'Inter',sans-serif; transition:border-color .15s; }
+  .jam-field:focus { outline:none; border-color:#4DB2FF; }
+  .jam-field::placeholder { color:#5E5E69; }
+  textarea.jam-field { min-height:96px; resize:vertical; line-height:1.5; }
+  .jam-label { display:block; font-size:13px; font-weight:600; color:#C9C9D3; margin:0 0 7px; }
+  .jam-req { color:#4DB2FF; }
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{animation-duration:.001ms!important; animation-iteration-count:1!important; animation-delay:0ms!important; transition-duration:.001ms!important}
+    .acReveal{animation:none!important; opacity:1!important; transform:none!important}
+  }
+</style>
+</head>
+<body>
+
+<div style="background:#09090C;overflow-x:hidden">
+
+  <!-- background glow -->
+  <div aria-hidden="true" style="position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(900px 520px at 78% -8%, rgba(10,132,255,0.16), transparent 60%), radial-gradient(700px 600px at 6% 8%, rgba(80,180,255,0.06), transparent 55%)"></div>
+
+  <!-- ===================== NAV ===================== -->
+  <header style="position:sticky;top:0;z-index:50;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);background:rgba(9,9,12,0.72);border-bottom:1px solid rgba(255,255,255,0.06)">
+    <nav aria-label="Primary" style="max-width:1180px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap">
+      <a href="/" style="display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:-0.02em;font-size:17px">
+        <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><rect x="2.5" y="2.5" width="17" height="17" rx="4.5" fill="none" stroke="#0A84FF" stroke-width="1.6"/><path d="M7 11h8M11 7v8" stroke="#4DB2FF" stroke-width="1.6" stroke-linecap="round"/></svg>
+        Conduit
+      </a>
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+        <div style="display:flex;align-items:center;gap:4px;margin-right:6px">
+          <a class="nav-link" href="/#features" style="padding:8px 12px;font-size:14px;color:#A6A6B2;border-radius:8px">Features</a>
+          <a class="nav-link" href="/#pricing" style="padding:8px 12px;font-size:14px;color:#A6A6B2;border-radius:8px">Pricing</a>
+          <a class="nav-link" href="/docs" style="padding:8px 12px;font-size:14px;color:#A6A6B2;border-radius:8px">Docs</a>
+          <a class="nav-link" href="#enter" style="padding:8px 12px;font-size:14px;color:#4DB2FF;border-radius:8px">The Jam</a>
+        </div>
+        <a class="cta-buy" href="#enter" style="display:inline-flex;align-items:center;gap:7px;padding:9px 16px;font-size:14px;font-weight:600;color:#fff;background:#0A84FF;border-radius:9px;box-shadow:0 1px 0 rgba(255,255,255,0.18) inset, 0 8px 24px -8px rgba(10,132,255,0.7);transition:background .2s">Enter the jam</a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="top" style="position:relative;z-index:1">
+
+    <!-- ===================== HERO ===================== -->
+    <section style="max-width:880px;margin:0 auto;padding:clamp(48px,8vw,96px) 24px clamp(36px,5vw,56px);text-align:center">
+      <div style="display:inline-flex;align-items:center;gap:9px;padding:6px 12px;border:1px solid rgba(255,255,255,0.1);border-radius:999px;font-size:12.5px;color:#B7B7C4;font-family:'JetBrains Mono',monospace;margin-bottom:24px">
+        <span style="width:7px;height:7px;border-radius:999px;background:#4ADE80;box-shadow:0 0 10px #4ADE80;animation:acGlow 2.4s ease-in-out infinite"></span>
+        Launch week · 7-day game jam
+      </div>
+      <h1 style="font-size:clamp(2.4rem,5.6vw,4rem);line-height:1.04;letter-spacing:-0.035em;font-weight:800;margin:0 0 20px;text-wrap:balance">
+        The Conduit Launch Jam
+      </h1>
+      <p style="font-size:clamp(1.05rem,1.5vw,1.28rem);line-height:1.6;color:#A6A6B2;max-width:620px;margin:0 auto 14px">
+        Build the best thing you can with Conduit in seven days. Direct the agent, art-direct it yourself, and show us what you made. <strong style="color:#E6E6EC">$500 top prize</strong>, Conduit commercial seats, and featuring.
+      </p>
+      <p style="font-size:14px;color:#8E8E9A;max-width:560px;margin:0 auto 34px;line-height:1.6">
+        You direct, you decide, you keep the credit. The agent does the editor work; the game is yours.
+      </p>
+
+      <!-- countdown -->
+      <div id="countdown-wrap" style="display:inline-flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:32px">
+        <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:14px 18px;min-width:74px">
+          <div id="cd-d" style="font-size:clamp(1.6rem,3vw,2.1rem);font-weight:750;letter-spacing:-0.03em;color:#F2F2F5">--</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#8E8E9A;margin-top:3px">days</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:14px 18px;min-width:74px">
+          <div id="cd-h" style="font-size:clamp(1.6rem,3vw,2.1rem);font-weight:750;letter-spacing:-0.03em;color:#F2F2F5">--</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#8E8E9A;margin-top:3px">hours</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:14px 18px;min-width:74px">
+          <div id="cd-m" style="font-size:clamp(1.6rem,3vw,2.1rem);font-weight:750;letter-spacing:-0.03em;color:#F2F2F5">--</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#8E8E9A;margin-top:3px">minutes</div>
+        </div>
+      </div>
+      <div id="cd-caption" style="font-family:'JetBrains Mono',monospace;font-size:12.5px;color:#8E8E9A;margin-bottom:30px">until submissions close</div>
+
+      <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:center">
+        <a class="cta-buy" href="#enter" style="display:inline-flex;align-items:center;gap:8px;padding:13px 24px;font-size:15px;font-weight:600;color:#fff;background:#0A84FF;border-radius:11px;box-shadow:0 1px 0 rgba(255,255,255,0.18) inset, 0 12px 34px -10px rgba(10,132,255,0.8);transition:background .2s">Submit your entry</a>
+        <a class="btn-secondary" href="https://buy.polar.sh/polar_cl_1FGJ3RGFEE5f2nqXGHt7n7UGcCq32avE6Ge8n3gKW5R" style="display:inline-flex;align-items:center;gap:8px;padding:13px 24px;font-size:15px;font-weight:600;color:#C9C9D3;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.12);border-radius:11px;transition:background .2s,border-color .2s">Get Conduit free</a>
+      </div>
+    </section>
+
+    <!-- ===================== PRIZES ===================== -->
+    <section class="acReveal" style="max-width:1180px;margin:0 auto;padding:clamp(40px,6vw,72px) 24px">
+      <div style="text-align:center;max-width:680px;margin:0 auto 44px">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:12.5px;color:#4DB2FF;margin-bottom:14px">// prizes</div>
+        <h2 style="font-size:clamp(1.8rem,3.4vw,2.6rem);line-height:1.1;letter-spacing:-0.03em;font-weight:700;margin:0;text-wrap:balance">What you can win.</h2>
+      </div>
+      <div style="display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr));max-width:980px;margin:0 auto">
+        <div style="position:relative;border:1px solid rgba(10,132,255,0.5);border-radius:18px;padding:30px;background:linear-gradient(180deg, rgba(10,132,255,0.1), rgba(255,255,255,0.008));box-shadow:0 30px 70px -30px rgba(10,132,255,0.5)">
+          <div style="position:absolute;top:-11px;left:30px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#fff;background:#0A84FF;padding:4px 10px;border-radius:6px;font-weight:600">1ST</div>
+          <div style="font-size:14px;font-weight:600;color:#7CC4FF;margin-bottom:12px">Best in jam</div>
+          <div style="font-size:40px;font-weight:780;letter-spacing:-0.03em;margin-bottom:14px">$500</div>
+          <div style="display:flex;align-items:flex-start;gap:9px;padding:6px 0;font-size:14px;color:#E6E6EC"><span style="color:#4DB2FF;margin-top:1px">+</span>A Conduit commercial seat</div>
+          <div style="display:flex;align-items:flex-start;gap:9px;padding:6px 0;font-size:14px;color:#E6E6EC"><span style="color:#4DB2FF;margin-top:1px">+</span>Featured on the site &amp; newsletter</div>
+        </div>
+        <div style="border:1px solid rgba(255,255,255,0.1);border-radius:18px;padding:30px;background:rgba(255,255,255,0.015)">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#8E8E9A;margin-bottom:12px">2ND &amp; 3RD</div>
+          <div style="font-size:14px;font-weight:600;color:#A6A6B2;margin-bottom:12px">Runners-up</div>
+          <div style="font-size:28px;font-weight:750;letter-spacing:-0.03em;margin-bottom:14px">Conduit seat</div>
+          <div style="display:flex;align-items:flex-start;gap:9px;padding:6px 0;font-size:14px;color:#C9C9D3"><span style="color:#4ADE80;margin-top:1px">+</span>A commercial seat each</div>
+          <div style="display:flex;align-items:flex-start;gap:9px;padding:6px 0;font-size:14px;color:#C9C9D3"><span style="color:#4ADE80;margin-top:1px">+</span>Featured on the site</div>
+        </div>
+        <div style="border:1px solid rgba(255,255,255,0.1);border-radius:18px;padding:30px;background:rgba(255,255,255,0.015)">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#8E8E9A;margin-bottom:12px">COMMUNITY</div>
+          <div style="font-size:14px;font-weight:600;color:#A6A6B2;margin-bottom:12px">People's choice</div>
+          <div style="font-size:28px;font-weight:750;letter-spacing:-0.03em;margin-bottom:14px">Featured</div>
+          <div style="display:flex;align-items:flex-start;gap:9px;padding:6px 0;font-size:14px;color:#C9C9D3"><span style="color:#4ADE80;margin-top:1px">+</span>Most-liked entry, voted by the community</div>
+          <div style="display:flex;align-items:flex-start;gap:9px;padding:6px 0;font-size:14px;color:#C9C9D3"><span style="color:#4ADE80;margin-top:1px">+</span>A Conduit seat &amp; a feature</div>
+        </div>
+      </div>
+      <p style="text-align:center;margin:22px auto 0;max-width:620px;font-size:13px;color:#6B6B76;line-height:1.6">Sponsor prize tiers may be added before kickoff. Want to sponsor a tier with license keys or credits? <a href="#enter" style="color:#7CC4FF">Get in touch.</a></p>
+    </section>
+
+    <!-- ===================== HOW TO ENTER ===================== -->
+    <section class="acReveal" style="max-width:1180px;margin:0 auto;padding:clamp(40px,6vw,72px) 24px">
+      <div style="text-align:center;max-width:680px;margin:0 auto 46px">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:12.5px;color:#4DB2FF;margin-bottom:14px">// how to enter</div>
+        <h2 style="font-size:clamp(1.8rem,3.4vw,2.6rem);line-height:1.1;letter-spacing:-0.03em;font-weight:700;margin:0 0 14px;text-wrap:balance">Three steps. Seven days.</h2>
+        <p style="color:#A6A6B2;font-size:16px;line-height:1.6;margin:0">Anything you make with Conduit counts, a prototype, a mechanic, a level, a full mini-game. Done beats big.</p>
+      </div>
+      <div style="display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr))">
+        <div style="border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:26px;background:rgba(255,255,255,0.015)"><div style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#4DB2FF;border:1px solid rgba(10,132,255,0.35);width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;margin-bottom:18px">01</div><h3 style="font-size:17.5px;font-weight:650;margin:0 0 8px;letter-spacing:-0.01em">Get Conduit, free</h3><p style="color:#9A9AA6;font-size:14.5px;line-height:1.55;margin:0">Grab the free Indie tier, drop it into your project, and point your agent at it. Five-minute setup in the <a href="/docs" style="color:#7CC4FF">docs</a>.</p></div>
+        <div style="border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:26px;background:rgba(255,255,255,0.015)"><div style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#4DB2FF;border:1px solid rgba(10,132,255,0.35);width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;margin-bottom:18px">02</div><h3 style="font-size:17.5px;font-weight:650;margin:0 0 8px;letter-spacing:-0.01em">Direct it. Build something.</h3><p style="color:#9A9AA6;font-size:14.5px;line-height:1.55;margin:0">You make the calls; the agent does the editor work. Bring your own art and ideas, or lean into the blockout, your choice.</p></div>
+        <div style="border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:26px;background:rgba(255,255,255,0.015)"><div style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#4DB2FF;border:1px solid rgba(10,132,255,0.35);width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;margin-bottom:18px">03</div><h3 style="font-size:17.5px;font-weight:650;margin:0 0 8px;letter-spacing:-0.01em">Record &amp; submit</h3><p style="color:#9A9AA6;font-size:14.5px;line-height:1.55;margin:0">Post a 30–90s clip of what you built and the prompts you used. Drop the link in the form below before the deadline.</p></div>
+      </div>
+    </section>
+
+    <!-- ===================== JUDGING ===================== -->
+    <section class="acReveal" style="max-width:1180px;margin:0 auto;padding:clamp(40px,6vw,64px) 24px">
+      <div style="border:1px solid rgba(255,255,255,0.08);border-radius:18px;padding:clamp(28px,4vw,44px);background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0))">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:12.5px;color:#4DB2FF;margin-bottom:14px">// how entries are judged</div>
+        <h2 style="font-size:clamp(1.5rem,2.6vw,2rem);line-height:1.12;letter-spacing:-0.03em;font-weight:700;margin:0 0 24px;text-wrap:balance">Judged on the game, not the prompt count.</h2>
+        <div style="display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(min(240px,100%),1fr))">
+          <div><div style="font-size:15px;font-weight:650;margin-bottom:6px;color:#E6E6EC">Creativity &amp; direction</div><p style="color:#9A9AA6;font-size:14px;line-height:1.55;margin:0">The idea, the feel, the choices you made. The stuff that makes it yours.</p></div>
+          <div><div style="font-size:15px;font-weight:650;margin-bottom:6px;color:#E6E6EC">Execution</div><p style="color:#9A9AA6;font-size:14px;line-height:1.55;margin:0">How playable and polished the result is in the time given.</p></div>
+          <div><div style="font-size:15px;font-weight:650;margin-bottom:6px;color:#E6E6EC">Clever use of Conduit</div><p style="color:#9A9AA6;font-size:14px;line-height:1.55;margin:0">How well you put the agent to work on the parts worth automating.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== ENTRY FORM ===================== -->
+    <section id="enter" class="acReveal" style="max-width:760px;margin:0 auto;padding:clamp(40px,6vw,72px) 24px">
+      <div style="text-align:center;max-width:620px;margin:0 auto 38px">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:12.5px;color:#4DB2FF;margin-bottom:14px">// submit your entry</div>
+        <h2 style="font-size:clamp(1.8rem,3.4vw,2.6rem);line-height:1.1;letter-spacing:-0.03em;font-weight:700;margin:0 0 14px;text-wrap:balance">Enter the jam.</h2>
+        <p style="color:#A6A6B2;font-size:15.5px;line-height:1.6;margin:0">One entry per person. You can resubmit to update your entry any time before the deadline, the latest one counts.</p>
+      </div>
+
+      <form id="jam-form" style="border:1px solid rgba(255,255,255,0.1);border-radius:18px;padding:clamp(24px,4vw,36px);background:rgba(255,255,255,0.015);display:grid;gap:20px">
+        <div>
+          <label class="jam-label" for="f-name">Your name <span class="jam-req">*</span></label>
+          <input class="jam-field" id="f-name" name="name" type="text" required maxlength="80" placeholder="Jane Maker" autocomplete="name">
+        </div>
+        <div>
+          <label class="jam-label" for="f-email">Email <span class="jam-req">*</span></label>
+          <input class="jam-field" id="f-email" name="email" type="email" required maxlength="160" placeholder="you@studio.com" autocomplete="email">
+          <p style="margin:7px 0 0;font-size:12px;color:#6B6B76">For your entry confirmation and if you win. Never shared.</p>
+        </div>
+        <div>
+          <label class="jam-label" for="f-handle">Handle to credit (optional)</label>
+          <input class="jam-field" id="f-handle" name="handle" type="text" maxlength="80" placeholder="@yourhandle / itch.io / portfolio">
+        </div>
+        <div>
+          <label class="jam-label" for="f-title">Project title <span class="jam-req">*</span></label>
+          <input class="jam-field" id="f-title" name="title" type="text" required maxlength="120" placeholder="Coin Rush 3000">
+        </div>
+        <div>
+          <label class="jam-label" for="f-desc">One-line description <span class="jam-req">*</span></label>
+          <input class="jam-field" id="f-desc" name="description" type="text" required maxlength="180" placeholder="A top-down dash where you collect coins before the timer runs out.">
+        </div>
+        <div>
+          <label class="jam-label" for="f-video">Video / clip URL <span class="jam-req">*</span></label>
+          <input class="jam-field" id="f-video" name="videoUrl" type="url" required maxlength="400" placeholder="https://youtube.com/... (30–90s of what you built)">
+          <p style="margin:7px 0 0;font-size:12px;color:#6B6B76">YouTube, Vimeo, X, itch, anywhere public. This is what we judge.</p>
+        </div>
+        <div>
+          <label class="jam-label" for="f-build">Playable build or repo (optional)</label>
+          <input class="jam-field" id="f-build" name="buildUrl" type="url" maxlength="400" placeholder="https://yourname.itch.io/...">
+        </div>
+        <div>
+          <label class="jam-label" for="f-prompts">The prompts you used <span class="jam-req">*</span></label>
+          <textarea class="jam-field" id="f-prompts" name="prompts" required maxlength="4000" placeholder="Paste the key prompts you gave the agent. We love seeing how you directed it."></textarea>
+        </div>
+        <div>
+          <label class="jam-label" for="f-tier">Which tier did you use? <span class="jam-req">*</span></label>
+          <select class="jam-field" id="f-tier" name="tier" required>
+            <option value="" disabled selected>Select one</option>
+            <option value="indie">Indie (free / noncommercial)</option>
+            <option value="commercial">Commercial</option>
+          </select>
+        </div>
+
+        <label style="display:flex;align-items:flex-start;gap:11px;font-size:13.5px;color:#A6A6B2;line-height:1.5;cursor:pointer">
+          <input type="checkbox" id="f-agree" name="agree" required style="margin-top:3px;width:16px;height:16px;accent-color:#0A84FF;flex-shrink:0">
+          <span>I built this with Conduit during the jam, it's my own work, and I grant permission to feature my entry (clip, title, and credited handle) on Conduit's site and channels.</span>
+        </label>
+
+        <!-- Cloudflare Turnstile (anti-bot). Replace data-sitekey before going live. -->
+        <div class="cf-turnstile" data-sitekey="0x4AAAAAADs4CS0b2XS0r7Yu" data-theme="dark"></div>
+
+        <button type="submit" id="f-submit" class="cta-buy" style="display:flex;align-items:center;justify-content:center;gap:8px;padding:14px;font-size:15.5px;font-weight:600;color:#fff;background:#0A84FF;border:none;border-radius:11px;cursor:pointer;box-shadow:0 1px 0 rgba(255,255,255,0.18) inset;transition:background .2s">Submit entry</button>
+
+        <div id="f-status" role="status" aria-live="polite" style="display:none;font-size:14px;line-height:1.5;padding:13px 15px;border-radius:10px"></div>
+      </form>
+    </section>
+
+    <!-- ===================== FAQ ===================== -->
+    <section class="acReveal" style="max-width:760px;margin:0 auto;padding:clamp(32px,5vw,56px) 24px clamp(48px,6vw,80px)">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:12.5px;color:#4DB2FF;margin-bottom:20px">// faq</div>
+      <div style="display:grid;gap:12px">
+        <details style="border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:18px 20px;background:rgba(255,255,255,0.012)"><summary style="font-size:15px;font-weight:600;cursor:pointer;color:#E6E6EC">Do I need the paid version to enter?</summary><p style="color:#9A9AA6;font-size:14px;line-height:1.6;margin:12px 0 0">No. The free Indie tier has all 68 tools and all 4 skills. The jam is open to everyone.</p></details>
+        <details style="border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:18px 20px;background:rgba(255,255,255,0.012)"><summary style="font-size:15px;font-weight:600;cursor:pointer;color:#E6E6EC">Does it have to be a finished game?</summary><p style="color:#9A9AA6;font-size:14px;line-height:1.6;margin:12px 0 0">No. A prototype, a single polished mechanic, or a great-looking level all count. We're judging the idea and execution, not scope.</p></details>
+        <details style="border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:18px 20px;background:rgba(255,255,255,0.012)"><summary style="font-size:15px;font-weight:600;cursor:pointer;color:#E6E6EC">Can I use my own art and assets?</summary><p style="color:#9A9AA6;font-size:14px;line-height:1.6;margin:12px 0 0">Absolutely, encouraged. Conduit builds the levels, logic, and UI; you bring the art, music, and vision. Use any assets you have the rights to.</p></details>
+        <details style="border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:18px 20px;background:rgba(255,255,255,0.012)"><summary style="font-size:15px;font-weight:600;cursor:pointer;color:#E6E6EC">Who owns what I make?</summary><p style="color:#9A9AA6;font-size:14px;line-height:1.6;margin:12px 0 0">You do, entirely. Entering only grants us permission to feature your clip and credit you.</p></details>
+        <details style="border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:18px 20px;background:rgba(255,255,255,0.012)"><summary style="font-size:15px;font-weight:600;cursor:pointer;color:#E6E6EC">When are winners announced?</summary><p style="color:#9A9AA6;font-size:14px;line-height:1.6;margin:12px 0 0">Within a few days of the deadline. Winners are notified by email and featured on the site.</p></details>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer style="position:relative;z-index:1;border-top:1px solid rgba(255,255,255,0.07);padding:48px 24px 40px">
+    <div style="max-width:1180px;margin:0 auto">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:28px">
+        <a href="/" style="display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:-0.02em;font-size:17px">
+          <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><rect x="2.5" y="2.5" width="17" height="17" rx="4.5" fill="none" stroke="#0A84FF" stroke-width="1.6"/><path d="M7 11h8M11 7v8" stroke="#4DB2FF" stroke-width="1.6" stroke-linecap="round"/></svg>
+          Conduit
+        </a>
+        <div style="display:flex;gap:18px;flex-wrap:wrap">
+          <a class="foot-link" href="/" style="font-size:14px;color:#A6A6B2">Home</a>
+          <a class="foot-link" href="/#pricing" style="font-size:14px;color:#A6A6B2">Pricing</a>
+          <a class="foot-link" href="/docs" style="font-size:14px;color:#A6A6B2">Docs</a>
+        </div>
+      </div>
+      <div style="padding-top:24px;border-top:1px solid rgba(255,255,255,0.06)">
+        <p style="font-size:12px;color:#62626C;line-height:1.65;margin:0 0 16px;max-width:780px">
+          Conduit is an independent, third-party tool made for Unreal Engine developers. Unreal Engine, Unreal, and their logos are trademarks or registered trademarks of Epic Games, Inc. in the United States and elsewhere, used here only to describe compatibility. Conduit is not affiliated with, endorsed by, or sponsored by Epic Games.
+        </p>
+        <span style="font-size:12.5px;color:#5E5E69">© 2026 Conduit · The Conduit Launch Jam</span>
+      </div>
+    </div>
+  </footer>
+
+</div>
+
+<!-- Cloudflare Turnstile loader -->
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+<script>
+  // ============================================================
+  //  JAM CONFIG — edit these two lines to reschedule the jam.
+  //  Times are ISO 8601 with explicit offset. -07:00 = US Pacific (PDT).
+  // ============================================================
+  var JAM_DEADLINE = '2026-07-28T23:59:00-07:00'; // submissions close
+  var SUBMIT_ENDPOINT = '/api/jam/submit';          // Cloudflare Worker route
+
+  (function () {
+    // ---- countdown ----
+    var dEl = document.getElementById('cd-d');
+    var hEl = document.getElementById('cd-h');
+    var mEl = document.getElementById('cd-m');
+    var capEl = document.getElementById('cd-caption');
+    var deadline = new Date(JAM_DEADLINE).getTime();
+    function tick() {
+      var now = Date.now();
+      var diff = deadline - now;
+      if (diff <= 0) {
+        dEl.textContent = hEl.textContent = mEl.textContent = '00';
+        capEl.textContent = 'submissions are closed';
+        return;
+      }
+      var mins = Math.floor(diff / 60000);
+      var days = Math.floor(mins / 1440);
+      var hours = Math.floor((mins % 1440) / 60);
+      var minutes = mins % 60;
+      dEl.textContent = days;
+      hEl.textContent = String(hours).padStart(2, '0');
+      mEl.textContent = String(minutes).padStart(2, '0');
+    }
+    tick();
+    setInterval(tick, 30000);
+
+    // ---- submission ----
+    var form = document.getElementById('jam-form');
+    var statusEl = document.getElementById('f-status');
+    var submitBtn = document.getElementById('f-submit');
+    function showStatus(kind, msg) {
+      statusEl.style.display = 'block';
+      statusEl.textContent = msg;
+      if (kind === 'ok') { statusEl.style.background = 'rgba(74,222,128,0.1)'; statusEl.style.border = '1px solid rgba(74,222,128,0.35)'; statusEl.style.color = '#9be8b8'; }
+      else { statusEl.style.background = 'rgba(255,99,99,0.08)'; statusEl.style.border = '1px solid rgba(255,99,99,0.3)'; statusEl.style.color = '#ffb3b3'; }
+    }
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var token = (window.turnstile && typeof window.turnstile.getResponse === 'function') ? window.turnstile.getResponse() : '';
+      if (!token) { showStatus('err', 'Please complete the verification check above and try again.'); return; }
+      var payload = {
+        name: form.name.value.trim(),
+        email: form.email.value.trim(),
+        handle: form.handle.value.trim(),
+        title: form.title.value.trim(),
+        description: form.description.value.trim(),
+        videoUrl: form.videoUrl.value.trim(),
+        buildUrl: form.buildUrl.value.trim(),
+        prompts: form.prompts.value.trim(),
+        tier: form.tier.value,
+        turnstileToken: token
+      };
+      submitBtn.disabled = true;
+      submitBtn.style.opacity = '0.6';
+      submitBtn.textContent = 'Submitting…';
+      fetch(SUBMIT_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      }).then(function (r) {
+        return r.json().then(function (body) { return { ok: r.ok, body: body }; });
+      }).then(function (res) {
+        if (res.ok && res.body && res.body.ok) {
+          form.reset();
+          if (window.turnstile) { window.turnstile.reset(); }
+          showStatus('ok', 'Entry received. Check your email for a confirmation, and good luck. You can resubmit any time before the deadline to update it.');
+          submitBtn.textContent = 'Submitted';
+        } else {
+          var m = (res.body && res.body.error) ? res.body.error : 'Something went wrong. Please try again in a moment.';
+          showStatus('err', m);
+          submitBtn.disabled = false; submitBtn.style.opacity = '1'; submitBtn.textContent = 'Submit entry';
+          if (window.turnstile) { window.turnstile.reset(); }
+        }
+      }).catch(function () {
+        showStatus('err', 'Network error, your entry was not submitted. Please try again.');
+        submitBtn.disabled = false; submitBtn.style.opacity = '1'; submitBtn.textContent = 'Submit entry';
+        if (window.turnstile) { window.turnstile.reset(); }
+      });
+    });
+  })();
+</script>
+</body>
+</html>
