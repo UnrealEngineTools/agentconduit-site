@@ -58,6 +58,10 @@
     .docwrap { grid-template-columns:1fr; gap:0; }
     .side { position:static; max-height:none; border-bottom:1px solid rgba(255,255,255,0.08); margin-bottom:8px; }
   }
+  /* Mobile: long code lines (URLs, paths) scroll instead of clipping; media stays fluid. */
+  pre { overflow-x:auto; max-width:100%; -webkit-overflow-scrolling:touch; }
+  img,svg,video,canvas { max-width:100%; height:auto; }
+  @media (max-width:600px){ .ic { white-space:normal; overflow-wrap:anywhere; } }
   @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} *{animation-duration:.001ms!important} }
 </style>
 </head>
