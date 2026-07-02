@@ -111,6 +111,7 @@
       <a href="#g-world">World &amp; level</a>
       <a href="#g-actors">Actors &amp; scene</a>
       <a href="#g-blueprints">Blueprints &amp; logic</a>
+      <a href="#g-animation">Animation</a>
       <a href="#g-umg">UMG — game UI</a>
       <a href="#g-materials">Materials &amp; look</a>
       <a href="#g-data">Data, assets &amp; properties</a>
@@ -289,7 +290,7 @@ YourProject/
 
       <!-- ===================== TOOL REFERENCE ===================== -->
       <section id="g-world" class="sec">
-        <div class="lbl">// tool reference · 1 / 10</div>
+        <div class="lbl">// tool reference · 1 / 11</div>
         <h2 class="h">World &amp; level</h2>
         <p class="lede">Create, open, and save levels, and set the GameMode that governs play.</p>
         <div class="tool" id="new_level"><div class="th"><code class="tn">new_level</code><span class="gate gw">Editor mutations</span></div><p class="td">Creates a new blank level and opens it for editing, replacing the current level. Optional <code class="ic">path</code> (e.g. "/Game/Maps/MyLevel") saves the new level to that asset. Not undoable.</p></div>
@@ -299,7 +300,7 @@ YourProject/
       </section>
 
       <section id="g-actors" class="sec">
-        <div class="lbl">// tool reference · 2 / 10</div>
+        <div class="lbl">// tool reference · 2 / 11</div>
         <h2 class="h">Actors &amp; scene</h2>
         <p class="lede">Spawn, transform, organize, inspect, and dress the actors in your level.</p>
         <div class="tool" id="spawn_actor"><div class="th"><code class="tn">spawn_actor</code><span class="gate gw">Editor mutations</span></div><p class="td">Spawns an actor into the current editor level. <code class="ic">class</code> (required) is a native class name (e.g. "StaticMeshActor", "PointLight") or a Blueprint class path (e.g. "/Game/.../BP_Foo.BP_Foo_C"). Optional <code class="ic">location</code> {x,y,z}, <code class="ic">rotation</code> {pitch,yaw,roll}, and <code class="ic">label</code>. Undoable.</p></div>
@@ -321,7 +322,7 @@ YourProject/
       </section>
 
       <section id="g-blueprints" class="sec">
-        <div class="lbl">// tool reference · 3 / 10</div>
+        <div class="lbl">// tool reference · 3 / 11</div>
         <h2 class="h">Blueprints &amp; logic</h2>
         <p class="lede">Author Blueprint classes — structure (components, variables) and node-graph logic (events, functions, flow, casts, input). Build a graph, then <code class="ic">compile_blueprint</code> to validate.</p>
         <div class="tool" id="create_blueprint"><div class="th"><code class="tn">create_blueprint</code><span class="gate gw">Editor mutations</span></div><p class="td">Creates a new Blueprint class asset from a parent class (default Actor). Args: <code class="ic">name</code>, <code class="ic">path</code> (content folder, e.g. "/Game/Blueprints"), optional <code class="ic">parent_class</code> (native class name or asset path, default "Actor"), optional <code class="ic">save</code> (default true). Flesh it out with add_blueprint_component / add_blueprint_variable / the node tools.</p></div>
@@ -339,8 +340,22 @@ YourProject/
         <div class="tool" id="set_pin_default"><div class="th"><code class="tn">set_pin_default</code><span class="gate gw">Editor mutations</span></div><p class="td">Sets the default (literal) value on an unconnected INPUT pin of a Blueprint node — e.g. drop an asset onto a SystemTemplate / Sound pin, or set a number/bool/enum/string. Args: <code class="ic">blueprint</code> (asset path), <code class="ic">node</code> (node id), <code class="ic">pin</code> (input pin name), <code class="ic">value</code> (for object/class pins: an asset or class path, or "None" to clear; otherwise the literal text). Fails if the pin is connected. Recompiles the Blueprint.</p></div>
       </section>
 
+      <section id="g-animation" class="sec">
+        <div class="lbl">// tool reference · 4 / 11</div>
+        <h2 class="h">Animation</h2>
+        <p class="lede">Author Animation Blueprints end-to-end — the single biggest capability gap versus other Unreal MCPs. Create the AnimBP and blendspaces, build the AnimGraph (blendspace / sequence players into the output pose), and lay out a locomotion state machine with states, transitions and rules, then bind it to a skeletal mesh. <code class="ic">compile_blueprint</code> validates the result.</p>
+        <div class="tool" id="create_anim_blueprint"><div class="th"><code class="tn">create_anim_blueprint</code><span class="gate gw">Editor mutations</span><span class="gate gr" style="color:#6EE7A0">new in 1.3</span></div><p class="td">Creates an Animation Blueprint bound to a skeleton (its AnimGraph is seeded automatically). Args: <code class="ic">name</code>, <code class="ic">path</code>, <code class="ic">skeleton</code> (USkeleton asset path), optional <code class="ic">parent_class</code> (a UAnimInstance subclass; default UAnimInstance), optional <code class="ic">save</code> (default true). Author its Event Graph with the add_blueprint_* node tools; bind it with set_anim_class.</p></div>
+        <div class="tool" id="create_blendspace"><div class="th"><code class="tn">create_blendspace</code><span class="gate gw">Editor mutations</span><span class="gate gr" style="color:#6EE7A0">new in 1.3</span></div><p class="td">Creates a 1D or 2D BlendSpace for locomotion. Args: <code class="ic">name</code>, <code class="ic">path</code>, <code class="ic">skeleton</code>, optional <code class="ic">type</code> ("1D" default / "2D"), <code class="ic">axis_x</code> {name,min,max,grid} and (2D) <code class="ic">axis_y</code>, and <code class="ic">samples</code> — an array of {anim, x, y}. Samples outside the axis range are rejected.</p></div>
+        <div class="tool" id="set_anim_class"><div class="th"><code class="tn">set_anim_class</code><span class="gate gw">Editor mutations</span><span class="gate gr" style="color:#6EE7A0">new in 1.3</span></div><p class="td">Binds an Animation Blueprint to a SkeletalMeshComponent. Args: <code class="ic">anim_class</code> (an AnimBlueprint asset path or a UAnimInstance class path), optional <code class="ic">component</code>, and a target: either <code class="ic">target</code> (a Blueprint asset path — sets the component template’s Anim Class and recompiles) or <code class="ic">actor_label</code> / the current selection (a level actor instance).</p></div>
+        <div class="tool" id="anim_graph_add_node"><div class="th"><code class="tn">anim_graph_add_node</code><span class="gate gw">Editor mutations</span><span class="gate gr" style="color:#6EE7A0">new in 1.4</span></div><p class="td">Adds a node to an AnimGraph. Args: <code class="ic">anim_blueprint</code>, <code class="ic">node_type</code> = "StateMachine" | "BlendSpacePlayer" | "SequencePlayer" | "VariableGet", optional <code class="ic">asset</code> (BlendSpace / AnimSequence), optional <code class="ic">variable</code> (for VariableGet), optional <code class="ic">state</code> (add inside a state’s pose graph), <code class="ic">pos_x</code>/<code class="ic">pos_y</code>. Returns the node id and its pins; reference the output-pose node as "root".</p></div>
+        <div class="tool" id="anim_graph_connect"><div class="th"><code class="tn">anim_graph_connect</code><span class="gate gw">Editor mutations</span><span class="gate gr" style="color:#6EE7A0">new in 1.4</span></div><p class="td">Connects two AnimGraph pins (pose or data). Args: <code class="ic">anim_blueprint</code>, <code class="ic">from_node</code> &amp; <code class="ic">to_node</code> (node ids, or "root" for the output-pose node), <code class="ic">from_pin</code> &amp; <code class="ic">to_pin</code> (e.g. a player’s "Pose" into root "Result", or a Speed VariableGet into a player’s "X"), optional <code class="ic">state</code>.</p></div>
+        <div class="tool" id="anim_sm_add_state"><div class="th"><code class="tn">anim_sm_add_state</code><span class="gate gw">Editor mutations</span><span class="gate gr" style="color:#6EE7A0">new in 1.5</span></div><p class="td">Adds a state to a state machine; its pose graph is created automatically. Args: <code class="ic">anim_blueprint</code>, <code class="ic">state_machine</code> (a StateMachine node id or name), <code class="ic">name</code>, optional <code class="ic">entry</code> (bool — make it the machine’s default state), <code class="ic">pos_x</code>/<code class="ic">pos_y</code>. Author the pose with anim_graph_add_node/connect passing <code class="ic">state</code> = this id.</p></div>
+        <div class="tool" id="anim_sm_add_transition"><div class="th"><code class="tn">anim_sm_add_transition</code><span class="gate gw">Editor mutations</span><span class="gate gr" style="color:#6EE7A0">new in 1.5</span></div><p class="td">Adds a transition between two states. Args: <code class="ic">anim_blueprint</code>, <code class="ic">state_machine</code>, <code class="ic">from_state</code> &amp; <code class="ic">to_state</code> (state ids or names), optional <code class="ic">blend_time</code> (crossfade seconds, default 0.2). Returns the transition id — set its rule next (a transition with no rule never fires).</p></div>
+        <div class="tool" id="anim_sm_set_transition_rule"><div class="th"><code class="tn">anim_sm_set_transition_rule</code><span class="gate gw">Editor mutations</span><span class="gate gr" style="color:#6EE7A0">new in 1.5</span></div><p class="td">Sets a transition’s condition. Args: <code class="ic">anim_blueprint</code>, <code class="ic">transition</code>, <code class="ic">variable</code> (a member variable), <code class="ic">comparison</code> one of &gt; &lt; &gt;= &lt;= == != for a numeric variable, or "bool" to use a boolean variable directly, and <code class="ic">value</code> (the number to compare against). Builds VariableGet → comparison → CanEnterTransition and recompiles.</p></div>
+      </section>
+
       <section id="g-umg" class="sec">
-        <div class="lbl">// tool reference · 4 / 10</div>
+        <div class="lbl">// tool reference · 5 / 11</div>
         <h2 class="h">UMG — game UI</h2>
         <p class="lede">Build Widget Blueprints (HUDs, menus), set widget and layout-slot properties, and render the UI to an image so the agent can <em>see</em> it.</p>
         <div class="tool" id="create_widget_blueprint"><div class="th"><code class="tn">create_widget_blueprint</code><span class="gate gw">Editor mutations</span></div><p class="td">Creates a UMG Widget Blueprint (game UI / HUD) with a root Canvas Panel. Args: <code class="ic">name</code>, <code class="ic">path</code> (e.g. "/Game/UI"), optional <code class="ic">parent_class</code> (default "UserWidget"), optional <code class="ic">save</code> (default true). Add widgets with add_widget.</p></div>
@@ -350,7 +365,7 @@ YourProject/
       </section>
 
       <section id="g-materials" class="sec">
-        <div class="lbl">// tool reference · 5 / 10</div>
+        <div class="lbl">// tool reference · 6 / 11</div>
         <h2 class="h">Materials &amp; look</h2>
         <p class="lede">Assign materials, tune them via dynamic instances, project decals, and grade the scene with post-processing.</p>
         <div class="tool" id="set_material"><div class="th"><code class="tn">set_material</code><span class="gate gw">Editor mutations</span></div><p class="td">Sets a material on a mesh component of the selected actor (or <code class="ic">actor_label</code>). Args: <code class="ic">material</code> (required, asset path), <code class="ic">slot</code> (material index, default 0), optional <code class="ic">component</code> (mesh component name; defaults to the actor's first mesh component). Undoable.</p></div>
@@ -361,7 +376,7 @@ YourProject/
       </section>
 
       <section id="g-data" class="sec">
-        <div class="lbl">// tool reference · 6 / 10</div>
+        <div class="lbl">// tool reference · 7 / 11</div>
         <h2 class="h">Data, assets &amp; properties</h2>
         <p class="lede">Create and import assets, read and write properties anywhere by reflection, edit nested struct/array/map paths, and populate CurveTables.</p>
         <div class="tool" id="create_asset"><div class="th"><code class="tn">create_asset</code><span class="gate gw">Editor mutations</span></div><p class="td">Creates a new asset and saves it. Args: <code class="ic">class</code> (required, asset class name or /Script path, e.g. "LevelUpInfo", "CurveTable", "DataAsset"), <code class="ic">path</code> (required, content folder), <code class="ic">name</code> (required), <code class="ic">save</code> (default true). Then use set_asset_property to populate it. Best for UDataAsset subclasses and CurveTables; Blueprints / Materials need their own factories.</p></div>
@@ -380,14 +395,14 @@ YourProject/
       </section>
 
       <section id="g-gameplay" class="sec">
-        <div class="lbl">// tool reference · 7 / 10</div>
+        <div class="lbl">// tool reference · 8 / 11</div>
         <h2 class="h">Gameplay &amp; input</h2>
         <p class="lede">Wire Enhanced Input. Set the GameMode with <code class="ic">set_game_mode</code> (under World &amp; level), drive logic from input with <code class="ic">add_blueprint_input_action_node</code> (under Blueprints), and bind keys here.</p>
         <div class="tool" id="add_input_mapping"><div class="th"><code class="tn">add_input_mapping</code><span class="gate gw">Editor mutations</span></div><p class="td">Maps a key to an Input Action in an Enhanced Input Mapping Context. Args: <code class="ic">context</code> (Input Mapping Context asset path), <code class="ic">action</code> (Input Action asset path), <code class="ic">key</code> (e.g. "W", "SpaceBar", "Gamepad_FaceButton_Bottom", "LeftMouseButton"). Create the IA / IMC assets with create_asset (class "InputAction" / "InputMappingContext"). Saves the context.</p></div>
       </section>
 
       <section id="g-verify" class="sec">
-        <div class="lbl">// tool reference · 8 / 10</div>
+        <div class="lbl">// tool reference · 9 / 11</div>
         <h2 class="h">Camera, play &amp; verify</h2>
         <p class="lede">Frame the viewport, run Play-In-Editor, and close the loop — screenshots, reference diffs, and the output log let the agent see and confirm its own work.</p>
         <div class="tool" id="set_viewport_camera"><div class="th"><code class="tn">set_viewport_camera</code><span class="gate gr">Read-only</span></div><p class="td">Aims the active level-editor perspective viewport. Optional <code class="ic">location</code> {x,y,z}, <code class="ic">rotation</code> {pitch,yaw,roll}, and <code class="ic">fov</code> (degrees). Omitted values keep their current setting. Use before take_screenshot to frame a shot.</p></div>
@@ -400,14 +415,14 @@ YourProject/
       </section>
 
       <section id="g-bulk" class="sec">
-        <div class="lbl">// tool reference · 9 / 10</div>
+        <div class="lbl">// tool reference · 10 / 11</div>
         <h2 class="h">Bulk &amp; orchestration</h2>
         <p class="lede">Collapse many calls into one request for bulk work.</p>
         <div class="tool" id="batch"><div class="th"><code class="tn">batch</code><span class="gate gu">Utility</span></div><p class="td">Runs several tool calls in order in a single request (fewer round-trips for bulk work). Args: <code class="ic">calls</code> (array of objects, each { "tool": name, "arguments": { … } }), optional <code class="ic">stop_on_error</code> (default false — continue past failures). Returns a numbered per-call result summary. Each sub-call still enforces its own safety gate. Image results are noted, not embedded.</p></div>
       </section>
 
       <section id="g-escape" class="sec">
-        <div class="lbl">// tool reference · 10 / 10</div>
+        <div class="lbl">// tool reference · 11 / 11</div>
         <h2 class="h">Escape hatches</h2>
         <p class="lede">For anything without a dedicated tool. These sit behind their own gates and are off by default.</p>
         <div class="tool" id="execute_python"><div class="th"><code class="tn">execute_python</code><span class="gate gp">Python gate</span></div><p class="td">Executes a Python script in Unreal's embedded interpreter (the <code class="ic">unreal</code> module is available) and returns captured stdout / stderr and the final expression's value. Use this for anything without a dedicated tool — asset edits, reflection, bulk operations. Multi-line scripts are supported. Runs inside one undo transaction. Requires 'Allow Python Execution' and the Python Editor Script Plugin.</p></div>
